@@ -6,11 +6,11 @@
 
 using namespace std;
 
-class Encryption{
+class Encryptor{
 private:
 	int key;
 public:
-	Encryption(int key){
+	Encryptor(int key){
 		this->key = key;
 	};
 	//Uses basic XOR cipher
