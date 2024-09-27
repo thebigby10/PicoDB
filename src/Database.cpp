@@ -1,5 +1,3 @@
-#pragma once
-
 #include<iostream>
 #include<string>
 #include<vector>
@@ -12,7 +10,8 @@ public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(string db_name, string file_path){
 		//check if file exists
-		if(!filesystem::exists(file_path)){
+		bool exists;
+		if(exists){
 			//directly
 			//fetch all data : use filehandler class
 			//convert it into a 3d vector data
@@ -23,8 +22,8 @@ public:
 	};
 	Database(string db_name, bool encryption);
 private:
-	String db_name; 
-	String file_path = "";
+	string db_name; 
+	string file_path = "";
 	bool encryption = true;
-	vector<Table> v;
+	vector<Table> db_data;
 };
