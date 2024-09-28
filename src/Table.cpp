@@ -10,5 +10,7 @@ private:
 	string table_name;
 	vector<vector< Cell> > table_data;
 public:
-	Table(string table_name);
+	Table(string table_name, vector<int >rows){ //add string conditions
+
+	}
 };

@@ -8,7 +8,7 @@ using namespace std;
 class Database{
 public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
-	Database(string db_name, string file_path){
+	Database(string db_name, string db_path){
 		//check if file exists
 		bool exists;
 		if(exists){
@@ -20,7 +20,7 @@ public:
 			//create config file
 		}
 	};
-	Database(string db_name, bool encryption);
+	// Database(string db_name, bool encryption);
 private:
 	string db_name; 
 	string file_path = "";

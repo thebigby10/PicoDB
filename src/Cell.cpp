@@ -11,6 +11,15 @@ enum class DataType {
     //DATE
 };
 
+enum class Constraint {
+    PRIMARY_KEY,
+    NOT_NULL,
+    UNIQUE,
+    NONE,
+    //FOREIGN KEY
+    
+};
+
 class Cell{
 public:
 	Cell(int data){
@@ -40,4 +49,5 @@ private:
 	string data_s;
 	bool data_b;
 	//implement date
+    Constrains constrains;
 };
