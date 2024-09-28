@@ -27,10 +27,15 @@ public:
 	vector<vector< string > > selectData(string table_name, vector<string> cols){
 
 	}
+	
+	vector<vector< string > > selectDataWhere(string table_name, vector<string> cols){
+
+	}
+
 	bool saveDB(){
 
 	}
 	bool dropTable(){
-		
+
 	}
 };
