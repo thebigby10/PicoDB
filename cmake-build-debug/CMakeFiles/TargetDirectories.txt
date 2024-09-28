@@ -1,2 +1,0 @@
-/home/thebigby01/Codes/_github_repos/PicoDB/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/thebigby01/Codes/_github_repos/PicoDB/cmake-build-debug/CMakeFiles/rebuild_cache.dir
