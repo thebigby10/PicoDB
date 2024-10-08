@@ -1,4 +1,13 @@
 # PicoDB
+![Version](https://img.shields.io/badge/version-1.0.0-brightgreen) (proposed)
+
+
+
+![C++](https://img.shields.io/badge/language-C%2B%2B-blue)
+![CSV](https://img.shields.io/badge/data-CSV-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
+![CMake](https://img.shields.io/badge/build-CMake-brightgreen)
+
 
 
 
