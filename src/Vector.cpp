@@ -146,4 +146,9 @@ class Vector {
             size = 0;
             capacity = 0;
         }
+
+        // Overloading the subscript operator for easier access
+        T& operator[](size_t index) {
+            return at(index); // Uses at() to handle index checking
+        }
 };
