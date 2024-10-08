@@ -38,4 +38,18 @@ class Vector {
         ~Vector() {
             delete[] arr;
         }
+
+        // Vector assignment operator
+        Vector& operator =(const Vector& other) {
+            if (this != &other) {
+                delete[] arr;
+                size = other.size;
+                capacity = other.capacity;
+                arr = new T[capacity];
+                for (size_t i = 0; i < size; ++i) {
+                    arr[i] = other.arr[i];
+                }
+            }
+            return *this;
+        }
 };
