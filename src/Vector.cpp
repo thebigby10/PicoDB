@@ -99,4 +99,19 @@ class Vector {
                     }
                 }
         }
+
+        // Return the number of elements in the vector
+        size_t get_size() const {
+            return size;
+        }
+
+        // Search for an element in the vector, returns the index or -1 if not found
+        int search(const T& value) const {
+            for (size_t i = 0; i < size; ++i) {
+                if (arr[i] == value) {
+                    return i;
+                }
+            }
+            return -1;
+        }
 };
