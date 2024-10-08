@@ -138,4 +138,12 @@ class Vector {
         void clear() {
             size = 0;
         }
+
+        // Delete the vector completely
+        void deleteVector() {
+            delete[] arr;
+            arr = nullptr;
+            size = 0;
+            capacity = 0;
+        }
 };
