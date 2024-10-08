@@ -133,4 +133,9 @@ class Vector {
             arr[i] = arr[j];
             arr[j] = temp;
         }
+
+        // Clear all elements in the vector
+        void clear() {
+            size = 0;
+        }
 };
