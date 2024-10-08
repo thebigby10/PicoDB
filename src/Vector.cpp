@@ -114,4 +114,12 @@ class Vector {
             }
             return -1;
         }
+
+        // Access element at index
+        T& at(size_t index) {
+            if (index >= size) {
+                throw std::out_of_range("Index out of range");
+            }
+            return arr[index];
+        }
 };
