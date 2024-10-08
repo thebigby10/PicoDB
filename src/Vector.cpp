@@ -122,4 +122,15 @@ class Vector {
             }
             return arr[index];
         }
+
+        // Swap two elements in the vector
+        void swap(size_t i, size_t j) {
+            if (i >= size || j >= size) {
+                throw std::out_of_range("Index out of range");
+            }
+
+            T temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
 };
