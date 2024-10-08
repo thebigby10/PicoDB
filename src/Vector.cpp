@@ -60,4 +60,19 @@ class Vector {
             }
             arr[size++] = value;
         }
+
+        // Add an element at a specific index
+        void add(size_t index, const T& value) {
+            if (index > size) {
+                throw std::out_of_range("Index out of range");
+            }
+            if (size == capacity) {
+                resize();
+            }
+            for (size_t i = size; i > index; --i) {
+                arr[i] = arr[i - 1];
+            }
+            arr[index] = value;
+            ++size;
+        }
 };
