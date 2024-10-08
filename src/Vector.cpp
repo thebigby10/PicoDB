@@ -151,4 +151,8 @@ class Vector {
         T& operator[](size_t index) {
             return at(index); // Uses at() to handle index checking
         }
+
+        const T& operator[](size_t index) const {
+            return at(index);
+        }
 };
