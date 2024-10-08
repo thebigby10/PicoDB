@@ -52,4 +52,12 @@ class Vector {
             }
             return *this;
         }
+
+        // Push back an element to the vector
+        void push_back(const T& value) {
+            if (size == capacity) {
+                resize();
+            }
+            arr[size++] = value;
+        }
 };
