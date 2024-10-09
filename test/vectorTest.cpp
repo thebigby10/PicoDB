@@ -19,6 +19,8 @@ int main() {
     }
     std::cout << std::endl;
 
+    // Erase an element
+    vec.erase(2);  // Remove element at index 2
 
     return 0;
 }
