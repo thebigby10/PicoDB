@@ -5,7 +5,7 @@ private:
 	char* data;
 	size_t len;
 
-	//helper function for calculating length of C string
+	//helper function for calculating length of C string : for direct assigning
 	size_t strLength(const char* str) const {
         size_t length = 0;
         while (str[length] != '\0') {
@@ -13,7 +13,7 @@ private:
         }
         return length;
     }
-    //helper function to copy c string
+    //helper function to copy c string : for direct assigning
     void strCopy(char* dest, const char* src) {
         size_t i = 0;
         while (src[i] != '\0') {
@@ -87,5 +87,25 @@ public:
         new_data[new_len] = '\0'; // null operator
 
         return String(new_data); // return concated string
+    }
+//length of the string
+    size_t length() const {
+        return len;
+    }
+//direct character access - for normal and const string
+    char& operator[](size_t index) {
+        return data[index];
+    }
+
+    const char& operator[](size_t index) const {
+        return data[index];
+    }
+//equality operator overloading
+    bool operator==(const String& other) const {
+        if (len != other.len) return false;
+        for (size_t i = 0; i < len; ++i) {
+            if (data[i] != other.data[i]) return false;
+        }
+        return true;
     }
 };
