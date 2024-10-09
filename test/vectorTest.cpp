@@ -29,5 +29,16 @@ int main() {
     }
     std::cout << std::endl;
 
+
+    vec.push_back(11);
+    // Sort the vector
+    vec.sort();
+
+    std::cout << "Vector elements after sorting: ";
+    for (size_t i = 0; i < vec.get_size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+
     return 0;
 }
