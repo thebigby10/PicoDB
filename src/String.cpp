@@ -128,4 +128,17 @@ public:
         }
         return -1; //no match
     }
+//return substring
+    String substr(size_t start, size_t sub_len) const {
+        if (start >= len) return String(); //out of bound, return empty
+        if (start + sub_len > len) sub_len = len - start; //resize if needed
+
+        char* sub_data = new char[sub_len + 1];
+        for (size_t i = 0; i < sub_len; ++i) {
+            sub_data[i] = data[start + i];
+        }
+        sub_data[sub_len] = '\0';
+
+        return String(sub_data);
+    }
 };
