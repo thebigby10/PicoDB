@@ -9,6 +9,8 @@ int main() {
     vec.push_back(10);
     vec.push_back(15);
 
+    // Add element at a specific position
+    vec.add(1, 7);  // Adding 7 at index 1
 
 
     return 0;
