@@ -20,7 +20,7 @@ public:
 			//create config file
 		}
 	};
-	// Database(string db_name, bool encryption);
+	// Databas e(string db_name, bool encryption);
 private:
 	string db_name; 
 	string file_path = "";
