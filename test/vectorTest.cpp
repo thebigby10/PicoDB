@@ -56,5 +56,9 @@ int main() {
     }
     std::cout << std::endl;
 
+    // Clearing the vector
+    vec.clear();
+    std::cout << "Vector size after clearing: " << vec.get_size() << std::endl;
+
     return 0;
 }
