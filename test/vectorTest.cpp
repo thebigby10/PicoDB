@@ -12,6 +12,13 @@ int main() {
     // Add element at a specific position
     vec.add(1, 7);  // Adding 7 at index 1
 
+    // Print elements
+    std::cout << "Vector elements after adding: ";
+    for (size_t i = 0; i < vec.get_size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+
 
     return 0;
 }
