@@ -172,4 +172,24 @@ public:
         data = trimmed_data;
         len = new_len;
     }
+//split string by delimiter
+    String* split(char delimiter, size_t& count) const {
+        count = 1; //at least one substirng exists : full string
+        for (size_t i = 0; i < len; ++i) {
+            if (data[i] == delimiter) ++count;
+        }
+
+        String* result = new String[count];
+        size_t start = 0, sub_idx = 0;
+
+        for (size_t i = 0; i < len; ++i) {
+            if (data[i] == delimiter) {
+                result[sub_idx++] = substr(start, i - start);
+                start = i + 1;
+            }
+        }
+        result[sub_idx] = substr(start, len - start); //last substring
+
+        return result;
+    }
 };
