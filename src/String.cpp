@@ -192,4 +192,7 @@ public:
 
         return result;
     }
-};
+    // Join an vector of strings with a delimiter
+    static String join(const String* arr, size_t count, char delimiter) {
+    	// needs to implement
+    };
