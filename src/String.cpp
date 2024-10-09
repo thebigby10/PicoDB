@@ -4,7 +4,7 @@ class String{
 private:
 	char* data;
 	size_t len;
-	
+
 	//helper function for calculating length of C string
 	size_t strLength(const char* str) const {
         size_t length = 0;
@@ -43,5 +43,15 @@ public:
 //destructor
     ~String() {
         delete[] data;
+    }
+//assignment operator overloading
+    String& operator=(const String& other) {
+        if (this != &other) { //check for self assignment
+            delete[] data;    //release old memory
+            len = other.len;
+            data = new char[len + 1];
+            strCopy(data, other.data);
+        }
+        return *this;
     }
 };
