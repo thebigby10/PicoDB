@@ -108,11 +108,24 @@ public:
         }
         return true;
     }
-// find a character in a string
+//find a character in a string
     int find(char c) const {
         for (size_t i = 0; i < len; ++i) {
             if (data[i] == c) return i;
         }
         return -1; // Return -1 if character not found
+    }
+//find a substring
+    int findSubstring(const String& substr) const {
+        if (substr.len > len) return -1; //substring larger than the string: not possible
+
+        for (size_t i = 0; i <= len - substr.len; ++i) {
+            size_t j = 0;
+            for (; j < substr.len; ++j) {
+                if (data[i + j] != substr[j]) break;
+            }
+            if (j == substr.len) return i; //substring found
+        }
+        return -1; //no match
     }
 };
