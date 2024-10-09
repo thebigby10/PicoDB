@@ -141,4 +141,11 @@ public:
 
         return String(sub_data);
     }
+//clear string
+    void clear() {
+        delete[] data;
+        data = new char[1];
+        data[0] = '\0';
+        len = 0;
+    }
 };
