@@ -47,5 +47,14 @@ int main() {
         std::cout << "Element 10 not found" << std::endl;
     }
 
+
+    // Swapping elements
+    vec.swap(0, 1);
+    std::cout << "Vector elements after swapping: ";
+    for (size_t i = 0; i < vec.get_size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+
     return 0;
 }
