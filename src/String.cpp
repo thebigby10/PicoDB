@@ -108,4 +108,11 @@ public:
         }
         return true;
     }
+// find a character in a string
+    int find(char c) const {
+        for (size_t i = 0; i < len; ++i) {
+            if (data[i] == c) return i;
+        }
+        return -1; // Return -1 if character not found
+    }
 };
