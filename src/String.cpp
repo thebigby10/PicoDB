@@ -54,4 +54,38 @@ public:
         }
         return *this;
     }
+//concat string+string
+    String operator+(const String& other) const {
+        size_t new_len = len + other.len;
+        char* new_data = new char[new_len + 1];
+
+	// copy first string
+        for (size_t i = 0; i < len; ++i) {
+            new_data[i] = data[i];
+        }
+	// copy 2nd string
+        for (size_t i = 0; i < other.len; ++i) {
+            new_data[len + i] = other.data[i];
+        }
+        new_data[new_len] = '\0'; // null operator
+
+        return String(new_data); // return the concat string
+    }
+//concat string+c string
+    String operator+(const char* str) const {
+        size_t str_len = strLength(str);
+        size_t new_len = len + str_len;
+        char* new_data = new char[new_len + 1];
+
+        for (size_t i = 0; i < len; ++i) {
+            new_data[i] = data[i];
+        }
+
+        for (size_t i = 0; i < str_len; ++i) {
+            new_data[len + i] = str[i];
+        }
+        new_data[new_len] = '\0'; // null operator
+
+        return String(new_data); // return concated string
+    }
 };
