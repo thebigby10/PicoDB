@@ -148,4 +148,28 @@ public:
         data[0] = '\0';
         len = 0;
     }
+//trim leading and trailing space
+    void trim() {
+	//trim leading 
+        size_t start = 0;
+        while (start < len && data[start] == ' ') {
+            ++start;
+        }
+	// trim trailing
+        size_t end = len - 1;
+        while (end > start && data[end] == ' ') {
+            --end;
+        }
+
+        size_t new_len = end - start + 1;
+        char* trimmed_data = new char[new_len + 1];
+        for (size_t i = 0; i < new_len; ++i) {
+            trimmed_data[i] = data[start + i];
+        }
+        trimmed_data[new_len] = '\0';
+
+        delete[] data;
+        data = trimmed_data;
+        len = new_len;
+    }
 };
