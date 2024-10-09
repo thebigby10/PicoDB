@@ -30,7 +30,6 @@ int main() {
     std::cout << std::endl;
 
 
-    vec.push_back(11);
     // Sort the vector
     vec.sort();
 
@@ -39,6 +38,14 @@ int main() {
         std::cout << vec[i] << " ";
     }
     std::cout << std::endl;
+
+    // Searching for an element
+    int index = vec.search(10);
+    if (index != -1) {
+        std::cout << "Element 10 found at index: " << index << std::endl;
+    } else {
+        std::cout << "Element 10 not found" << std::endl;
+    }
 
     return 0;
 }
