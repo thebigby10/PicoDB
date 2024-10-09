@@ -22,5 +22,12 @@ int main() {
     // Erase an element
     vec.erase(2);  // Remove element at index 2
 
+    // Print elements after erase
+    std::cout << "Vector elements after erasing: ";
+    for (size_t i = 0; i < vec.get_size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+
     return 0;
 }
