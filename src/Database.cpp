@@ -22,11 +22,12 @@ public:
 	};
 	Database(string db_name, bool encryption){
 		//check if file exists
-		bool exists;
+		bool exists = checkFileExists(db_name);
 		if(exists){
 			//directly
 			//fetch all data : use filehandler class
 			//convert it into a 3d vector data
+
 		}
 		else{
 			//create config file
