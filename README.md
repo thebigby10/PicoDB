@@ -88,7 +88,7 @@ PicoDB is a lightweight SQL simulation library built in C++ that uses CSV files 
 Here is the proposed basic Project Structure. We are planning to update it over time.
 
 ```plaintext
-/your_library/
+/picoDB/
 ├── CMakeLists.txt      	# CMake build configuration
 ├── include/            	# Public headers
 ├── src/                	# Library implementation
@@ -98,5 +98,6 @@ Here is the proposed basic Project Structure. We are planning to update it over 
 └── README.md           	# Project overview
  ``` 
  
-
+## Here is the draw.io diagram for our project (rough)
+![alt text](image.png)
 
