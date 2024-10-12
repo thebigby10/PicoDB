@@ -1,8 +1,9 @@
 #include<iostream>
+#include"Vector.cpp"
 class String{
 private:
 	char* data;
-	size_t len;
+	size_t size;
 
 	//helper function for calculating length of C string : for direct assigning
 	size_t strLength(const char* str) const {
@@ -24,20 +25,28 @@ private:
 
 public:
 //default constructor
-	String() : data(new char[1]), len(0) {
+	String() : data(new char[1]), size(0) {
         data[0] = '\0';
     }
 //constructor from string
     String(const char* str) {
-		len = strLength(str);
-        data = new char[len + 1]; //allocate memory
-        strCopy(data, str); //copy contents
+        size = 0;
+        while (str[size] != '\0') size++;  // Calculate the size
+        data = new char[size + 1];         // Allocate memory
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = str[i];              // Copy characters
+        }
+        data[size] = '\0';                 // Null-terminate the string
     }
+
 //copy constructor
     String(const String& other) {
-        len = other.len;
-        data = new char[len + 1];
-        strCopy(data, other.data);
+        size = other.size;
+        data = new char[size + 1];
+        for(size_t i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+        data[size] = '\0';
     }
 //destructor
     ~String() {
@@ -45,30 +54,35 @@ public:
     }
 //assignment operator overloading
     String& operator=(const String& other) {
-        if (this != &other) { //check for self assignment
-            delete[] data;    //release old memory
-            len = other.len;
-            data = new char[len + 1];
-            strCopy(data, other.data);
+        if (this != &other) {
+            delete[] data;
+            size = other.size;
+            data = new char[size + 1];
+            for (size_t i = 0; i < size; ++i) {
+                data[i] = other.data[i];
+            }
+            data[size] = '\0';
         }
         return *this;
     }
-//concat string+string
-    String operator+(const String& other) const {
-        size_t new_len = len + other.len;
-        char* new_data = new char[new_len + 1];
-
-	// copy first string
-        for (size_t i = 0; i < len; ++i) {
-            new_data[i] = data[i];
+//Overload the + operator to support concatenation
+     String operator+(const String& other) const {
+        String result;
+        result.size = size + other.size;
+        result.data = new char[result.size + 1];
+        for (size_t i = 0; i < size; ++i) {
+            result.data[i] = data[i];
         }
-	// copy 2nd string
-        for (size_t i = 0; i < other.len; ++i) {
-            new_data[len + i] = other.data[i];
+        for (size_t i = 0; i < other.size; ++i) {
+            result.data[size + i] = other.data[i];
         }
-        new_data[new_len] = '\0'; // null operator
-
-        return String(new_data); // return the concat string
+        result.data[result.size] = '\0';
+        return result;
+    }
+// Overload the += operator
+    String& operator+=(const String& other) {
+        *this = *this + other;
+        return *this;
     }
 //concat string+c string
     String operator+(const char* str) const {
@@ -87,6 +101,10 @@ public:
 
         return String(new_data); // return concated string
     }
+// conversation to const char*
+    operator const char*() const {
+        return data;
+    }
 //length of the string
     size_t length() const {
         return len;
@@ -101,7 +119,7 @@ public:
     }
 //equality operator overloading
     bool operator==(const String& other) const {
-        if (len != other.len) return false;
+        if (size != other.size) return false;
         for (size_t i = 0; i < len; ++i) {
             if (data[i] != other.data[i]) return false;
         }
@@ -192,4 +210,28 @@ public:
         return result;
     }
 //join a vector of string with delimiter
+    static String join(const Vector<String>& vec, char delimiter, size_t columnCount = 0) {
+    if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
+
+    // Create the result string, initializing it with the first element in the vector
+    String result = vec[0];  // Copy the first element
+    size_t currentColumn = 1;
+
+    for (size_t i = 1; i < vec.get_size(); ++i) {
+        result += delimiter;  // Add the delimiter
+
+        // Check if we need to insert a newline based on columnCount
+        if (columnCount > 0 && currentColumn >= columnCount) {
+            result += "\n";
+            currentColumn = 0;  // Reset column count
+        }
+
+        result += vec[i];  // Add the next element
+        ++currentColumn;   // Increment the current column count
+    }
+
+    return result;
+}
+
+
 };

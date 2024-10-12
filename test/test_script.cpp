@@ -9,7 +9,7 @@ int main(){
 	// studentdb.createTable("student", {
 	// 	{"student_id", "INT", "PRIMARY_KEY", ""},
 	// 	{"student_name", "STRING", "NOT_NULL", ""},
-	// 	{"cgpa", "INT","DEFAULT 0", },
+	// 	{"cgpa", "INT","DEFAULT 0", }, 
 	// });
 	
 	// // insert data

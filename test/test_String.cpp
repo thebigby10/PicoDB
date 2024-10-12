@@ -2,5 +2,5 @@
 #include"../src/String.cpp"
 
 int main(){
-
+	
 }
