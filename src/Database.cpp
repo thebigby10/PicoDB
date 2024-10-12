@@ -33,19 +33,38 @@ public:
 		}
 	}
 
-	bool createTable(string table_name,vector<vector<string > > col_data ){ 
-		//add conditions
-		row_data[][0] = col_name
-		row_data[][1] = type
-		row_data[][2] = constrains
-		row_data[][3] = conditions
-	}
+	bool createTable(string tableName, vector < vector <string> > columnData) {
+    // Create a 2D vector to store column data
+    vector < vector <string> > table;
+
+    // Add each column definition to the table
+    for (const auto& column : columnData) {
+        table.push_back(column);
+    }
+
+    // Add the table to the database 
+    db_data.push_back(table); // this vector is 3D
+
+    // Simulate saving table info
+    cout << "Table '" << tableName << "' created successfully with the following columns:" << endl;
+    for (const auto& column : columnData) {
+        cout << "Column: " << column[0] << " | Type: " << column[1] << " | Constraints: ";
+        for (size_t i = 2; i < column.size(); ++i) {
+            cout << column[i] << " ";
+        }
+        cout << endl;
+    }
+
+    // Assume table creation is always successful for now
+    return true;
+}
 	
 private:
 	string db_name; 
 	string file_path = "";
 	bool encryption = true;
-	vector<Table> db_data;
+	vector < vector < vector <string> > > db_data; //3d
+	
 
 	
 };
