@@ -234,5 +234,8 @@ public:
 
         return result;
     }
+    const char* c_str() const {
+        return data;  // Return the data pointer
+    }
 };
 #endif
