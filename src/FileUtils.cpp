@@ -17,7 +17,14 @@ bool fileExists(const String& filename) {
 }
 
 void readFromFile(const String& filename) {
-
+	#ifdef _WIN32
+	    String command = String("type \"") + filename + String("\"");
+	#elif __linux__
+	    String command = String("cat \"") + filename + String("\"");
+	#else
+	    return;
+	#endif
+	    system(command.c_str());
 }
 
 #endif
