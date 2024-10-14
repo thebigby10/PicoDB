@@ -1,20 +1,24 @@
+#ifndef STRING_H // Include guard start
+#define STRING_H
 #include<iostream>
-#include"Vector.cpp"
-class String{
-private:
-	char* data;
-	size_t size;
+#include "Vector.cpp"
 
-	//helper function for calculating length of C string : for direct assigning
-	size_t strLength(const char* str) const {
+class String {
+private:
+    char* data;
+    size_t size;
+
+    // Helper function for calculating length of C string
+    size_t strLength(const char* str) const {
         size_t length = 0;
         while (str[length] != '\0') {
             ++length;
         }
         return length;
     }
-    //helper function to copy c string : for direct assigning
-    void strCopy(char* dest, const char* src) {
+
+    // Helper function to copy C string
+    void strCopy(char* dest, const char* src) const{
         size_t i = 0;
         while (src[i] != '\0') {
             dest[i] = src[i];
@@ -24,92 +28,88 @@ private:
     }
 
 public:
-//default constructor
-	String() : data(new char[1]), size(0) {
+    // Default constructor
+    String() : data(new char[1]), size(0) {
         data[0] = '\0';
     }
-//constructor from string
+
+    // Constructor from string
     String(const char* str) {
-        size = 0;
-        while (str[size] != '\0') size++;  // Calculate the size
-        data = new char[size + 1];         // Allocate memory
-        for (size_t i = 0; i < size; ++i) {
-            data[i] = str[i];              // Copy characters
-        }
-        data[size] = '\0';                 // Null-terminate the string
+        size = strLength(str);
+        data = new char[size + 1]; // Allocate memory
+        strCopy(data, str);
     }
 
-//copy constructor
+    String(size_t count, char c) {
+        size = count;
+        data = new char[size + 1]; // +1 for null terminator
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = c; // Fill with the character
+        }
+        data[size] = '\0'; // Null terminate the string
+    }
+
+    // Copy constructor
     String(const String& other) {
         size = other.size;
         data = new char[size + 1];
-        for(size_t i = 0; i < size; ++i) {
-            data[i] = other.data[i];
-        }
-        data[size] = '\0';
+        strCopy(data, other.data);
     }
-//destructor
+
+    // Destructor
     ~String() {
         delete[] data;
     }
-//assignment operator overloading
+    // Assignment operator
     String& operator=(const String& other) {
         if (this != &other) {
             delete[] data;
             size = other.size;
             data = new char[size + 1];
-            for (size_t i = 0; i < size; ++i) {
-                data[i] = other.data[i];
-            }
-            data[size] = '\0';
+            strCopy(data, other.data);
         }
         return *this;
     }
-//Overload the + operator to support concatenation
-     String operator+(const String& other) const {
+
+    // Overload the + operator to support concatenation (String + String)
+    String operator+(const String& other) const {
         String result;
         result.size = size + other.size;
         result.data = new char[result.size + 1];
-        for (size_t i = 0; i < size; ++i) {
-            result.data[i] = data[i];
-        }
-        for (size_t i = 0; i < other.size; ++i) {
-            result.data[size + i] = other.data[i];
-        }
-        result.data[result.size] = '\0';
+        strCopy(result.data, data); // Copy current string
+        strCopy(result.data + size, other.data); // Concatenate other string
         return result;
     }
-// Overload the += operator
+
+    // Overload the += operator (String += String)
     String& operator+=(const String& other) {
         *this = *this + other;
         return *this;
     }
-//concat string+c string
+
+    // Concatenation of String + const char*
     String operator+(const char* str) const {
         size_t str_len = strLength(str);
-        size_t new_len = len + str_len;
+        size_t new_len = size + str_len;
         char* new_data = new char[new_len + 1];
 
-        for (size_t i = 0; i < len; ++i) {
-            new_data[i] = data[i];
-        }
+        strCopy(new_data, data);          // Copy original string
+        strCopy(new_data + size, str);    // Append C-string
 
-        for (size_t i = 0; i < str_len; ++i) {
-            new_data[len + i] = str[i];
-        }
-        new_data[new_len] = '\0'; // null operator
-
-        return String(new_data); // return concated string
+        return String(new_data); // Return concatenated string
     }
-// conversation to const char*
+
+    // Conversion to const char*
     operator const char*() const {
         return data;
     }
-//length of the string
+
+    // Length of the string
     size_t length() const {
-        return len;
+        return size;
     }
-//direct character access - for normal and const string
+
+    // Direct character access
     char& operator[](size_t index) {
         return data[index];
     }
@@ -117,38 +117,42 @@ public:
     const char& operator[](size_t index) const {
         return data[index];
     }
-//equality operator overloading
+
+    // Equality operator overloading
     bool operator==(const String& other) const {
         if (size != other.size) return false;
-        for (size_t i = 0; i < len; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             if (data[i] != other.data[i]) return false;
         }
         return true;
     }
-//find a character in a string
+
+    // Find a character in a string
     int find(char c) const {
-        for (size_t i = 0; i < len; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             if (data[i] == c) return i;
         }
         return -1; // Return -1 if character not found
     }
-//find a substring
-    int findSubstring(const String& substr) const {
-        if (substr.len > len) return -1; //substring larger than the string: not possible
 
-        for (size_t i = 0; i <= len - substr.len; ++i) {
+    // Find a substring
+    int findSubstring(const String& substr) const {
+        if (substr.size > size) return -1; // Substring larger than the string: not possible
+
+        for (size_t i = 0; i <= size - substr.size; ++i) {
             size_t j = 0;
-            for (; j < substr.len; ++j) {
+            for (; j < substr.size; ++j) {
                 if (data[i + j] != substr[j]) break;
             }
-            if (j == substr.len) return i; //substring found
+            if (j == substr.size) return i; // Substring found
         }
-        return -1; //no match
+        return -1; // No match
     }
-//return substring
+
+    // Return substring
     String substr(size_t start, size_t sub_len) const {
-        if (start >= len) return String(); //out of bound, return empty
-        if (start + sub_len > len) sub_len = len - start; //resize if needed
+        if (start >= size) return String(); // Out of bound, return empty
+        if (start + sub_len > size) sub_len = size - start; // Resize if needed
 
         char* sub_data = new char[sub_len + 1];
         for (size_t i = 0; i < sub_len; ++i) {
@@ -158,25 +162,22 @@ public:
 
         return String(sub_data);
     }
-//clear string
+
+    // Clear string
     void clear() {
         delete[] data;
         data = new char[1];
         data[0] = '\0';
-        len = 0;
+        size = 0;
     }
-//trim leading and trailing space
+
+    // Trim leading and trailing spaces
     void trim() {
-	//trim leading 
         size_t start = 0;
-        while (start < len && data[start] == ' ') {
-            ++start;
-        }
-	// trim trailing
-        size_t end = len - 1;
-        while (end > start && data[end] == ' ') {
-            --end;
-        }
+        while (start < size && data[start] == ' ') ++start;
+
+        size_t end = size - 1;
+        while (end > start && data[end] == ' ') --end;
 
         size_t new_len = end - start + 1;
         char* trimmed_data = new char[new_len + 1];
@@ -187,51 +188,51 @@ public:
 
         delete[] data;
         data = trimmed_data;
-        len = new_len;
+        size = new_len;
     }
-//split string by delimiter
+
+    // Split string by delimiter
     String* split(char delimiter, size_t& count) const {
-        count = 1; //at least one substirng exists : full string
-        for (size_t i = 0; i < len; ++i) {
+        count = 1; // At least one substring exists: full string
+        for (size_t i = 0; i < size; ++i) {
             if (data[i] == delimiter) ++count;
         }
 
         String* result = new String[count];
         size_t start = 0, sub_idx = 0;
 
-        for (size_t i = 0; i < len; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             if (data[i] == delimiter) {
                 result[sub_idx++] = substr(start, i - start);
                 start = i + 1;
             }
         }
-        result[sub_idx] = substr(start, len - start); //last substring
+        result[sub_idx] = substr(start, size - start); // Last substring
 
         return result;
     }
-//join a vector of string with delimiter
-    static String join(const Vector<String>& vec, char delimiter, size_t columnCount = 0) {
-    if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
 
-    // Create the result string, initializing it with the first element in the vector
-    String result = vec[0];  // Copy the first element
-    size_t currentColumn = 1;
+    // Join a vector of strings with a delimiter
+    static String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
+        if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
+        String delimiter(1, d); 
+        String result = vec[0];  // Copy the first element
+        size_t currentColumn = 1;
 
-    for (size_t i = 1; i < vec.get_size(); ++i) {
-        result += delimiter;  // Add the delimiter
+        for (size_t i = 1; i < vec.get_size(); ++i) {
+            result += String(delimiter);  // Add the delimiter
 
-        // Check if we need to insert a newline based on columnCount
-        if (columnCount > 0 && currentColumn >= columnCount) {
-            result += "\n";
-            currentColumn = 0;  // Reset column count
+            if (columnCount > 0 && currentColumn >= columnCount) {
+                result += "\n";
+                currentColumn = 1;  // Reset to 1 after newline
+            } else {
+                ++currentColumn;
+            }
+
+            result += vec[i];  // Add the next element
         }
 
-        result += vec[i];  // Add the next element
-        ++currentColumn;   // Increment the current column count
+        return result;
     }
-
-    return result;
-}
-
-
 };
+#endif

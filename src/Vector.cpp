@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 #include <iostream>
 
 template <typename T>
@@ -123,6 +126,13 @@ class Vector {
             return arr[index];
         }
 
+        const T& at(size_t index) const {
+            if (index >= size) {
+                throw std::out_of_range("Index out of range");
+            }
+            return arr[index];
+        }
+
         // Swap two elements in the vector
         void swap(size_t i, size_t j) {
             if (i >= size || j >= size) {
@@ -156,3 +166,5 @@ class Vector {
             return at(index);
         }
 };
+
+#endif
