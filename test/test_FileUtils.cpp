@@ -5,9 +5,10 @@
 using namespace std;
 
 int main(){
-	String s = "/home/thebigby01/db/StudentDB/student";
+	String s = "/home/thebigby01/db/StudentDB/studentt";
 	cout<<fileExists(s)<<endl;
-	if(fileExists(s)){
+	if(!fileExists(s)){
+		createFile(s);
 		cout<<readFromFile(s)<<endl;
 		writeToFile(s, "Helloooo?");
 	}

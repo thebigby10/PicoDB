@@ -57,4 +57,26 @@ void writeToFile(const String& filename, const String& data, bool append = false
     fileStream.close();  // Close the file
 }
 
+// Function to create a file (it will overwrite if the file already exists)
+void createFile(const String& filename) {
+    std::ofstream fileStream(filename.c_str(), std::ios::out);  // Open file in write mode (creates file)
+    
+    if (!fileStream.is_open()) {
+        std::cerr << "Failed to create file: " << filename << std::endl;
+    }
+    
+    fileStream.close();  // Close the file
+}
+
+// Function to delete a file
+bool deleteFile(const String& filename) {
+    // Remove the file using std::remove, return true if successful, false otherwise
+    if (std::remove(filename.c_str()) == 0) {
+        return true;
+    } else {
+        std::cerr << "Failed to delete file: " << filename << std::endl;
+        return false;
+    }
+}
+
 #endif
