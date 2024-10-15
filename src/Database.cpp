@@ -26,11 +26,13 @@ public:
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
-			// fetch config file
-			
-			// fetch raw data
-			// decrypt the data
-			// convert decrypte raw data to vector 3/table
+			// fetch raw config file
+			String config_data = conf_file.readFromFile();
+// TODO : must check if the user exists
+			//std::cout<<config_data<<std::endl;
+			// convert the config file into variables
+//	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO
+
 		}
 		else{
 			//create config file
