@@ -72,6 +72,20 @@ private:
         
         fileStream.close();  // Close the file
     }
+    // Function to delete a file
+    bool deleteFile() {
+        // Remove the file using std::remove, return true if successful, false otherwise
+        if (std::remove(m_filepath.c_str()) == 0) {
+            return true;
+        } else {
+            std::cerr << "Failed to delete file: " << m_filepath << std::endl;
+            return false;
+        }
+    }
+    
+    void loadConfig(){
+
+    }
 };
 
 #endif
