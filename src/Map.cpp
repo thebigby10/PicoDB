@@ -12,7 +12,20 @@ private:
     Vector<V> values;
 
 public:
-    
+    // Add a new key-value pair
+    void insert(const K& key, const V& value) {
+        // Check if key already exists
+        for (size_t i = 0; i < keys.get_size(); ++i) {
+            if (keys[i] == key) {
+                values[i] = value; // Update the value if key exists
+                return;
+            }
+        }
+        // Add new key-value pair
+        keys.push_back(key);
+        values.push_back(value);
+    }
+
 };
 
 #endif
