@@ -1,9 +1,9 @@
 #include<iostream>
 #include<filesystem>
 #include "Vector.cpp"
-#include <String.cpp>
+#include "String.cpp"
 #include "Table.cpp"
-#include "FileUtils.cpp"
+#include "FileHandler.cpp"
 using namespace std;
 
 class Database{
@@ -11,12 +11,13 @@ public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(String db_name, String db_path, String username, String key){
 		//check if file exists
-		bool exists;
-		if(fileExists(db_path)){
-			//directly
-			//fetch all data : use filehandler class
-			//convert it into a 3d vector data
+		FileHandler db_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
+		if(db_file.fileExists()){
+			// fetch config file
 			
+			// fetch raw data
+			// decrypt the data
+			// convert decrypte raw data to vector 3/table
 		}
 		else{
 			//create config file

@@ -3,27 +3,25 @@
 #include "String.cpp"
 #include <fstream>
 
-// Migrate to an oop
-
 class FileHandler{
 private:
-    String m_filepath;
-private:
+    String filepath;
+public:
 //checks if a file exists
     FileHandler(String filepath){
-        m_filepath = filepath;
+        this->filepath = filepath;
     }
 
     bool fileExists() {
-        std::ifstream file(m_filepath);
+        std::ifstream file(filepath);
         return file.good();
     }
 // Function to read from a file and return a single String containing all its contents
     String readFromFile() {
-        std::ifstream fileStream(m_filepath.c_str(), std::ios::in);  // Open the file in input mode
+        std::ifstream fileStream(filepath.c_str(), std::ios::in);  // Open the file in input mode
         
         if (!fileStream.is_open()) {
-            std::cerr << "Failed to open file: " << m_filepath << std::endl;
+            std::cerr << "Failed to open file: " << filepath << std::endl;
             return String("");  // Return an empty string on failure
         }
 
@@ -47,13 +45,13 @@ private:
         
         // Choose file mode based on append flag
         if (append) {
-            fileStream.open(m_filepath.c_str(), std::ios::app);  // Open file in append mode
+            fileStream.open(filepath.c_str(), std::ios::app);  // Open file in append mode
         } else {
-            fileStream.open(m_filepath.c_str(), std::ios::out);  // Open file in write/overwrite mode
+            fileStream.open(filepath.c_str(), std::ios::out);  // Open file in write/overwrite mode
         }
         
         if (!fileStream.is_open()) {
-            std::cerr << "Failed to open file: " << m_filepath << std::endl;
+            std::cerr << "Failed to open file: " << filepath << std::endl;
             return;
         }
         
@@ -64,27 +62,23 @@ private:
     }
     // Function to create a file (it will overwrite if the file already exists)
     void createFile() {
-        std::ofstream fileStream(m_filepath.c_str(), std::ios::out);  // Open file in write mode (creates file)
+        std::ofstream fileStream(filepath.c_str(), std::ios::out);  // Open file in write mode (creates file)
         
         if (!fileStream.is_open()) {
-            std::cerr << "Failed to create file: " << m_filepath << std::endl;
+            std::cerr << "Failed to create file: " << filepath << std::endl;
         }
         
         fileStream.close();  // Close the file
     }
     // Function to delete a file
-    bool deleteFile() {
+    bool removeFile() {
         // Remove the file using std::remove, return true if successful, false otherwise
-        if (std::remove(m_filepath.c_str()) == 0) {
+        if (std::remove(filepath.c_str()) == 0) {
             return true;
         } else {
-            std::cerr << "Failed to delete file: " << m_filepath << std::endl;
+            std::cerr << "Failed to delete file: " << filepath << std::endl;
             return false;
         }
-    }
-    
-    void loadConfig(){
-
     }
 };
 
