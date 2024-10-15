@@ -27,6 +27,15 @@ class Vector {
             arr = new T[capacity];
         }
 
+        // Constructor with initializer list
+        Vector(std::initializer_list<T> list) : size(list.size()), capacity(list.size()) {
+            arr = new T[capacity];
+            size_t i = 0;
+            for (const T& item : list) {
+                arr[i++] = item;
+            }
+        }
+
         // Copy constructor
         Vector(const Vector& other) {
             size = other.size;
