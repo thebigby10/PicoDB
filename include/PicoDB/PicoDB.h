@@ -1,22 +1,27 @@
 #include<iostream>
 
 #include "../../src/Database.cpp"
-#include "../../src/Table.cpp"
-#include "../../src/Cell.cpp"
+// #include "../../src/Table.cpp"
+//#include "../../src/Cell.cpp"
 
 #include "../../src/FileHandler.cpp"
 #include "../../src/Encryptor.cpp"
 
 #include "../../src/Vector.cpp"
-#include "../../src/Date.cpp"
+// #include "../../src/Date.cpp"
 
 #include "../../src/String.cpp"
+#include "../../src/Map.cpp"
 
 class PicoDB{
 public:
-	PicoDB(String db_name, String db_path, String username, int key){
-		Database database(db_name, db_path, username, key);
+	PicoDB(String db_name, String db_path, String username, String key, String table_delimiter){
+		Database(db_name, db_path, username, key, table_delimiter);
 	}
+	PicoDB(String db_name, String db_path, String username, String key){
+		Database(db_name, db_path, username, key);
+	}
+	/*
 	bool createTable(string table_name,vector<vector<string > > col_data ){ //add conditios
 		
 	}
@@ -38,4 +43,5 @@ public:
 	bool dropTable(){
 
 	}
+	*/
 };

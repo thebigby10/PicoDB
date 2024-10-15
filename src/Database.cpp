@@ -2,7 +2,7 @@
 #include<filesystem>
 #include "Vector.cpp"
 #include "String.cpp"
-#include "Table.cpp"
+// #include "Table.cpp"
 #include "FileHandler.cpp"
 #include "ConfigManager.cpp"
 
@@ -14,7 +14,7 @@ private:
 	String key;
 	String delimiter;
 	bool encryption = true;
-	vector<Table> db_data;
+	// Vector<Table> db_data;
 public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
