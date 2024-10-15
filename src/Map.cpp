@@ -36,6 +36,18 @@ public:
         throw std::runtime_error("Key not found");
     }
 
+    // Remove a key-value pair
+    void remove(const K& key) {
+        for (size_t i = 0; i < keys.get_size(); ++i) {
+            if (keys[i] == key) {
+                keys.erase(keys.begin() + i);
+                values.erase(values.begin() + i);
+                return;
+            }
+        }
+        throw std::runtime_error("Key not found");
+    }
+
     
 };
 
