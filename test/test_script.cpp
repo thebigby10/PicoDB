@@ -3,7 +3,7 @@
 
 int main(){
 	// create db or use db
-	PicoDB studentdb("studentdb", "/home/thebigby01/tempdb/studentdb/", "thebigby01", 152);
+	PicoDB studentdb("studentdb", "/home/thebigby01/", "thebigby01", 152);
 	
 	// // create table
 	// studentdb.createTable("student", {
