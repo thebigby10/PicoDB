@@ -4,6 +4,7 @@
 #include "String.cpp"
 #include "Table.cpp"
 #include "FileHandler.cpp"
+#include "ConfigManager.cpp"
 using namespace std;
 
 class Database{
@@ -21,6 +22,8 @@ public:
 		}
 		else{
 			//create config file
+			ConfigManager conf_manager(db_path);
+			Vector< Map<String, String> > conf_data = conf_manager.writeConfig();
 		}
 	};
 	// Databas e(string db_name, bool encryption);
