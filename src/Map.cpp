@@ -26,6 +26,17 @@ public:
         values.push_back(value);
     }
 
+    // Get the value for a given key
+    V get(const K& key) const {
+        for (size_t i = 0; i < keys.get_size(); ++i) {
+            if (keys[i] == key) {
+                return values[i];
+            }
+        }
+        throw std::runtime_error("Key not found");
+    }
+
+    
 };
 
 #endif
