@@ -48,7 +48,20 @@ public:
         throw std::runtime_error("Key not found");
     }
 
-    
+    // Check if a key exists in the map
+    bool contains(const K& key) const {
+        for (size_t i=0;i<keys.get_size();i++) {
+            if (keys[i] == key) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Return the size of the map
+    size_t size() const {
+        return keys.size();
+    }
 };
 
 #endif
