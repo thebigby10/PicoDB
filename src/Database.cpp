@@ -5,12 +5,18 @@
 #include "Table.cpp"
 #include "FileHandler.cpp"
 #include "ConfigManager.cpp"
-using namespace std;
 
 class Database{
+private:
+	String db_name; 
+	String db_path = "";
+	bool encryption = true;
+	vector<Table> db_data;
 public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
-	Database(String db_name, String db_path, String username, String key){
+	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_pico_;")){
+		this->db_name = db_name;
+
 		//check if file exists
 		FileHandler db_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(db_file.fileExists()){
@@ -23,13 +29,8 @@ public:
 		else{
 			//create config file
 			ConfigManager conf_manager(db_path);
-			Vector< Map<String, String> > conf_data = conf_manager.writeConfig();
+			conf_manager.writeConfig(db_name,db_path+String("/")+db_name+".config",table_delimiter,username )
 		}
 	};
 	// Databas e(string db_name, bool encryption);
-private:
-	string db_name; 
-	string file_path = "";
-	bool encryption = true;
-	vector<Table> db_data;
 };
