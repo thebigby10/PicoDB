@@ -62,9 +62,16 @@ private:
         
         fileStream.close();  // Close the file
     }
+    // Function to create a file (it will overwrite if the file already exists)
+    void createFile() {
+        std::ofstream fileStream(m_filepath.c_str(), std::ios::out);  // Open file in write mode (creates file)
+        
+        if (!fileStream.is_open()) {
+            std::cerr << "Failed to create file: " << m_filepath << std::endl;
+        }
+        
+        fileStream.close();  // Close the file
+    }
 };
-
-
-
 
 #endif
