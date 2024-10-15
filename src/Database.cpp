@@ -3,6 +3,7 @@
 #include "Vector.cpp"
 #include <String.cpp>
 #include "Table.cpp"
+#include "FileUtils.cpp"
 using namespace std;
 
 class Database{
@@ -11,10 +12,11 @@ public:
 	Database(String db_name, String db_path, String username, String key){
 		//check if file exists
 		bool exists;
-		if(exists){
+		if(fileExists(db_path)){
 			//directly
 			//fetch all data : use filehandler class
 			//convert it into a 3d vector data
+			
 		}
 		else{
 			//create config file

@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(){
-	String s = "/home/thebigby01/db/StudentDB/studentt";
+	String s = "/home/thebigby01/db/StudentDB/student";
 	cout<<fileExists(s)<<endl;
 	if(!fileExists(s)){
 		createFile(s);
