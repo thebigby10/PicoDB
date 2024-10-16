@@ -8,12 +8,17 @@
 
 class ConfigManager{
 private:
-	String db_path;
+	String conf_path;
+	String conf_data;
 public:
 	ConfigManager(String db_path){
-		this->db_path = db_path;
+		this->conf_path = conf_path;
+		FileHandler conf_file(conf_path);
+		if(conf_file.fileExists()){
+			this->conf_data = conf_file.readFromFile();
+		}
 	}
-	void writeConfig(String database_name, String conf_path, String table_delimiter, String admin_username, bool encryption = true ){
+	void createConfig(String database_name, String table_delimiter, String admin_username, bool encryption = true ){
 		String conf_data;
 		conf_data+=String("[Database]\n");
 		conf_data+=String("database_name = ") + database_name + String("\n"); //Check
@@ -35,9 +40,25 @@ public:
 		conf_file.writeToFile(conf_data);
 
 	}
-	// Vector<Map<String, String>> readConfig(){
+	void writeConfig(){
+		
+	}
+	String get_dbname(){
+		
+		 
+	}
+	String get_dbpath(){
+		
+	}
+	String get_t_delimiter(){
+		
+	}
+	String get_Admin(){
 
-	// }
+	}
+	// get_permissions()
+	// is_encrypted()
+	// get_tables()
 
 };
 

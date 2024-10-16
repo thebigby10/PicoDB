@@ -21,10 +21,11 @@ public:
 	PicoDB(String db_name, String db_path, String username, String key){
 		Database(db_name, db_path, username, key);
 	}
-	/*
-	bool createTable(string table_name,vector<vector<string > > col_data ){ //add conditios
+	bool createTable(String table_name,Vector<Vector<String>> col_data){
 		
+		return false;
 	}
+	/*
 	bool insertData(string table_name, vector<string> col_data, vector<string>col_values ){
 
 	} 

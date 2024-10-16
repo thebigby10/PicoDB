@@ -16,6 +16,7 @@ private:
 	bool encryption = true;
 	// Vector<Table> db_data;
 public:
+
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
 		this->db_name = db_name;
@@ -26,18 +27,17 @@ public:
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
-			// fetch raw config file
-			String config_data = conf_file.readFromFile();
-// TODO : must check if the user exists
-			//std::cout<<config_data<<std::endl;
+// Conf manager fetches raw data ✅
+			ConfigManager conf_manager(conf_file);
 			// convert the config file into variables
+			// TODO : must check if the user exists
 //	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO
-
+			//convert the tables into vector
 		}
 		else{
 			//create config file
-			ConfigManager conf_manager(db_path);
-			conf_manager.writeConfig(db_name,db_path+String("/")+db_name+".config",table_delimiter,username );
+			ConfigManager conf_manager(db_path+String("/")+db_name+".config");
+			conf_manager.createConfig(db_name,table_delimiter,username );
 		}
 	};
 	// Databas e(string db_name, bool encryption);
