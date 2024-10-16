@@ -28,6 +28,18 @@ private:
         dest[i] = '\0'; // Null-terminate the copied string
     }
 
+    void reverse(char* str, size_t length) {
+        size_t start = 0;
+        size_t end = length - 1;
+        while (start < end) {
+            char temp = str[start];
+            str[start] = str[end];
+            str[end] = temp;
+            ++start;
+            --end;
+        }
+    }
+
 public:
     // Default constructor
     String() : data(new char[1]), size(0) {
@@ -238,7 +250,7 @@ public:
     const char* c_str() const {
         return data;  // Return the data pointer
     }
-    
+
     int toInt() {
         String str = data;
         int num = 0;
@@ -296,4 +308,43 @@ public:
         return isNegative ? -num : num;
     }
 };
+
+// Helper function to reverse a char array (used in intToString and doubleToString)
+void reverse(char* str, size_t length) {
+    size_t start = 0;
+    size_t end = length - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        ++start;
+        --end;
+    }
+}
+
+// Convert integer to String
+String toString(int num) {
+    bool isNegative = false;
+    if (num < 0) {
+        isNegative = true;
+        num = -num;
+    }
+
+    char buffer[20];  // Enough to store largest 32-bit int
+    size_t i = 0;
+
+    do {
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    } while (num > 0);
+
+    if (isNegative) {
+        buffer[i++] = '-';
+    }
+
+    buffer[i] = '\0';
+    reverse(buffer, i);
+
+    return String(buffer);
+}
 #endif
