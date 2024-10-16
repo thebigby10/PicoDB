@@ -347,4 +347,49 @@ String toString(int num) {
 
     return String(buffer);
 }
+
+// Convert double to String (simple version)
+String toString(double num) {
+    bool isNegative = false;
+    if (num < 0) {
+        isNegative = true;
+        num = -num;
+    }
+
+    char buffer[40]; // Large enough to handle most doubles
+    size_t i = 0;
+
+    // Extract integer part
+    int integerPart = static_cast<int>(num);
+    double fractionalPart = num - integerPart;
+
+    // Convert integer part to string
+    do {
+        buffer[i++] = (integerPart % 10) + '0';
+        integerPart /= 10;
+    } while (integerPart > 0);
+
+    // Add negative sign if necessary
+    if (isNegative) {
+        buffer[i++] = '-';
+    }
+
+    // Reverse the integer part to get correct order
+    reverse(buffer, i);
+
+    // Add decimal point
+    buffer[i++] = '.';
+
+    // Convert fractional part to string (precision: 6 decimal places)
+    for (int j = 0; j < 6; ++j) {
+        fractionalPart *= 10;
+        int digit = static_cast<int>(fractionalPart);
+        buffer[i++] = digit + '0';
+        fractionalPart -= digit;
+    }
+
+    buffer[i] = '\0';  // Null-terminate the string
+
+    return String(buffer);
+}
 #endif
