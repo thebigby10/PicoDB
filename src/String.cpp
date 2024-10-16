@@ -238,6 +238,7 @@ public:
     const char* c_str() const {
         return data;  // Return the data pointer
     }
+    
     int toInt() {
         String str = data;
         int num = 0;
@@ -261,6 +262,38 @@ public:
 
         return isNegative ? -num : num;
     }
-    
+    // Convert String to double
+    double toDouble() {
+        String str = data;
+        double num = 0.0;
+        bool isNegative = false;
+        bool hasDecimal = false;
+        double decimalFactor = 0.1;
+        size_t i = 0;
+
+        // Check for negative sign
+        if (str[0] == '-') {
+            isNegative = true;
+            ++i;
+        }
+
+        // Convert each character to the corresponding digit
+        for (; i < str.length(); ++i) {
+            if (str[i] >= '0' && str[i] <= '9') {
+                if (hasDecimal) {
+                    num += (str[i] - '0') * decimalFactor;
+                    decimalFactor /= 10.0;
+                } else {
+                    num = num * 10 + (str[i] - '0');
+                }
+            } else if (str[i] == '.' && !hasDecimal) {
+                hasDecimal = true;  // Start processing decimals
+            } else {
+                break;  // Stop if a non-digit is encountered
+            }
+        }
+
+        return isNegative ? -num : num;
+    }
 };
 #endif
