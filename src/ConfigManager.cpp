@@ -4,6 +4,7 @@
 #include "Map.cpp"
 #include "Vector.cpp"
 #include "FileHandler.cpp"
+#include "Table.cpp"
 #include <fstream>
 
 class ConfigManager{
@@ -40,25 +41,29 @@ public:
 		conf_file.writeToFile(conf_data);
 
 	}
-	void writeConfig(){
-		
-	}
-	String get_dbname(){
-		
-		 
-	}
-	String get_dbpath(){
-		
+	void updateConfig(){
+
 	}
 	String get_t_delimiter(){
 		
 	}
-	String get_Admin(){
+	String get_admin(){
 
 	}
-	// get_permissions()
+	String get_delimiter(){
+
+	}
+	Vector<Map<String, Vector<String> > > get_users(){
+		//returns a vector in format Vector<Map<String, Vector<String> > >; 
+		//username, tables
+	}
 	// is_encrypted()
-	// get_tables()
+	Vector<String> get_table_header(){
+		//gets the tables and converts them in a Vector<Table> and returns it
+	}
+	void deleteConfig(){
+		
+	}
 
 };
 
