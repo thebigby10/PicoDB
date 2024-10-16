@@ -1,6 +1,7 @@
 #ifndef STRING_H // Include guard start
 #define STRING_H
 #include<iostream>
+#include <sstream>
 #include "Vector.cpp"
 
 class String {
@@ -213,7 +214,7 @@ public:
     }
 
     // Join a vector of strings with a delimiter
-    static String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
+    String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
         if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
         String delimiter(1, d); 
         String result = vec[0];  // Copy the first element
@@ -237,5 +238,29 @@ public:
     const char* c_str() const {
         return data;  // Return the data pointer
     }
+    int toInt() {
+        String str = data;
+        int num = 0;
+        bool isNegative = false;
+        size_t i = 0;
+
+        // Check for negative sign
+        if (str[0] == '-') {
+            isNegative = true;
+            ++i;
+        }
+
+        // Convert each character to the corresponding digit
+        for (; i < str.length(); ++i) {
+            if (str[i] >= '0' && str[i] <= '9') {
+                num = num * 10 + (str[i] - '0');
+            } else {
+                break;  // Stop if a non-digit is encountered
+            }
+        }
+
+        return isNegative ? -num : num;
+    }
+    
 };
 #endif
