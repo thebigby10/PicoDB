@@ -51,13 +51,18 @@ public:
 
 	
 	String get_t_delimiter(){
-		//returns the table delimiter
-		return 
+		istringstream stream(conf_data.c_str());
+		string line;
+		while(getline(stream, line)){
+			if(line.find("table_delimiter") != string::npos){
+				return String(line.substr(line.find("=")+2));
+			}
+		}			
 
-		
 	}
+	
 	String get_admin(){
-
+		
 	}
 	String get_delimiter(){
 
