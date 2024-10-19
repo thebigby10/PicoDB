@@ -1,6 +1,8 @@
+#ifndef ENCRYPTOR_H // Include guard start
+#define ENCRYPTOR_H
 #include<iostream>
-#include<string>
-#include<vector>
+#include"Vector.cpp"
+#include"String.cpp"
 
 using namespace std;
 
@@ -12,16 +14,16 @@ public:
 		this->key = key;
 	};
 	//Uses basic XOR cipher
-	string encryptData(string data) const{
-		string encrypted_data = data;
-		for(int i=0;i<data.size();i++){
+	String encryptData(String data) const{
+		String encrypted_data = data;
+		for(int i=0;i<data.length();i++){
 			encrypted_data[i] = data[i] ^ key;
 		}
 		return encrypted_data;
 	}
-	string decryptData(string data) const{
-		string decrypted_data = data;
-		for(int i=0;i<data.size();i++){
+	String decryptData(String data) const{
+		String decrypted_data = data;
+		for(int i=0;i<data.length();i++){
 			decrypted_data[i] = data[i] ^ key;
 		}
 		return decrypted_data;
@@ -32,3 +34,4 @@ public:
 	//RC4 Stream Cipher
 
 };
+#endif

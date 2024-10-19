@@ -1,55 +1,29 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <filesystem>
-#include <fstream>
-#include <sstream>
+#include<iostream>
+#include<filesystem>
+#include "Vector.cpp"
+#include "String.cpp"
+#include "Table.cpp"
+#include "FileHandler.cpp"
 using namespace std;
 
 class Database {
 public:
-    Database(string db_name, string db_path) {
-        this->db_name = db_name;
-        this->file_path = db_path;
-
-        // Check if the database file exists
-        bool exists = checkFileExists(file_path + "/" + db_name + ".db");
-        if (exists) {
-            // Load data from the database file
-            cout << "Database found. Loading data..." << endl;
-            loadDatabase();
-        } else {
-            // Create a new database file
-            cout << "Database not found. Creating new database at " << db_path << endl;
-            createDatabaseFile();
-        }
-    }
-
-    bool createTable(string tableName, vector < vector < string > > columnData) {
-        // Create a 2D vector to store column data
-        vector < vector < string > > table;
-
-        // Add each column definition to the table
-        for (const auto& column : columnData) {
-            table.push_back(column);
-        }
-
-        // Add the table to the database 
-        db_data.push_back(table); // this vector is 3D
-
-        // Simulate saving table info
-        cout << "Table '" << tableName << "' created successfully with the following columns:" << endl;
-        for (const auto& column : columnData) {
-            cout << "Column: " << column[0] << " | Type: " << column[1] << " | Constraints: ";
-            for (size_t i = 2; i < column.size(); ++i) {
-                cout << column[i] << " ";
-            }
-            cout << endl;
-        }
-
-        return true; // Assume table creation is always successful for now
-    }
-
+	// Database(string db_name, bool force_create, bool encryption, string file_path )
+	Database(String db_name, String db_path, String username, String key){
+		//check if file exists
+		FileHandler db_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
+		if(db_file.fileExists()){
+			// fetch config file
+			
+			// fetch raw data
+			// decrypt the data
+			// convert decrypte raw data to vector 3/table
+		}
+		else{
+			//create config file
+		}
+	};
+	// Databas e(string db_name, bool encryption);
 private:
     string db_name; 
     string file_path = "";
