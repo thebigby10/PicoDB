@@ -50,40 +50,33 @@ public:
 		
 
 	
-	 String get_t_delimiter() {
-		istringstream conf_data_stream(conf_data.c_str()); 
-		string line; 
-		while(getline(conf_data_stream, line)){ 
-			if(line.find("table_delimiter") != string::npos){ 
-				return String(line.substr(line.find("=")+1).c_str()); //return the table_delimiter
-			}
-		}
-		return String(""); //return empty string if the table_delimiter is not found
+	String get_t_delimiter() {
+		int start_pos = conf_data.findSubstring(String("table_delimiter = "));
+		if (start_pos == -1) return String(""); // Not found
 		
-	 }
+		start_pos += String("table_delimiter = ").length();
+
+		// Manually find the end position (next newline character after start_pos)
+		int end_pos = start_pos;
+		while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+			++end_pos;
+		}
+
+		return conf_data.substr(start_pos, end_pos - start_pos); // Extract substring between start_pos and end_pos
+	}
+
 
 	
-	String get_admin(){
-		istringstream ss(conf_data.c_str());
-		string line;
-		while(getline(ss, line)){
-			if(line.find("username") != string::npos){
-				return String(line.substr(line.find("=")+1).c_str());
-			}
-		}
-		return String("");//return empty string if the admin is not found
-
+	 String get_admin() {
+        int start_pos = conf_data.findSubstring(String("username = "));
+        if (start_pos == -1) return String(""); // Not found
+        start_pos += String("username = ").length();
+        int end_pos = conf_data.find(start_pos);
+        return conf_data.substr(start_pos, end_pos - start_pos);
+    }
 		
-	}
 	String get_delimiter(){
-		istringstream ss(conf_data.c_str());
-		string line;
-		while(getline(ss, line)){
-			if(line.find("delimiter") != string::npos){
-				return String(line.substr(line.find("=")+1).c_str());
-			}
-		}
-		return String("");//return empty string if the delimiter is not found
+		
 
 	}
 	Vector<Map<String, Vector<String> > > get_users(){
