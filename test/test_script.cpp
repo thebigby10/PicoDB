@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+// #include<bits/stdc++.h> //doesnt work on mac hehe
+=======
+>>>>>>> origin/asif-dev
 #include "../include/PicoDB/PicoDB.h"
-
+#include "../src/Database.cpp"
 int main(){
 	// create db or use db
 	PicoDB studentdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
@@ -39,4 +43,16 @@ int main(){
 
 
 
+// }
+
+ 	string db_name = "test_db";
+    string db_path = "."; // Current directory
+
+    Database db(db_name, db_path);
+
+    return 0;
+   
 }
+
+//let's have a look on the syntax (rafi - dev)
+//Database anotherDB("booksDB", "path/to/db");   

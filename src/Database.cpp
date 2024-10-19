@@ -47,4 +47,9 @@ public:
 		}
 	};
 	// Databas e(string db_name, bool encryption);
+private:
+	string db_name; 
+	string file_path = "";
+	bool encryption = true;
+	vector<Table> db_data;
 };
