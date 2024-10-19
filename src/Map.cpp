@@ -62,6 +62,9 @@ public:
     size_t size() const {
         return keys.size();
     }
+    Vector<K> get_keys(){
+        return this->keys;
+    }
 };
 
 #endif

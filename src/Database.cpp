@@ -14,7 +14,9 @@ private:
 	String key;
 	String delimiter;
 	bool encryption = true;
-	// Vector<Table> db_data;
+	String admin;
+	// Vector<>permissions;
+	Vector<String> table_names;
 public:
 
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
@@ -24,15 +26,19 @@ public:
 		this->username = username;
 		this->key = key;
 		this->delimiter = delimiter;
+		this->admin = username;
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
 // Conf manager fetches raw data ✅
 			ConfigManager conf_manager(conf_file);
 			// convert the config file into variables
+			this->delimiter = conf_manager.get_t_delimiter();
+			this->admin = conf_manager.get_admin();
+			this->db_data = conf_manager.get_table_header();
 			// TODO : must check if the user exists
-//	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO
 			//convert the tables into vector
+
 		}
 		else{
 			//create config file
