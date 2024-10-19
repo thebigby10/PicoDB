@@ -50,21 +50,40 @@ public:
 		
 
 	
-	String get_t_delimiter(){
-		istringstream stream(conf_data.c_str());
-		string line;
-		while(getline(stream, line)){
-			if(line.find("table_delimiter") != string::npos){
-				return String(line.substr(line.find("=")+2));
+	 String get_t_delimiter() {
+		istringstream conf_data_stream(conf_data.c_str()); 
+		string line; 
+		while(getline(conf_data_stream, line)){ 
+			if(line.find("table_delimiter") != string::npos){ 
+				return String(line.substr(line.find("=")+1).c_str()); //return the table_delimiter
 			}
-		}			
+		}
+		return String(""); //return empty string if the table_delimiter is not found
+		
+	 }
 
-	}
 	
 	String get_admin(){
+		istringstream ss(conf_data.c_str());
+		string line;
+		while(getline(ss, line)){
+			if(line.find("username") != string::npos){
+				return String(line.substr(line.find("=")+1).c_str());
+			}
+		}
+		return String("");//return empty string if the admin is not found
+
 		
 	}
 	String get_delimiter(){
+		istringstream ss(conf_data.c_str());
+		string line;
+		while(getline(ss, line)){
+			if(line.find("delimiter") != string::npos){
+				return String(line.substr(line.find("=")+1).c_str());
+			}
+		}
+		return String("");//return empty string if the delimiter is not found
 
 	}
 	Vector<Map<String, Vector<String> > > get_users(){
