@@ -42,9 +42,9 @@ public:
 
 	}
 	void updateConfig(String new_config_data){
-		this->conf_data = new_config_data;
-		FileHandler conf_file(conf_path);
-		
+		this->conf_data = new_config_data; //update the config data
+		FileHandler conf_file(conf_path); //write the new config data to the file
+		conf_file.writeToFile(new_config_data); //write the new config data to the file
 
 
 	}
@@ -52,6 +52,7 @@ public:
 
 	
 	String get_t_delimiter(){
+		//returns the table delimiter
 		
 	}
 	String get_admin(){
