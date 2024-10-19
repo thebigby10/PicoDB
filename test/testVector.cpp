@@ -1,40 +1,26 @@
 #include "../src/Vector.cpp"
+#include "../src/String.cpp"
 using namespace std;
 
-class student{
+class Student{
 private:
-	int m_id;
+	int id;
 public:
-	student(int id){
-		this->m_id = id;
-	}
-	student(){
-
+	Student(int id){
+		this->id = id;
 	}
 	int get_id(){
-		return m_id;
-	}
-	void set_id(){
-		this->m_id = m_id;
+		return this->id;
 	}
 };
 
 int main(){
-	Vector<student> s;
-	s.push_back(student(10));
-	s.push_back(student(100));
-	s.add(1,student(50));
-	s.push_back()
-
-	Vector<student> b = s;
-	Vector<student> c;
-	c = b;
-
-	s.erase(0);
-
-	for(int i=0;i<s.get_size();i++){
-		cout<<s[i].get_id()<<" ";
-	}
-	cout<<endl;
+	Vector<Vector<String> >v = {
+		{"student_id", "INT", "PRIMARY_KEY", ""},
+		{"student_name", "STRING", "NOT_NULL", ""},
+		{"cgpa", "INT","DEFAULT 0", }, 
+	};
+	// v = {10,20,30};
+	// cout<<v[1];
 	return 0;
 }

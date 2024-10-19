@@ -1,17 +1,19 @@
+<<<<<<< HEAD
 // #include<bits/stdc++.h> //doesnt work on mac hehe
+=======
+>>>>>>> origin/asif-dev
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/Database.cpp"
 int main(){
 	// create db or use db
-	PicoDB studentdb("studentdb", "/home/thebigby01/", "thebigby01", 152);
+	PicoDB studentdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
 	
-	// // create table
-	// studentdb.createTable("student", {
-	// 	{"student_id", "INT", "PRIMARY_KEY", ""},
-	// 	{"student_name", "STRING", "NOT_NULL", ""},
-	// 	{"cgpa", "INT","DEFAULT 0", }, 
-	// });
-	
+	// create table
+	studentdb.createTable(String("students"), {
+		{"student_id", "INT", "PRIMARY_KEY", ""},
+		{"student_name", "STRING", "NOT_NULL", ""},
+		{"cgpa", "INT","DEFAULT 0", }, 
+	});
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042153", "Uthuth", 4});

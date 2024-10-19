@@ -1,6 +1,7 @@
 #ifndef STRING_H // Include guard start
 #define STRING_H
 #include<iostream>
+#include <sstream>
 #include "Vector.cpp"
 
 class String {
@@ -25,6 +26,18 @@ private:
             ++i;
         }
         dest[i] = '\0'; // Null-terminate the copied string
+    }
+
+    void reverse(char* str, size_t length) {
+        size_t start = 0;
+        size_t end = length - 1;
+        while (start < end) {
+            char temp = str[start];
+            str[start] = str[end];
+            str[end] = temp;
+            ++start;
+            --end;
+        }
     }
 
 public:
@@ -213,7 +226,7 @@ public:
     }
 
     // Join a vector of strings with a delimiter
-    static String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
+    String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
         if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
         String delimiter(1, d); 
         String result = vec[0];  // Copy the first element
@@ -237,5 +250,146 @@ public:
     const char* c_str() const {
         return data;  // Return the data pointer
     }
+
+    int toInt() {
+        String str = data;
+        int num = 0;
+        bool isNegative = false;
+        size_t i = 0;
+
+        // Check for negative sign
+        if (str[0] == '-') {
+            isNegative = true;
+            ++i;
+        }
+
+        // Convert each character to the corresponding digit
+        for (; i < str.length(); ++i) {
+            if (str[i] >= '0' && str[i] <= '9') {
+                num = num * 10 + (str[i] - '0');
+            } else {
+                break;  // Stop if a non-digit is encountered
+            }
+        }
+
+        return isNegative ? -num : num;
+    }
+    // Convert String to double
+    double toDouble() {
+        String str = data;
+        double num = 0.0;
+        bool isNegative = false;
+        bool hasDecimal = false;
+        double decimalFactor = 0.1;
+        size_t i = 0;
+
+        // Check for negative sign
+        if (str[0] == '-') {
+            isNegative = true;
+            ++i;
+        }
+
+        // Convert each character to the corresponding digit
+        for (; i < str.length(); ++i) {
+            if (str[i] >= '0' && str[i] <= '9') {
+                if (hasDecimal) {
+                    num += (str[i] - '0') * decimalFactor;
+                    decimalFactor /= 10.0;
+                } else {
+                    num = num * 10 + (str[i] - '0');
+                }
+            } else if (str[i] == '.' && !hasDecimal) {
+                hasDecimal = true;  // Start processing decimals
+            } else {
+                break;  // Stop if a non-digit is encountered
+            }
+        }
+
+        return isNegative ? -num : num;
+    }
 };
+
+// Helper function to reverse a char array (used in intToString and doubleToString)
+void reverse(char* str, size_t length) {
+    size_t start = 0;
+    size_t end = length - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        ++start;
+        --end;
+    }
+}
+
+// Convert integer to String
+String toString(int num) {
+    bool isNegative = false;
+    if (num < 0) {
+        isNegative = true;
+        num = -num;
+    }
+
+    char buffer[20];  // Enough to store largest 32-bit int
+    size_t i = 0;
+
+    do {
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    } while (num > 0);
+
+    if (isNegative) {
+        buffer[i++] = '-';
+    }
+
+    buffer[i] = '\0';
+    reverse(buffer, i);
+
+    return String(buffer);
+}
+
+// Convert double to String (simple version)
+String toString(double num) {
+    bool isNegative = false;
+    if (num < 0) {
+        isNegative = true;
+        num = -num;
+    }
+
+    char buffer[40]; // Large enough to handle most doubles
+    size_t i = 0;
+
+    // Extract integer part
+    int integerPart = static_cast<int>(num);
+    double fractionalPart = num - integerPart;
+
+    // Convert integer part to string
+    do {
+        buffer[i++] = (integerPart % 10) + '0';
+        integerPart /= 10;
+    } while (integerPart > 0);
+
+    // Add negative sign if necessary
+    if (isNegative) {
+        buffer[i++] = '-';
+    }
+
+    // Reverse the integer part to get correct order
+    reverse(buffer, i);
+
+    // Add decimal point
+    buffer[i++] = '.';
+
+    // Convert fractional part to string (precision: 6 decimal places)
+    for (int j = 0; j < 6; ++j) {
+        fractionalPart *= 10;
+        int digit = static_cast<int>(fractionalPart);
+        buffer[i++] = digit + '0';
+        fractionalPart -= digit;
+    }
+
+    buffer[i] = '\0';  // Null-terminate the string
+
+    return String(buffer);
+}
 #endif
