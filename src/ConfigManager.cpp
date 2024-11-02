@@ -151,7 +151,45 @@ public:
         // Move the start position to after "[Users]"
         start_pos += String("[Tables]").length();
 
+                // Read each line until the next section or end of conf_data
+        while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+            int end_pos = start_pos;
+            while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                ++end_pos;
+            }
 
+            // Extract a single line
+            String line = conf_data.substr(start_pos, end_pos - start_pos);
+
+            // Find the delimiter '='
+            int equal_pos = line.find('=');
+            if (equal_pos != -1) {
+                // Extract table name
+                String table_name = line.substr(0, equal_pos).trim();
+
+                // Extract the headers string and split by comma
+                String headers_str = line.substr(equal_pos + 1, end_pos - (equal_pos+1)).trim();
+                Vector<String> headers;
+
+                // Split headers_str by ',' to get each header name
+                size_t pos = 0;
+                while ((pos = headers_str.find(',')) != -1) {
+                    headers.push_back(headers_str.substr(0, pos).trim());
+                    headers_str = headers_str.substr(pos + 1, headers_str.strLength()-(pos+1));
+                }
+                headers.push_back(headers_str.trim()); // Last table after the last comma
+
+                // Add the table and headers to the map
+                tables_with_headers[table_name] = headers;
+            }
+
+            // Move to the next line
+            start_pos = end_pos + 1;
+        }
+
+        // Add the map to the table_header_details vector
+        table_header_details.push_back(tables_with_headers);
+        return table_header_details;
 	}
 
 
