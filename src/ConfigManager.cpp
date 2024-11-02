@@ -88,12 +88,12 @@ public:
 		Vector<Map<String, Vector<String>>> users;
         Map<String, Vector<String>> user_tables;
 
-        // Find the start position of the [Users] section in conf_data
-        int start_pos = conf_data.findSubstring(String("[Users]"));
-        if (start_pos == -1) return users; // Return an empty vector if no [Users] section is found
+        // Find the start position of the [Permission] section in conf_data
+        int start_pos = conf_data.findSubstring(String("[Permission]"));
+        if (start_pos == -1) return users; // Return an empty vector if no [Permission] section is found
 
         // Move the start position to after "[Users]"
-        start_pos += String("[Users]").length();
+        start_pos += String("[Permission]").length();
 
         // Read each line until the next section or end of conf_data
         while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
@@ -161,6 +161,13 @@ public:
 		return table_headers;
 
 	}
+
+
+	Vector<String> get_table_names() {
+
+	}
+
+
 	void deleteConfig(){
 		FileHandler conf_file(conf_path);
 		conf_file.removeFile();
