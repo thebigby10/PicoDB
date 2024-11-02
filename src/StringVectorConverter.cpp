@@ -18,7 +18,13 @@ public:
 		this->data_v = data_v;
 	}
 
+	Vector<Table> StringToVector(){
 
+	}
+
+	String VectorToString(){
+
+	}
 
 };
 
