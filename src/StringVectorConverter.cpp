@@ -6,3 +6,20 @@
 #include "FileHandler.cpp"
 #include "Table.cpp"
 #include <fstream>
+class StringVectorConverter{
+private:
+	Vector<String> data_s; 
+	Vector<Table> data_v; 
+public:
+	StringVectorConverter(Vector<String> data_s){
+		this->data_s = data_s;
+	}
+	StringVectorConverter(Vector<Table> data_v){
+		this->data_v = data_v;
+	}
+
+
+
+};
+
+#endif
