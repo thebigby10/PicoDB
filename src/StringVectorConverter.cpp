@@ -23,9 +23,35 @@ public:
 
 	}
 
-	Vector<Map<String, String> > VectorToString(){
+    Vector<Map<String, String>> VectorToString() {
+        Vector<Map<String, String>> result; // Initialize result vector
+        
+        // Check if there are any tables to process
+        for (size_t i = 0; i < data_v.get_size(); ++i) { // Iterate over each Table in data_v
+            Table table = data_v[i];
+            if (table.getRows().get_size() == 0) continue; // Skip empty tables
+            
+            // Get column names from the first row of the table
+            Vector<String> headerRow = table.getRows()[0]; // Get the first row for headers
+            Vector<String> columns = table.getColumns(); // Get columns
 
-	}
+            // Now iterate through the remaining rows
+            for (size_t j = 1; j < table.getRows().get_size(); ++j) { // Start from 1 to skip the header
+                Vector<String> row = table.getRows()[j]; // Get the current row
+                Map<String, String> map; // Initialize a new map for the current row
+                
+                // Map each column name to the corresponding row value
+                for (size_t k = 0; k < columns.get_size(); ++k) {
+                    map[columns[k]] = row[k];
+                }
+                
+                result.push_back(map); // Add the map to the result vector
+            }
+        }
+        
+        return result;
+    }
+
 
 };
 
