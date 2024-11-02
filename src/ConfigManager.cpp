@@ -170,7 +170,28 @@ public:
         // Move the start position to after "[Tables]"
         start_pos += String("[Tables]").length();
 
+        // Read each line until the next section or end of conf_data
+        while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+            int end_pos = start_pos;
+            while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                ++end_pos;
+            }
 
+            // Extract a single line
+            String line = conf_data.substr(start_pos, end_pos - start_pos);
+
+            // Find the delimiter '='
+            int equal_pos = line.find('=');
+            if (equal_pos != -1) {
+                // Extract username
+                String table_name = line.substr(0, equal_pos).trim();
+                table_names.push_back(table_name);
+            }
+
+            // Move to the next line
+            start_pos = end_pos + 1;
+        }
+        return table_names;
 	}
 
 
