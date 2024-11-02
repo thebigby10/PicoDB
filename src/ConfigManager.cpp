@@ -78,9 +78,7 @@ public:
 
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the admin username
 
-
     }
-
 
 	Vector<Map<String, Vector<String> > > get_users(){
 		//returns a vector in format Vector<Map<String, Vector<String> > >;
@@ -164,6 +162,14 @@ public:
 
 
 	Vector<String> get_table_names() {
+        Vector<String> table_names;
+
+        int start_pos = conf_data.findSubstring(String("[Tables]"));
+        if (start_pos == -1) return users; // Return an empty vector if no [Tables] section is found
+
+        // Move the start position to after "[Tables]"
+        start_pos += String("[Tables]").length();
+
 
 	}
 
