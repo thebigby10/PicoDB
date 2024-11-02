@@ -81,22 +81,6 @@ public:
 
     }
 
-	String get_delimiter(){
-		//returns the delimiter
-		int start_pos = conf_data.findSubstring(String("delimiter = "));
-		if(start_pos == -1) return String("");
-		start_pos += String("delimiter = ").length();
-		int end_pos = start_pos;
-		while(end_pos < conf_data.length() && conf_data[end_pos] != '\n'){
-			++end_pos;
-		}
-		return conf_data.substr(start_pos, end_pos - start_pos);
-
-
-
-
-	}
-
 
 	Vector<Map<String, Vector<String> > > get_users(){
 		//returns a vector in format Vector<Map<String, Vector<String> > >;
