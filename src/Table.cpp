@@ -31,4 +31,7 @@ public:
 		}
 		return columns;
 	}
+	vector<vector<Cell> > getRows() const {
+		return table_data;
+	}
 };
