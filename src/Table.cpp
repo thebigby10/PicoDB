@@ -17,10 +17,18 @@ public:
 			row.push_back(Cell(rows[i]));
 			table_data.push_back(row);
 		}
-
-
 	}
-	 getrows(){
-		return table_data;
+	
+	size_t getSize() const {
+        return table_data.size();
+    }
+	vector<string> getColumns() const {
+		vector<string> columns;
+		if (table_data.size() > 0) {
+			for (size_t i = 0; i < table_data[0].size(); ++i) {
+				columns.push_back("Column " + to_string(i + 1));
+			}
+		}
+		return columns;
 	}
 };

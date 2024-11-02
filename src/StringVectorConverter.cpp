@@ -7,6 +7,7 @@
 #include "Table.cpp"
 #include <fstream>
 
+using namespace std;
 class StringVectorConverter{
 private:
 	Vector<Map<String, String> > data_s; 
@@ -29,14 +30,14 @@ public:
         // Check if there are any tables to process
         for (size_t i = 0; i < data_v.get_size(); ++i) { // Iterate over each Table in data_v
             Table table = data_v[i];
-            if (table.getRows().get_size() == 0) continue; // Skip empty tables
+            if (table.getSize() == 0) continue; // Skip empty tables
             
             // Get column names from the first row of the table
-            Vector<String> headerRow = table.getRows()[0]; // Get the first row for headers
-            Vector<String> columns = table.getColumns(); // Get columns
-
+            Vector<String> headerRow = table.getRows()[0]; // Get the header row
+            Vector<String> columns = table.getColumns();  // Get columns
+ 
             // Now iterate through the remaining rows
-            for (size_t j = 1; j < table.getRows().get_size(); ++j) { // Start from 1 to skip the header
+            for (size_t j = 1; j < table.getSize(); ++j) { // Start from 1 to skip the header
                 Vector<String> row = table.getRows()[j]; // Get the current row
                 Map<String, String> map; // Initialize a new map for the current row
                 
