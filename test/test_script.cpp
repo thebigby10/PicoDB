@@ -1,12 +1,10 @@
-<<<<<<< HEAD
-// #include<bits/stdc++.h> //doesnt work on mac hehe
-=======
->>>>>>> origin/asif-dev
+
+//#include<bits/stdc++.h> //doesnt work on mac hehe
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/Database.cpp"
 int main(){
 	// create db or use db
-	PicoDB studentdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
+	PicoDB bankdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
 	
 	// create table
 	studentdb.createTable(String("students"), {
