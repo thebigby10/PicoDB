@@ -47,9 +47,9 @@ public:
 		conf_file.writeToFile(new_config_data); //write the new config data to the file
 
 	}
-		
 
-	
+
+
     String get_t_delimiter() {
         int start_pos = conf_data.findSubstring(String("table_delimiter = "));
         if (start_pos == -1) return String(""); // Not found
@@ -64,7 +64,7 @@ public:
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the delimiter value
     }
 
-	
+
     String get_admin() {
         int start_pos = conf_data.findSubstring(String("username = ")); // Find the start of the admin username
         if (start_pos == -1) return String(""); // Not found
@@ -78,9 +78,9 @@ public:
 
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the admin username
 
-		
+
     }
-		
+
 	String get_delimiter(){
 		//returns the delimiter
 		int start_pos = conf_data.findSubstring(String("delimiter = "));
@@ -90,17 +90,29 @@ public:
 		while(end_pos < conf_data.length() && conf_data[end_pos] != '\n'){
 			++end_pos;
 		}
-		return conf_data.substr(start_pos, end_pos - start_pos);	
+		return conf_data.substr(start_pos, end_pos - start_pos);
 
 
-		
+
 
 	}
+
+
 	Vector<Map<String, Vector<String> > > get_users(){
-		//returns a vector in format Vector<Map<String, Vector<String> > >; 
+		//returns a vector in format Vector<Map<String, Vector<String> > >;
 		//username, tables
+		Vector<Map<String, Vector<String>>> users;
+        Map<String, Vector<String>> user_tables;
+
+        // Find the start position of the [Users] section in conf_data
+        int start_pos = conf_data.findSubstring(String("[Users]"));
+        if (start_pos == -1) return users; // Return an empty vector if no [Users] section is found
+
+        // Move the start position to after "[Users]"
+        start_pos += String("[Users]").length();
 
 	}
+
 	bool is_encrypted(){
 
 	}
@@ -119,17 +131,17 @@ public:
 			while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
 				++end_pos;
 			}
-			String table_line = conf_data.substr(start_pos, end_pos - start_pos); 
+			String table_line = conf_data.substr(start_pos, end_pos - start_pos);
 			table_headers.push_back(conf_data.substr(start_pos, end_pos - start_pos));
 			start_pos = end_pos + 1;
 		}
 		return table_headers;
-		
+
 	}
 	void deleteConfig(){
 		FileHandler conf_file(conf_path);
-		conf_file.removeFile();	
-		
+		conf_file.removeFile();
+
 	}
 
 };
