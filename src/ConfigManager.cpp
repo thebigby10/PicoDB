@@ -140,23 +140,17 @@ public:
 
 
 
-	Vector<String> get_table_header(){
-		//gets the tables and converts them in a Vector<Table> and returns it
-		Vector<String> table_headers;
-		int start_pos = conf_data.findSubstring(String("[Tables]"));
-		if(start_pos == -1) return table_headers;
+	Vector<Map<String, Vector<String>>> get_table_headers(){
+		Vector<Map<String, Vector<String>>> table_header_details;
+        Map<String, Vector<String>> tables_with_headers;
 
-		start_pos += String("[Tables]").length();
-		while (start_pos < conf_data.length() &&  conf_data[start_pos] != '[') {
-			int end_pos = start_pos;
-			while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
-				++end_pos;
-			}
-			String table_line = conf_data.substr(start_pos, end_pos - start_pos);
-			table_headers.push_back(conf_data.substr(start_pos, end_pos - start_pos));
-			start_pos = end_pos + 1;
-		}
-		return table_headers;
+        // Find the start position of the [Tables] section in conf_data
+        int start_pos = conf_data.findSubstring(String("[Tables]"));
+        if (start_pos == -1) return table_header_details; // Return an empty vector if no [Tables] section is found
+
+        // Move the start position to after "[Users]"
+        start_pos += String("[Tables]").length();
+
 
 	}
 
@@ -165,7 +159,7 @@ public:
         Vector<String> table_names;
 
         int start_pos = conf_data.findSubstring(String("[Tables]"));
-        if (start_pos == -1) return users; // Return an empty vector if no [Tables] section is found
+        if (start_pos == -1) return table_names; // Return an empty vector if no [Tables] section is found
 
         // Move the start position to after "[Tables]"
         start_pos += String("[Tables]").length();
