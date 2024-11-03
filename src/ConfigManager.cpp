@@ -80,10 +80,9 @@ public:
 
     }
 
-	Vector<Map<String, Vector<String> > > get_users(){
-		//returns a vector in format Vector<Map<String, Vector<String> > >;
+	Map<String, Vector<String>>  get_users(){
+		//returns a map in format Map<String, Vector<String> > ;
 		//username, tables
-		Vector<Map<String, Vector<String>>> users;
         Map<String, Vector<String>> user_tables;
 
         // Find the start position of the [Permission] section in conf_data
@@ -129,9 +128,7 @@ public:
             start_pos = end_pos + 1;
         }
 
-        // Add the map to the users vector
-        users.push_back(user_tables);
-        return users;
+        return user_tables;
 	}
 
 	bool is_encrypted(){
