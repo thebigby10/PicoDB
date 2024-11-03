@@ -137,8 +137,7 @@ public:
 
 
 
-	Vector<Map<String, Vector<String>>> get_table_headers(){
-		Vector<Map<String, Vector<String>>> table_header_details;
+	Map<String, Vector<String>> get_table_headers(){
         Map<String, Vector<String>> tables_with_headers;
 
         // Find the start position of the [Tables] section in conf_data
@@ -184,9 +183,7 @@ public:
             start_pos = end_pos + 1;
         }
 
-        // Add the map to the table_header_details vector
-        table_header_details.push_back(tables_with_headers);
-        return table_header_details;
+        return tables_with_headers;
 	}
 
 
