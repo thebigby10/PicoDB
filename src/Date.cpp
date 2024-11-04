@@ -26,6 +26,17 @@ public:
     void setMonth(int month);
     void setYear(int year);
 
+    // Convert date to string
+    string DatetoString() const;
+
+    //Convert string to date
+    void StringtoDate(const string& date);
+
+    // Destructor
+    ~Date();
+};
+
+
     
 
    
