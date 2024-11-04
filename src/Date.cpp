@@ -13,13 +13,27 @@ private:
 
 public:
     // Default constructor
-    Date();
-    Date(int day, int month, int year);
+    Date(){
+        this->day = 1;
+        this->month = 1;
+        this->year = 2000; //default date
+    }
+    Date(int day, int month, int year){
+        this->day = day;
+        this->month = month;
+        this->year = year;
+    }
 
     // Getters
-    int getDay() const;
-    int getMonth() const;
-    int getYear() const;
+    int getDay() const{
+        return day;
+    }
+    int getMonth() const{
+        return month;
+    }
+    int getYear() const{
+        return year;
+    }
 
     // Setters
     void setDay(int day);
