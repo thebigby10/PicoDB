@@ -2,6 +2,7 @@
 #define DATE_H
 #include <iostream>
 #include <sstream>
+#include <iomanip> //setw, setfill er jonne (better to avoid)
 using namespace std;
 
 class Date {
@@ -49,7 +50,10 @@ public:
     // Convert date to string
     string DatetoString() const{
         stringstream ss;
-        ss << day << "/" << month << "/" << year;
+        ss << setw(2) << setfill('0') << day << "/"  //ensures 2 digits
+           << setw(2) << setfill('0') << month << "/"  //ensures 2 digits
+           << year;  //year is not 2 digits
+        
         return ss.str();
         
     }
@@ -89,4 +93,4 @@ public:
 
 
 
-}
+
