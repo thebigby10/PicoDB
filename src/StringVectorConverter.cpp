@@ -57,6 +57,7 @@ public:
 	}
 
 	String vector2DToString(Vector<Vector<String>> vec_data, String delimiter) {
+		cout<<"<<STRINGTOVECTOR_1>>"<<endl;
 		String data;
 
 		int num_rows = vec_data.get_size();
@@ -64,14 +65,14 @@ public:
 
 		//extract a single line from a 1D Vector
 		for (int i=0; i<num_rows; i++) {
-            int j=0;
-            for(j; j<num_columns-1; j++) {
+            for(int j; j<num_columns-1; j++) {
                 data += vec_data[i][j];
                 data += String(delimiter);
             }
 			data += vec_data[i][j];
             data += String("\n");
 		}
+		cout<<"<<STRINGTOVECTOR_2>>"<<endl;
 		return data;
 	}
 };

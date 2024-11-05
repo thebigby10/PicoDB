@@ -24,12 +24,18 @@ public:
 	}
 
 	PicoDB(String db_name, String db_path, String username, String key)
-	: db(db_name, db_path, username, key){
+	: db(db_name, db_path, username, key) {
         	// No additional setup implemented in the constructor body yet
 	}
 
 	bool createTable(String table_name,Vector<Vector<String>> col_data){
-        this->db.get_tables().push_back(Table(table_name, col_data));
+		cout<<"CREATE TABLE"<<endl;
+        (this->db).get_tables().push_back(Table(table_name, col_data));
+        cout<<(this->db).get_tables().get_size()<<endl;
+        //DEBUG
+        // cout<<this->db.get_tables().get_size()<<endl;
+        //DEBUG
+        //todo if exists
 		return true;
 	}
 
