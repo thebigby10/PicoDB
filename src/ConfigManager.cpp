@@ -26,3 +26,9 @@ public:
 		conf_data+=String("file_path = ") + conf_path + String("\n");
 		conf_data+=String("table_delimiter = ") + table_delimiter + String("\n");
 		conf_data+=String("\n");
+        conf_data+=String("[Admin]\n");
+		conf_data+=String("username = ") + admin_username + String("\n");
+		conf_data+=String("\n");
+		conf_data+=String("[Permission]\n");
+		conf_data+=String("\n");
+		conf_data+=String("[Encryption]\n");
