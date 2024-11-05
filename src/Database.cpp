@@ -221,7 +221,7 @@ public:
 		Vector<Vector<Cell>> rows = table.getTableData();
 		for (int i = 0; i < rows.get_size(); ++i) {
 			for (int j = 0; j < rows[i].get_size(); ++j) {
-				std::cout << rows[i][j].getValue() << "\t"; // Assuming Cell has a method getValue() to get the cell's value.
+				std::cout << rows[i][j].getString() << "\t"; // Assuming Cell has a method getString() to get the cell's value.
 			}
 			std::cout << std::endl;
 		}
