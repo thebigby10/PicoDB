@@ -59,3 +59,8 @@ private:
         }
 	}
 
+	// to update table cells
+	void updateRecords (Vector<Vector<Cell>> cell_data) {
+		this->table_data = cell_data;
+	}
+
