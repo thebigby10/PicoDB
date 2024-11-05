@@ -40,3 +40,19 @@ public:
 		}
         	return table_cell_data;
 	}
+
+        //used in saveTabl
+	String vectorToString(Vector<String> vec_data) {
+		String data;
+
+		int n = vec_data.get_size();
+		int j=0;
+		//extract a single line from a 1D Vector
+		for (j; j<n-1; j++) {
+			data += vec_data[j];
+			data += String(",");
+		}
+		data += vec_data[j]; // getting the last value and adding new line
+		data += String("\n");
+		return data;
+	}
