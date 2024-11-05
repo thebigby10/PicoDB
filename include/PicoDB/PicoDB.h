@@ -39,7 +39,16 @@ public:
 		return true;
 	}
 
-
+	Table select(String table_name, Vector<String> cols){
+		Table output_table;
+		Table input_table;
+		for(int i=0;i<db.get_tables();i++){
+			if(db.get_tables()[i].table_name == table_name){
+				input_table = db.get_tables()[i];
+				break;
+			}
+		}
+	}
 	
 
 	/*
