@@ -39,3 +39,17 @@
 		}
 	};
 	// Database e(string db_name, bool encryption);
+
+
+	void loadCurrentTables(String database_name, String file_path){
+		ConfigManager conf_file(file_path+String("/")+database_name+String(".config"));
+		StringVectorConverter converter;
+		Encryptor encryptor(String(key).toInt());
+
+
+		// fetch the config file data and add it to table_name, headers, types and constraints
+		Vector<Vector<String>> temp_data = conf_file.get_table_meta_data();
+		int temp_data_size = temp_data.get_size();
+		for(int i=0; i<temp_data_size; i+=4) {
+			this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
+		}
