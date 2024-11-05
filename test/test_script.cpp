@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 
 //#include<bits/stdc++.h> //doesnt work on mac hehe
+=======
+// #include<bits/stdc++.h> //doesnt work on mac hehe
+>>>>>>> rafi-dev
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/Database.cpp"
 int main(){
