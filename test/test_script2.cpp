@@ -13,5 +13,7 @@ int main(){
 	//check file exists
 	// FileHandler file1("/home/thebigby01/db/barbiedb/barbiedb.config");
 	// cout<<file1.fileExists()<<endl;
+	barbiedb.select("person_info", {});
+	// studentdb.select("student", {"student_id", "cgpa"});
 	barbiedb.saveDB();
 }

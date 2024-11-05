@@ -1,8 +1,8 @@
 #include<iostream>
 
 #include "../../src/Database.cpp"
-// #include "../../src/Table.cpp"
-//#include "../../src/Cell.cpp"
+#include "../../src/Table.cpp"
+#include "../../src/Cell.cpp"
 
 #include "../../src/FileHandler.cpp"
 #include "../../src/Encryptor.cpp"
@@ -11,7 +11,7 @@
 // #include "../../src/Date.cpp"
 
 #include "../../src/String.cpp"
-//#include "../../src/Map.cpp"
+#include "../../src/Map.cpp"
 
 class PicoDB{
 private:
@@ -39,6 +39,8 @@ public:
 		return true;
 	}
 
+
+	
 
 	/*
 	bool insertInto(string table_name, vector<string> col_data, vector<string>col_values ){
