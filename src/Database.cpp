@@ -46,7 +46,9 @@ public:
 			// TODO : must check if the user exists
 
 			//convert the tables into vector ✅
-			loadCurrentTables(db_name, db_path);
+			// loadCurrentTables(db_name, db_path);
+//->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+			cout<<"Table exists."<<endl;
 		}
 		else{
 			//create config file
@@ -116,6 +118,7 @@ public:
 
 
 	void saveTableData(){
+		cout<<"<<SAVETABLE_1>>"<<endl;
 	    int table_size = tables.get_size();
         for (int i=0; i<table_size; i++) {
             String table_name = tables[i].getTableName();
@@ -126,8 +129,8 @@ public:
 
             int num_rows = cells.get_size();
             for (int j=0; j<num_rows; j++) {
+            	Vector<String> row_data;
                 for (int k=0; k<num_columns; k++) {
-                    Vector<String> row_data;
                     DataType dataType = cells[j][k].getDataType();
 
                     if (dataType == DataType::INTEGER) {
@@ -146,14 +149,25 @@ public:
                     table_data.push_back(row_data);
                 }
             }
+            // print table data
+            for (int j=0; j<num_rows; j++) {
+                for (int k=0; k<num_columns; k++) {
+                	cout<<table_data[j][k]<<endl;
+                }
+            }
+            // print table data
 
+            cout<<"<<SAVETABLE_2>>"<<endl;
             StringVectorConverter converter;
             Encryptor encryptor(String(key).toInt());
+            cout<<"<<SAVETABLE_2_1>>"<<endl;
             String file_data = converter.vector2DToString(table_data, delimiter);  // converts vector data to string for writing
             file_data = encryptor.encryptData(file_data);   // encrypts the data
-
+            cout<<"<<SAVETABLE_3>>"<<endl;
 
             FileHandler table_file(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
+            cout<<db_path+String("/")+table_name+String(".csv")<<endl;
+            table_file.createFile();
             table_file.writeToFile(file_data);
         }
 	}
@@ -188,7 +202,7 @@ public:
 	}
 
 	//getter for tables
-	Vector<Table> get_tables() {
+	Vector<Table>& get_tables() {
 		return tables;
 	}
 
