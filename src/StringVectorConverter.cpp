@@ -23,3 +23,20 @@ public:
 			}
 
 			// Extract a single line
+			String line = data.substr(start_pos, end_pos - start_pos);
+			Vector<String> line_data;
+
+			size_t pos = 0;
+            while ((pos = line.findSubstring(delimiter)) != -1) {
+				line_data.push_back(line.substr(0, pos).trim());
+				line = line.substr(pos + 1, line.length()-(pos+1));
+                	}
+                	line_data.push_back(line.trim()); // Last table after the last comma
+			table_cell_data.push_back(line_data);
+
+			// Move to the next line
+			start_pos = end_pos + 1;
+
+		}
+        	return table_cell_data;
+	}
