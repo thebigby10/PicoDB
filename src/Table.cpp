@@ -50,3 +50,12 @@ private:
 	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
 	}
 
+	void extract_col_data(Vector<Vector<String>> temp_col_data) {
+        int num_headers = temp_col_data.get_size();
+		for (int i=0; i<num_headers; i++) {
+            this->headers.push_back(temp_col_data[i][0]);
+            this->data_types.push_back(temp_col_data[i][1]);
+            this->constraints.push_back(temp_col_data[i][2]);
+        }
+	}
+
