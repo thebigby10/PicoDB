@@ -35,6 +35,7 @@ public:
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
+
 			// Conf manager fetches raw data ✅
 			ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
 
