@@ -69,3 +69,28 @@
 			table_data_from_file = converter.stringToVector(table_string_data, delimiter);
 
 			// load the data to table cells
+						int num_of_types = data_types.get_size();
+			int num_of_rows = table_data_from_file.get_size();
+			for (int j=0; j<num_of_rows; j++) {
+                Vector<Cell> single_line_cell_data;
+                for (int k=0; k<num_of_types; k++) {
+					if (data_types[k] == String("INT")) {
+                        // Conversion to int
+                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toInt()));
+                    } else if (data_types[k] == String("DOUBLE")) {
+                        // Conversion to double
+                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toDouble()));
+                    } else if (data_types[k] == String("BOOLEAN")) {
+                        // Conversion to boolean
+                        // single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toBool()));
+                    } else {
+                        // Default case (e.g., assume it's a string)
+                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k]));
+                    }
+                }
+                cell_data.push_back(single_line_cell_data);
+            }
+            tables[i].updateRecords(cell_data);
+        }
+    }
+
