@@ -65,3 +65,8 @@ public:
 
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the delimiter value
     }
+
+    String get_admin() {
+        int start_pos = conf_data.findSubstring(String("username = ")); // Find the start of the admin username
+        if (start_pos == -1) return String(""); // Not found
+        start_pos += String("username = ").length(); // move to the start of the username
