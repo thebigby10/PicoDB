@@ -1,19 +1,36 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/FileHandler.cpp"
+#include "../src/Database.cpp"
+#include "../src/Table.cpp"
+
+void printTable(const Table& table);
 
 using namespace std;
-int main(){
-	// create db or use db
-	PicoDB barbiedb("barbiedb", "/home/thebigby01/db/barbiedb", "asif152", "_key_", ",_,");
-	barbiedb.createTable(String("person_info"), {
-		{"id", "INT", "PRIMARY_KEY", ""},
-		{"name", "STRING", "NOT_NULL", ""} 
-	});
-	//check file exists
-	// FileHandler file1("/home/thebigby01/db/barbiedb/barbiedb.config");
-	// cout<<file1.fileExists()<<endl;
-	barbiedb.select("person_info", {});
-	// studentdb.select("student", {"student_id", "cgpa"});
-	barbiedb.saveDB();
-}
+
+int main() {
+    // Create or use existing database
+    PicoDB rapidb("rapidb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "rapi69", "_key_", ",_,");
+    
+    // Create a table named "person_info"
+    rapidb.createTable(String("person_info"), {
+        {"id", "INT", "PRIMARY_KEY", ""},
+        {"name", "STRING", "NOT_NULL", ""}
+    });
+
+    // Insert data into the "person_info" table
+    // Here we can assume you have a method to insert data, such as:
+    //rapidb.insert("person_info", {{"1", "Alice"}, {"2", "Bob"}, {"3", "Charlie"}});
+
+    // Select from the "person_info" table
+    Table selectedTable = rapidb.select("person_info", {});
+
+    // Print the selected table
+    printTable(selectedTable);
+
+    // Save the database
+    rapidb.saveDB();
+
+    return 0; // Return success status
+};
+
