@@ -40,13 +40,16 @@ public:
 	}
 
 	Table select(String table_name, Vector<String> cols){
-		Table output_table;
-		Table input_table;
-		for(int i=0;i<db.get_tables();i++){
-			if(db.get_tables()[i].table_name == table_name){
-				input_table = db.get_tables()[i];
-				break;
+		if(cols.get_size()==0){
+			Table output_table;
+			Table input_table;
+			for(int i=0;i<db.get_tables().get_size();i++){
+				if(db.get_tables()[i].table_name == table_name){
+					input_table = db.get_tables()[i];
+					break;
+				}
 			}
+			return input_table;
 		}
 	}
 	
