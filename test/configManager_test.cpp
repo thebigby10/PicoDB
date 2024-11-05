@@ -3,4 +3,5 @@
 
 int main(){
 	PicoDB barbiedb("Barbiedb", "/home/thebigby01/db/barbiedb", "zawad_pro","1234",",-,");
+	return 0;
 }
