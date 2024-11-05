@@ -86,6 +86,6 @@ public:
 	Vector<Vector<Cell>> getTableData() const {
 		return table_data;
 	}
-	}
+
 };
 #endif

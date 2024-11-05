@@ -205,5 +205,27 @@ public:
 		return tables;
 	}
 
+	//function for select all
+	void printTable(const Table& table) {
+    	// Print table name
+		std::cout << "Table: " << table.getTableName() << std::endl;
+
+		// Print column headers
+		Vector<String> headers = table.getHeaders();
+		for (int i = 0; i < headers.get_size(); ++i) {
+			std::cout << headers[i] << "\t";
+		}
+		std::cout << std::endl;
+
+		// Print rows
+		Vector<Vector<Cell>> rows = table.getTableData();
+		for (int i = 0; i < rows.get_size(); ++i) {
+			for (int j = 0; j < rows[i].get_size(); ++j) {
+				std::cout << rows[i][j].getValue() << "\t"; // Assuming Cell has a method getValue() to get the cell's value.
+			}
+			std::cout << std::endl;
+		}
+}
+
 };
 #endif
