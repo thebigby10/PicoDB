@@ -1,3 +1,5 @@
+#ifndef TABLE_H // Include guard start
+#define TABLE_H
 #include<iostream>
 #include "String.cpp"
 #include "Vector.cpp"
@@ -5,19 +7,23 @@
 
 using namespace std;
 
-class Constrains{
+/*
+class Constraints{
 public:
-	String constrain_key; // NOT_NULL, UNIQUE, PEIMARY_KEY, FOREIGN_KEY, DEFAULT, CHECK
-	String constrain_secondary_key; //LESS_THAN, GREATER_THAN, EQUAL_TO, NOT_EQUAL_TO, TABLE_NAME
-	String constrain_value; // value or column name
-}
+	String constraint_key; // NOT_NULL, UNIQUE, PEIMARY_KEY, FOREIGN_KEY, DEFAULT, CHECK
+	String constraint_secondary_key; //LESS_THAN, GREATER_THAN, EQUAL_TO, NOT_EQUAL_TO, TABLE_NAME
+	String constraint_value; // value or column name
+};
+*/
 
 class Table{
 private:
-	string table_name;
-	vector<String> headers;
-	vector<vector< Cell> > table_data;
-	vector<Vector<String > >constrains;
+	String table_name;
+	Vector<String> headers;
+	Vector<String> data_types;
+	Vector<String> constraints;
+	Vector<Vector<Cell>> table_data;
+
 	/*
 		String constrain_key;
 		// NOT_NULL, UNIQUE, PEIMARY_KEY, FOREIGN_KEY, DEFAULT, CHECK
@@ -26,38 +32,60 @@ private:
 		String constrain_value;
 		// value or column name
 	*/
+
 public:
-<<<<<<< HEAD
-//TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO	TODO
-	Table(string table_name, vector<String >headers, String raw_data){ //add string conditions
+    // Default constructor
+    Table() : table_name(""), headers(), data_types(), constraints(), table_data() {}
+
+	// new constructor - is used in createTable in picoDB class
+	Table(String table_name, Vector<Vector<String>> col_data){
 		this->table_name = table_name;
-		this->headers = headers;
+		extract_col_data(col_data);
 
 
-=======
-	Table(string table_name, vector<int >rows){ //add string conditions
-		this->table_name = table_name;
-		for(int i = 0; i < rows.size(); ++i){
-			vector<Cell> row;
-			row.push_back(Cell(rows[i]));
-			table_data.push_back(row);
-		}
+	//constructor overloader - is used in loadCurrentTables in Database class
+	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
+	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
 	}
-	
-	size_t getSize() const {
-        return table_data.size();
-    }
-	vector<string> getColumns() const {
-		vector<string> columns;
-		if (table_data.size() > 0) {
-			for (size_t i = 0; i < table_data[0].size(); ++i) {
-				columns.push_back("Column " + to_string(i + 1));
-			}
-		}
-		return columns;
+
+	void extract_col_data(Vector<Vector<String>> temp_col_data) {
+        int num_headers = temp_col_data.get_size();
+		for (int i=0; i<num_headers; i++) {
+            this->headers.push_back(temp_col_data[i][0]);
+            this->data_types.push_back(temp_col_data[i][1]);
+            this->constraints.push_back(temp_col_data[i][2]);
+        }
 	}
-	vector<vector<Cell> > getRows() const {
+
+	// to update table cells
+	void updateRecords (Vector<Vector<Cell>> cell_data) {
+		this->table_data = cell_data;
+	}
+
+    // Getter for table_name
+	String getTableName() const {
+    		return table_name;
+	}
+
+	// Getter for headers
+	Vector<String> getHeaders() const {
+		return headers;
+	}
+
+	// Getter for data_types
+	Vector<String> getDataTypes() const {
+		return data_types;
+	}
+
+	// Getter for constraints
+	Vector<String> getConstraints() const {
+		return constraints;
+	}
+
+	// Getter for table_data
+	Vector<Vector<Cell>> getTableData() const {
 		return table_data;
->>>>>>> rafi-dev
 	}
+
 };
+#endif
