@@ -41,7 +41,7 @@ public:
 	Table(String table_name, Vector<Vector<String>> col_data){
 		this->table_name = table_name;
 		extract_col_data(col_data);
-
+	}
 
 	//constructor overloader - is used in loadCurrentTables in Database class
 	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
