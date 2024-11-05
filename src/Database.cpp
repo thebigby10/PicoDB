@@ -126,3 +126,33 @@
                     table_data.push_back(row_data);
                 }
             }
+			            StringVectorConverter converter;
+            Encryptor encryptor(String(key).toInt());
+            String file_data = converter.vector2DToString(table_data, delimiter);  // converts vector data to string for writing
+            file_data = encryptor.encryptData(file_data);   // encrypts the data
+
+
+            FileHandler table_file(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
+            table_file.writeToFile(file_data);
+        }
+	}
+
+	void saveTableMetaData(){
+		String table_meta_data;
+		StringVectorConverter converter;
+		int tables_num = tables.get_size();
+		for(int i=0; i<tables_num; i++) {
+			//for table names
+			table_meta_data += tables[i].getTableName();
+			table_meta_data += String("\n");
+
+			//for headers
+			table_meta_data += converter.vectorToString(tables[i].getHeaders());
+
+			//for data_types
+			table_meta_data += converter.vectorToString(tables[i].getDataTypes());
+
+			//for constraints
+			table_meta_data += converter.vectorToString(tables[i].getConstraints());
+		}
+
