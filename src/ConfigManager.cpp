@@ -136,3 +136,20 @@ public:
 	bool is_encrypted(){
 
 	}
+
+	Vector<Vector<String>> get_table_meta_data(){
+        	Vector<Vector<String>> table_meta_data;
+
+        	// Find the start position of the [Tables] section in conf_data
+        	int start_pos = conf_data.findSubstring(String("[Tables]"));
+        	if (start_pos == -1) return table_meta_data; // Return an empty vector if no [Tables] section is found
+
+        	// Move the start position to after "[Users]"
+        	start_pos += String("[Tables]").length();
+
+        	// Read each line until the next section or end of conf_data
+		while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+			int end_pos = start_pos;
+			while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                ++end_pos;
+			}
