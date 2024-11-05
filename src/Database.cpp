@@ -53,3 +53,19 @@
 		for(int i=0; i<temp_data_size; i+=4) {
 			this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
 		}
+				// decrypt the csv file data related to the table and copy the info
+		int table_size = tables.get_size();
+		for(int i=0; i<table_size; i++) {
+			String table_name = tables[i].getTableName();
+			Vector<String> data_types = tables[i].getDataTypes();
+			Vector<Vector<Cell>> cell_data;
+			Vector<Vector<String>> table_data_from_file;
+			String table_string_data;
+
+			// open the specific table file and decrypt it
+			FileHandler table_file = FileHandler(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
+			table_string_data = table_file.readFromFile();
+			table_string_data = encryptor.decryptData(table_string_data); // decrypt fetched string data
+			table_data_from_file = converter.stringToVector(table_string_data, delimiter);
+
+			// load the data to table cells
