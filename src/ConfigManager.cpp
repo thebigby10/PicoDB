@@ -45,5 +45,9 @@ public:
 		this->conf_data = new_config_data; //update the config data
 		FileHandler conf_file(conf_path);
 		conf_file.writeToFile(new_config_data); //write the new config data to the file
+	}
 
+	void appendConfig(String new_config_data, bool append){
+		FileHandler conf_file(conf_path);
+		conf_file.writeToFile(new_config_data, append); //append the updated config data to the file
 	}
