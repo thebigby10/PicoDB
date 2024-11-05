@@ -19,3 +19,10 @@ public:
 			this->conf_data = conf_file.readFromFile();
 		}
 	}
+	void createConfig(String database_name, String table_delimiter, String admin_username, bool encryption = true ){
+		String conf_data;
+		conf_data+=String("[Database]\n");
+		conf_data+=String("database_name = ") + database_name + String("\n"); //Check
+		conf_data+=String("file_path = ") + conf_path + String("\n");
+		conf_data+=String("table_delimiter = ") + table_delimiter + String("\n");
+		conf_data+=String("\n");
