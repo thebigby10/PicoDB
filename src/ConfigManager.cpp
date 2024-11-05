@@ -132,3 +132,7 @@ public:
 
         return user_tables;
 	}*/
+
+	bool is_encrypted(){
+
+	}
