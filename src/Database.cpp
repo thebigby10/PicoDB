@@ -95,4 +95,34 @@
     }
 	//void saveDBMetaData() {}
 
+	void saveTableData(){
+	    int table_size = tables.get_size();
+        for (int i=0; i<table_size; i++) {
+            String table_name = tables[i].getTableName();
+            int num_columns = tables[i].getHeaders().get_size();
 
+            Vector<Vector<Cell>> cells = tables[i].getTableData();
+            Vector<Vector<String>> table_data;
+
+            int num_rows = cells.get_size();
+            for (int j=0; j<num_rows; j++) {
+                for (int k=0; k<num_columns; k++) {
+                    Vector<String> row_data;
+                    DataType dataType = cells[j][k].getDataType();
+
+                    if (dataType == DataType::INTEGER) {
+                        // conversion from int to string
+                        row_data.push_back(String::toString(cells[j][k].getInt()));
+                    } else if (dataType == DataType::DOUBLE) {
+                        // conversion from double to string
+                        row_data.push_back(String::toString(cells[j][k].getDouble()));
+                    } else if (dataType == DataType::BOOLEAN) {
+                        // conversion from boolean to string
+                        row_data.push_back(String::toString(cells[j][k].getBoolean()));
+                    } else {
+                        // code to execute if none of the cases match
+                        row_data.push_back(cells[j][k].getString());
+                    }
+                    table_data.push_back(row_data);
+                }
+            }
