@@ -28,18 +28,6 @@ private:
         dest[i] = '\0'; // Null-terminate the copied string
     }
 
-    void reverse(char* str, size_t length) {
-        size_t start = 0;
-        size_t end = length - 1;
-        while (start < end) {
-            char temp = str[start];
-            str[start] = str[end];
-            str[end] = temp;
-            ++start;
-            --end;
-        }
-    }
-
 public:
     // Default constructor
     String() : data(new char[1]), size(0) {
@@ -185,7 +173,7 @@ public:
     }
 
     // Trim leading and trailing spaces
-    void trim() {
+    String trim() const {
         size_t start = 0;
         while (start < size && data[start] == ' ') ++start;
 
@@ -199,9 +187,8 @@ public:
         }
         trimmed_data[new_len] = '\0';
 
-        delete[] data;
-        data = trimmed_data;
-        size = new_len;
+        // Return a new String object with trimmed data
+        return String(trimmed_data);
     }
 
     // Split string by delimiter
@@ -228,7 +215,7 @@ public:
     // Join a vector of strings with a delimiter
     String join(const Vector<String>& vec, char d, size_t columnCount = 0) {
         if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
-        String delimiter(1, d); 
+        String delimiter(1, d);
         String result = vec[0];  // Copy the first element
         size_t currentColumn = 1;
 
@@ -307,9 +294,19 @@ public:
 
         return isNegative ? -num : num;
     }
+
+    // Helper function to reverse a char array (used in intToString and doubleToString)
+    static void reverse(char* str, size_t length);
+
+    static String toString(int num);
+    static String toString(double num);
+    static String toString(bool val) {
+        return val ? String("true") : String("false");
+    }
 };
 
 // Helper function to reverse a char array (used in intToString and doubleToString)
+/*
 void reverse(char* str, size_t length) {
     size_t start = 0;
     size_t end = length - 1;
@@ -320,10 +317,23 @@ void reverse(char* str, size_t length) {
         ++start;
         --end;
     }
-}
+}*/
+
+void String::reverse(char* str, size_t length) {
+        size_t start = 0;
+        size_t end = length - 1;
+        while (start < end) {
+            char temp = str[start];
+            str[start] = str[end];
+            str[end] = temp;
+            ++start;
+            --end;
+        }
+    }
 
 // Convert integer to String
-String toString(int num) {
+
+String String::toString(int num) {
     bool isNegative = false;
     if (num < 0) {
         isNegative = true;
@@ -343,13 +353,14 @@ String toString(int num) {
     }
 
     buffer[i] = '\0';
-    reverse(buffer, i);
+    String::reverse(buffer, i);
 
     return String(buffer);
 }
 
 // Convert double to String (simple version)
-String toString(double num) {
+
+String String::toString(double num) {
     bool isNegative = false;
     if (num < 0) {
         isNegative = true;
@@ -375,7 +386,7 @@ String toString(double num) {
     }
 
     // Reverse the integer part to get correct order
-    reverse(buffer, i);
+    String::reverse(buffer, i);
 
     // Add decimal point
     buffer[i++] = '.';
