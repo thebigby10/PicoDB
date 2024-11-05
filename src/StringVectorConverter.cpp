@@ -7,7 +7,6 @@
 #include "Table.cpp"
 #include <fstream>
 
-
 using namespace std;
 class StringVectorConverter{
 public:
@@ -41,7 +40,7 @@ public:
         	return table_cell_data;
 	}
 
-        //used in saveTabl
+    //used in saveTabl
 	String vectorToString(Vector<String> vec_data) {
 		String data;
 
@@ -56,6 +55,7 @@ public:
 		data += String("\n");
 		return data;
 	}
+
 	String vector2DToString(Vector<Vector<String>> vec_data, String delimiter) {
 		String data;
 
