@@ -170,3 +170,13 @@ public:
         	}
         return table_meta_data;
 	}
+
+
+	Vector<String> get_table_names() {
+        Vector<String> table_names;
+
+        int start_pos = conf_data.findSubstring(String("[Tables]"));
+        if (start_pos == -1) return table_names; // Return an empty vector if no [Tables] section is found
+
+        // Move the start position to after "[Tables]"
+        start_pos += String("[Tables]").length();
