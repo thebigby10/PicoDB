@@ -44,7 +44,7 @@ public:
 			Table output_table;
 			Table input_table;
 			for(int i=0;i<db.get_tables().get_size();i++){
-				if(db.get_tables()[i].table_name == table_name){
+				if((db.get_tables()[i].getTableName()) == (table_name)){
 					input_table = db.get_tables()[i];
 					break;
 				}
