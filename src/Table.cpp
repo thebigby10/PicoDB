@@ -33,3 +33,14 @@ private:
 		// value or column name
 	*/
 
+    public:
+
+    // Default constructor
+    Table() : table_name(""), headers(), data_types(), constraints(), table_data() {}
+
+	// new constructor - is used in createTable in picoDB class
+	Table(String table_name, Vector<Vector<String>> col_data){
+		this->table_name = table_name;
+		extract_col_data(col_data);
+
+	}
