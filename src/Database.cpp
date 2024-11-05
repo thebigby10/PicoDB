@@ -155,4 +155,20 @@
 			//for constraints
 			table_meta_data += converter.vectorToString(tables[i].getConstraints());
 		}
+		ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
+		conf_manager.appendConfig(table_meta_data, true);
+	}
 
+	bool saveDB(){
+		saveTableMetaData();
+		saveTableData();
+		//saveDBMetaData();
+	}
+
+	//getter for tables
+	Vector<Table> get_tables() {
+		return tables;
+	}
+
+};
+#endif
