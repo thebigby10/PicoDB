@@ -32,7 +32,7 @@ public:
 		conf_data+=String("[Permission]\n");
 		conf_data+=String("\n");
 		conf_data+=String("[Encryption]\n");
-        f(encryption) conf_data+=String("enabled = true\n");
+        if(encryption) conf_data+=String("enabled = true\n");
 		else conf_data+=String("enabled = false\n");
 		conf_data+=String("\n");
 		conf_data+=String("[Tables]\n");

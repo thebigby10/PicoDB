@@ -33,8 +33,7 @@ private:
 		// value or column name
 	*/
 
-    public:
-
+public:
     // Default constructor
     Table() : table_name(""), headers(), data_types(), constraints(), table_data() {}
 
@@ -43,7 +42,6 @@ private:
 		this->table_name = table_name;
 		extract_col_data(col_data);
 
-	}
 
 	//constructor overloader - is used in loadCurrentTables in Database class
 	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
