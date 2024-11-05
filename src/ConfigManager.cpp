@@ -80,3 +80,55 @@ public:
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the admin username
 
     }
+
+    /*
+	Map<String, Vector<String>>  get_users(){
+		//returns a map in format Map<String, Vector<String> > ;
+		//username, tables
+        Map<String, Vector<String>> user_tables;
+
+        // Find the start position of the [Permission] section in conf_data
+        int start_pos = conf_data.findSubstring(String("[Permission]"));
+        if (start_pos == -1) return users; // Return an empty vector if no [Permission] section is found
+
+        // Move the start position to after "[Users]"
+        start_pos += String("[Permission]").length();
+
+        // Read each line until the next section or end of conf_data
+        while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+            int end_pos = start_pos;
+            while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                ++end_pos;
+            }
+
+            // Extract a single line
+            String line = conf_data.substr(start_pos, end_pos - start_pos);
+
+            // Find the delimiter '='
+            int equal_pos = line.find('=');
+            if (equal_pos != -1) {
+                // Extract username
+                String username = line.substr(0, equal_pos).trim();
+
+                // Extract the tables string and split by comma
+                String tables_str = line.substr(equal_pos + 1, end_pos - (equal_pos+1)).trim();
+                Vector<String> tables;
+
+                // Split tables_str by ',' to get each table name
+                size_t pos = 0;
+                while ((pos = tables_str.find(',')) != -1) {
+                    tables.push_back(tables_str.substr(0, pos).trim());
+                    tables_str = tables_str.substr(pos + 1, tables_str.strLength()-(pos+1));
+                }
+                tables.push_back(tables_str.trim()); // Last table after the last comma
+
+                // Add the username and tables to the map
+                user_tables[username] = tables;
+            }
+
+            // Move to the next line
+            start_pos = end_pos + 1;
+        }
+
+        return user_tables;
+	}*/
