@@ -51,3 +51,8 @@ public:
 		FileHandler conf_file(conf_path);
 		conf_file.writeToFile(new_config_data, append); //append the updated config data to the file
 	}
+
+	String get_t_delimiter() {
+        int start_pos = conf_data.findSubstring(String("table_delimiter = "));
+        if (start_pos == -1) return String(""); // Not found
+        start_pos += String("table_delimiter = ").length();
