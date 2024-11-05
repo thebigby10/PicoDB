@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
+#include <iostream>
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/FileHandler.cpp"
 #include "../src/Database.cpp"
-#include "../src/Table.cpp"
+#include "../src/Table.cpp" 
 
 void printTable(const Table& table);
 
@@ -23,10 +24,11 @@ int main() {
     //rapidb.insert("person_info", {{"1", "Alice"}, {"2", "Bob"}, {"3", "Charlie"}});
 
     // Select from the "person_info" table
-    Table selectedTable = rapidb.select("person_info", {});
+    //Table selectedTable = 
+	rapidb.select("person_info", {});
 
     // Print the selected table
-    printTable(selectedTable);
+    //
 
     // Save the database
     rapidb.saveDB();
