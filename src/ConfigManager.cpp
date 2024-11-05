@@ -70,3 +70,13 @@ public:
         int start_pos = conf_data.findSubstring(String("username = ")); // Find the start of the admin username
         if (start_pos == -1) return String(""); // Not found
         start_pos += String("username = ").length(); // move to the start of the username
+
+        // Find the end of the admin username (next newline)
+        int end_pos = start_pos; // Start from the beginning of the username
+        while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') { // Find the next newline character
+            ++end_pos; // Move to the next character
+        }
+
+        return conf_data.substr(start_pos, end_pos - start_pos); // Extract the admin username
+
+    }
