@@ -64,3 +64,30 @@ private:
 		this->table_data = cell_data;
 	}
 
+    // Getter for table_name
+	String getTableName() const {
+    		return table_name;
+	}
+
+	// Getter for headers
+	Vector<String> getHeaders() const {
+		return headers;
+	}
+
+	// Getter for data_types
+	Vector<String> getDataTypes() const {
+		return data_types;
+	}
+
+	// Getter for constraints
+	Vector<String> getConstraints() const {
+		return constraints;
+	}
+
+	// Getter for table_data
+	Vector<Vector<Cell>> getTableData() const {
+		return table_data;
+	}
+
+};
+#endif
