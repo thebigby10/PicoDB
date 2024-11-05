@@ -148,8 +148,25 @@ public:
         	start_pos += String("[Tables]").length();
 
         	// Read each line until the next section or end of conf_data
-		while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
-			int end_pos = start_pos;
-			while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
-                ++end_pos;
+            while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+                int end_pos = start_pos;
+                while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                    ++end_pos;
 			}
+
+            // Extract a single line
+			String line = conf_data.substr(start_pos, end_pos - start_pos);
+			Vector<String> line_data;
+			int pos = 0;
+            while ((pos = line.find(',')) != -1) {
+                line_data.push_back(line.substr(0, pos).trim());
+                line = line.substr(pos + 1, line.length()-(pos+1));
+            }
+            line_data.push_back(line.trim()); // Last table after the last comma
+			table_meta_data.push_back(line_data);
+
+			// Move to the next line
+			start_pos = end_pos + 1;
+        	}
+        return table_meta_data;
+	}
