@@ -204,3 +204,13 @@ public:
         }
         return table_names;
 	}
+
+	void deleteConfig(){
+		FileHandler conf_file(conf_path);
+		conf_file.removeFile();
+
+	}
+
+};
+
+#endif
