@@ -62,6 +62,10 @@ public:
 		this->table_data = cell_data;
 	}
 
+	void updateSingleRecord (Vector<Cell> cell_data) {
+		this->table_data.push_back(cell_data);
+	}
+
     // Getter for table_name
 	String getTableName() const {
     		return table_name;
