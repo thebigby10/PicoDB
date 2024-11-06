@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
     // Create or use existing database
-    PicoDB rapidb("rapidb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "rapi69", "_key_", ",_,");
+    PicoDB rapidb("studentdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/studentdb/", "thebigby01", "hello111", ",_,");
     
     // Create a table named "person_info"
     rapidb.createTable(String("person_info"), {
