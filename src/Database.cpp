@@ -35,6 +35,7 @@ public:
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
+
 			// Conf manager fetches raw data ✅
 			ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
 
@@ -198,6 +199,153 @@ public:
 		saveTableMetaData();
 		saveTableData();
 		//saveDBMetaData();
+	}
+
+	void insertInto(String table_name, Vector<String> cols, Vector<String> cell_data){
+        int tables_num = tables.get_size();
+        for(int i=0; i<tables_num; i++) {
+            if (table_name == tables[i].getTableName()){
+                Vector<String> data_types = tables[i].getDataTypes();
+                Vector<String> headers = tables[i].getHeaders();
+                int num_of_columns = headers.get_size();
+
+                Vector<Cell> single_line_cell_data;
+                for(int j=0; j<num_of_columns; j++) {
+                    if (headers[j] == cols[j]){
+                        if (data_types[j] == String("INT")) {
+                        // Conversion to int
+                        single_line_cell_data.push_back(Cell(cell_data[j].toInt()));
+                        } else if (data_types[j] == String("DOUBLE")) {
+                            // Conversion to double
+                            single_line_cell_data.push_back(Cell(cell_data[j].toDouble()));
+                        } else if (data_types[j] == String("BOOLEAN")) {
+                            // Conversion to boolean
+                            // single_line_cell_data.push_back(Cell(cell_data[j].toBool()));
+                        } else {
+                            // Default case (e.g., assume it's a string)
+                            single_line_cell_data.push_back(Cell(cell_data[j]));
+                        }
+                    }
+
+                }
+                tables[i].updateSingleRecord(single_line_cell_data);
+            }
+		}
+
+	}
+
+
+	//function for select all
+	void printTable(const Table& table) {
+    	// Print table name
+		std::cout << "Table: " << table.getTableName() << std::endl;
+
+		// Get the column headers
+		Vector<String> headers = table.getHeaders();
+
+		// Determine the maximum width for each column
+		Vector<size_t> colWidths;
+		for (int i = 0; i < headers.get_size(); ++i) {
+			colWidths.push_back(0); // Initialize each element to 0
+		}
+
+		// First, calculate the maximum length of each column (header + data)
+		for (int i = 0; i < headers.get_size(); ++i) {
+			colWidths[i] = headers[i].length();  // Start by considering the header size
+		}
+
+		// Also check the row data for each column to find the longest string in that column
+		Vector<Vector<Cell>> rows = table.getTableData();
+		for (int i = 0; i < rows.get_size(); ++i) {
+			for (int j = 0; j < rows[i].get_size(); ++j) {
+				//size_t cellLength = rows[i][j].getString().length();
+				size_t cellLength ;
+				String c_data;
+				DataType dataType = rows[i][j].getDataType();
+
+                    if (dataType == DataType::INTEGER) {
+                        // conversion from int to string
+                        c_data = String::toString(rows[i][j].getInt());
+                    } else if (dataType == DataType::DOUBLE) {
+                        // conversion from double to string
+                        c_data = String::toString(rows[i][j].getDouble());
+                    } else if (dataType == DataType::BOOLEAN) {
+                        // conversion from boolean to string
+                        c_data = String::toString(rows[i][j].getBoolean());
+                    } else {
+                        // code to execute if none of the cases match
+                        c_data = rows[i][j].getString();
+                    }
+
+                    cellLength = c_data.length();
+				if (cellLength > colWidths[j]) {
+					colWidths[j] = cellLength;  // Update column width if the cell's length is greater
+				}
+			}
+		}
+
+		// Print column headers with dynamic widths
+		for (int i = 0; i < headers.get_size(); ++i) {
+			std::cout << "| " << headers[i];
+			// Pad the header to match the max width
+			for (size_t j = headers[i].length(); j < colWidths[i]; ++j) {
+				std::cout << " ";
+			}
+			std::cout << " ";  // Space after each column
+		}
+		std::cout << "|" << std::endl;
+
+		// Print a line under the headers to form a box
+		for (int i = 0; i < headers.get_size(); ++i) {
+			std::cout << "+";
+			for (size_t j = 0; j < colWidths[i] + 2; ++j) {
+				std::cout << "-";  // Create a separator line with appropriate width
+			}
+		}
+		std::cout << "+" << std::endl;
+
+		// Print rows with dynamic column widths
+		if (rows.get_size() == 0) {
+			std::cout << "No records found." << std::endl;
+		} else {
+			for (int i = 0; i < rows.get_size(); ++i) {
+				for (int j = 0; j < rows[i].get_size(); ++j) {
+                    String cell_data;
+                    DataType dataType = rows[i][j].getDataType();
+
+                    if (dataType == DataType::INTEGER) {
+                        // conversion from int to string
+                        cell_data = String::toString(rows[i][j].getInt());
+                    } else if (dataType == DataType::DOUBLE) {
+                        // conversion from double to string
+                        cell_data = String::toString(rows[i][j].getDouble());
+                    } else if (dataType == DataType::BOOLEAN) {
+                        // conversion from boolean to string
+                        cell_data = String::toString(rows[i][j].getBoolean());
+                    } else {
+                        // code to execute if none of the cases match
+                        cell_data = rows[i][j].getString();
+                    }
+
+					std::cout << "| " << cell_data;
+					// Pad each column to the dynamic width
+					for (size_t k = cell_data.length(); k < colWidths[j]; ++k) {
+						std::cout << " ";
+					}
+					std::cout << " ";  // Space after each column
+				}
+				std::cout << "|" << std::endl;
+			}
+		}
+
+		// Print bottom line to close the box
+		for (int i = 0; i < headers.get_size(); ++i) {
+			std::cout << "+";
+			for (size_t j = 0; j < colWidths[i] + 2; ++j) {
+				std::cout << "-";  // Closing line for each column
+			}
+		}
+		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
 	//getter for tables

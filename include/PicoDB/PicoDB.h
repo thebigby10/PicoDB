@@ -39,7 +39,7 @@ public:
 		return true;
 	}
 
-	Table select(String table_name, Vector<String> cols){
+	void select(String table_name, Vector<String> cols){
 		if(cols.get_size()==0){
 			Table output_table;
 			Table input_table;
@@ -49,16 +49,16 @@ public:
 					break;
 				}
 			}
-			return input_table;
+			db.printTable(input_table);
 		}
 	}
-	
 
-	/*
-	bool insertInto(string table_name, vector<string> col_data, vector<string>col_values ){
 
+	bool insertInto(String table_name, Vector<String> col_data, Vector<String>col_values ){
+        this->db.insertInto(table_name, col_data, col_values);
 	}
 
+    /*
 	vector<vector< string > > selectData(string table_name, vector<string> cols){
 
 	}
