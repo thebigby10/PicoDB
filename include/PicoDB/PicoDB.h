@@ -11,7 +11,7 @@
 // #include "../../src/Date.cpp"
 
 #include "../../src/String.cpp"
-#include "../../src/Map.cpp"
+//#include "../../src/Map.cpp"
 
 class PicoDB{
 private:
@@ -29,19 +29,12 @@ public:
 	}
 
 	bool createTable(String table_name,Vector<Vector<String>> col_data){
-		cout<<"CREATE TABLE"<<endl;
-        (this->db).get_tables().push_back(Table(table_name, col_data));
-        cout<<(this->db).get_tables().get_size()<<endl;
-        //DEBUG
-        // cout<<this->db.get_tables().get_size()<<endl;
-        //DEBUG
-        //todo if exists
+		this->db.get_tables().push_back(Table(table_name, col_data));
 		return true;
 	}
 
 	void select(String table_name, Vector<String> cols){
 		if(cols.get_size()==0){
-			Table output_table;
 			Table input_table;
 			for(int i=0;i<db.get_tables().get_size();i++){
 				if((db.get_tables()[i].getTableName()) == (table_name)){
@@ -54,8 +47,8 @@ public:
 	}
 
 
-	bool insertInto(String table_name, Vector<String> col_data, Vector<String>col_values ){
-        this->db.insertInto(table_name, col_data, col_values);
+	bool insertInto(String table_name, Vector<String> col_data, Vector<String> col_values){
+        return this->db.insertInto(table_name, col_data, col_values);
 	}
 
     /*
@@ -69,6 +62,7 @@ public:
 
 	bool saveDB(){
 		this->db.saveDB();
+		return true;
 	}
 	/*
 	bool dropTable(){
