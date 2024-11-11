@@ -33,11 +33,16 @@ int main() {
 
     // Select from the "person_info" table
     //Table selectedTable = 
-	//rapidb.select("person_info", {});
+	rapidb.select("person_info", {});
 
     // Print the selected table
     //
-    rapidb.select("person_info", {"name"});
+    try {
+    rapidb.select("person_info", {"id"});
+} catch (const std::out_of_range& e) {
+    cerr << "Error: " << e.what() << endl;
+}
+
     // Save the database
     rapidb.saveDB();
 
