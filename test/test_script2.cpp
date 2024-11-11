@@ -29,13 +29,15 @@ int main() {
     rapidb.insertInto("person_info", {"id", "name"}, {"5", "Eve"});
 
 
+
+
     // Select from the "person_info" table
     //Table selectedTable = 
-	rapidb.select("person_info", {});
+	//rapidb.select("person_info", {});
 
     // Print the selected table
     //
-
+    rapidb.select("person_info", {"name"});
     // Save the database
     rapidb.saveDB();
 
