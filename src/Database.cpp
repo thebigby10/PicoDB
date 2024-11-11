@@ -46,9 +46,8 @@ public:
 			// TODO : must check if the user exists
 
 			//convert the tables into vector ✅
-			// loadCurrentTables(db_name, db_path);
-//->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-			cout<<"Table exists."<<endl;
+			//loadCurrentTables(db_name, db_path);
+
 		}
 		else{
 			//create config file
@@ -118,7 +117,7 @@ public:
 
 
 	void saveTableData(){
-		cout<<"<<SAVETABLE_1>>"<<endl;
+
 	    int table_size = tables.get_size();
         for (int i=0; i<table_size; i++) {
             String table_name = tables[i].getTableName();
@@ -149,24 +148,17 @@ public:
                     table_data.push_back(row_data);
                 }
             }
-            // print table data
-            for (int j=0; j<num_rows; j++) {
-                for (int k=0; k<num_columns; k++) {
-                	cout<<table_data[j][k]<<endl;
-                }
-            }
-            // print table data
 
-            cout<<"<<SAVETABLE_2>>"<<endl;
+
             StringVectorConverter converter;
             Encryptor encryptor(String(key).toInt());
-            cout<<"<<SAVETABLE_2_1>>"<<endl;
+
             String file_data = converter.vector2DToString(table_data, delimiter);  // converts vector data to string for writing
             file_data = encryptor.encryptData(file_data);   // encrypts the data
-            cout<<"<<SAVETABLE_3>>"<<endl;
+
 
             FileHandler table_file(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
-            cout<<db_path+String("/")+table_name+String(".csv")<<endl;
+
             table_file.createFile();
             table_file.writeToFile(file_data);
         }
@@ -198,10 +190,11 @@ public:
 	bool saveDB(){
 		saveTableMetaData();
 		saveTableData();
+		return true;
 		//saveDBMetaData();
 	}
 
-	void insertInto(String table_name, Vector<String> cols, Vector<String> cell_data){
+	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data){
         int tables_num = tables.get_size();
         for(int i=0; i<tables_num; i++) {
             if (table_name == tables[i].getTableName()){
@@ -229,13 +222,13 @@ public:
 
                 }
                 tables[i].updateSingleRecord(single_line_cell_data);
+				return true;
             }
 		}
-
 	}
 
 
-	//function for select all
+	//function for printing a table
 	void printTable(const Table& table) {
     	// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;

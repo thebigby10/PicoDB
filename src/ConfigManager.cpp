@@ -1,4 +1,4 @@
-    #ifndef MANAGECONFIG_H // Include guard start
+#ifndef MANAGECONFIG_H // Include guard start
 #define MANAGECONFIG_H
 #include "String.cpp"
 //#include "Map.cpp"
@@ -18,8 +18,7 @@ public:
 		if(conf_file.fileExists()){
 			this->conf_data = conf_file.readFromFile();
 		}
-// ->>>>>>>>>>>>>>>>>>>>>>>
-        cout<<"config manager>>>"<<endl;
+
 	}
 	void createConfig(String database_name, String table_delimiter, String admin_username, bool encryption = true ){
 		String conf_data;
@@ -136,7 +135,7 @@ public:
 	}*/
 
 	bool is_encrypted(){
-
+        return true;
 	}
 
 	Vector<Vector<String>> get_table_meta_data(){
