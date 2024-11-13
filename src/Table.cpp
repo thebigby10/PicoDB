@@ -48,14 +48,31 @@ public:
 	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
 	}
 
-	void extract_col_data(Vector<Vector<String>> temp_col_data) {
+	// void extract_col_data(Vector<Vector<String>> temp_col_data) {
+    //     int num_headers = temp_col_data.get_size();
+	// 	for (int i=0; i<num_headers; i++) {
+    //         this->headers.push_back(temp_col_data[i][0]);
+    //         this->data_types.push_back(temp_col_data[i][1]);
+    //         this->constraints.push_back(temp_col_data[i][2]);
+    //     }
+	// }
+
+	//update table with new data
+    void extract_col_data(Vector<Vector<String>> temp_col_data) {
         int num_headers = temp_col_data.get_size();
-		for (int i=0; i<num_headers; i++) {
-            this->headers.push_back(temp_col_data[i][0]);
-            this->data_types.push_back(temp_col_data[i][1]);
-            this->constraints.push_back(temp_col_data[i][2]);
+        for (int i = 0; i < num_headers; ++i) {
+            if (temp_col_data[i].get_size() > 0) {
+                headers.push_back(temp_col_data[i][0]);
+            }
+            if (temp_col_data[i].get_size() > 1) {
+                data_types.push_back(temp_col_data[i][1]);
+            }
+            if (temp_col_data[i].get_size() > 2) {
+                constraints.push_back(temp_col_data[i][2]);
+            }
         }
-	}
+    }
+
 
 	// to update table cells
 	void updateRecords (Vector<Vector<Cell>> cell_data) {
@@ -89,6 +106,11 @@ public:
 	// Getter for table_data
 	Vector<Vector<Cell>> getTableData() const {
 		return table_data;
+	}
+
+	// set header
+	void setHeaders(Vector<String> headers) {
+		this->headers = headers;
 	}
 
 };

@@ -28,7 +28,7 @@ int main() {
 
     // Select from the "person_info" table
     try {
-        rapidb.select("person_info", {"name"});
+        rapidb.select("person_info", {"name", "id"});
     } catch (const std::out_of_range& e) {
         cerr << "Error: " << e.what() << endl;
     }
