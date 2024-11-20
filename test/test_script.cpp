@@ -4,15 +4,23 @@
 #include "../src/Database.cpp"
 int main(){
 	// create db or use db
-	PicoDB bankdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
+	PicoDB testdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
 
 	// create table
-	studentdb.createTable(String("students"), {
-		{"student_id", "INT", "PRIMARY_KEY", ""},
-		{"student_name", "STRING", "NOT_NULL", ""},
-		{"cgpa", "INT","DEFAULT 0", },
+	testdb.createTable(String("students"), {
+		{"student_id", "INT", "PRIMARY_KEY"},
+		{"student_name", "STRING", "NOT_NULL"},
+		{"cgpa", "INT","DEFAULT"},
 	});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", "4"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Utsho", "0"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
 
+    testdb.select("students", {});
+	testdb.saveDB();
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042153", "Uthuth", 4});
@@ -44,10 +52,10 @@ int main(){
 
 // }
 
- 	string db_name = "test_db";
-    string db_path = "."; // Current directory
+ 	// string db_name = "test_db";
+    // string db_path = "."; // Current directory
 
-    Database db(db_name, db_path);
+    // Database db(db_name, db_path);
 
     return 0;
 
