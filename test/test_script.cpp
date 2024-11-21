@@ -1,17 +1,30 @@
 //#include<bits/stdc++.h> //doesnt work on mac hehe
-
+#include<iostream>
 #include "../include/PicoDB/PicoDB.h"
 #include "../src/Database.cpp"
-int main(){
-	// create db or use db
-	PicoDB bankdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
+#include "../src/String.cpp"
+#include "../src/Encryptor.cpp"
 
-	// create table
-	studentdb.createTable(String("students"), {
-		{"student_id", "INT", "PRIMARY_KEY", ""},
-		{"student_name", "STRING", "NOT_NULL", ""},
-		{"cgpa", "INT","DEFAULT 0", },
+using namespace std;
+
+int main(){
+	PicoDB testDB("testdb", "D:/SPL Projects/PicoDB/test/testDB", "zawad", "5", ",");
+
+	testDB.createTable(String("students"), {
+		{"student_id", "INT", "PRIMARY_KEY"},
+		{"student_name", "STRING", "NOT_NULL"},
+		{"cgpa", "INT","DEFAULT"},
 	});
+
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", "4"});
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Utsho", "0"});
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "3"});
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
+	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
+
+    testDB.select("students", {});
+	testDB.saveDB();
 
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
@@ -44,10 +57,10 @@ int main(){
 
 // }
 
- 	string db_name = "test_db";
-    string db_path = "."; // Current directory
+ 	//string db_name = "test_db";
+    //string db_path = "."; // Current directory
 
-    Database db(db_name, db_path);
+    //Database db(db_name, db_path);
 
     return 0;
 
