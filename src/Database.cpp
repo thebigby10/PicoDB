@@ -57,12 +57,10 @@ public:
 	};
 	// Database e(string db_name, bool encryption);
 
-
 	void loadCurrentTables(String database_name, String file_path){
 		ConfigManager conf_file(file_path+String("/")+database_name+String(".config"));
 		StringVectorConverter converter;
 		Encryptor encryptor(String(key).toInt());
-
 
 		// fetch the config file data and add it to table_name, headers, types and constraints
 		Vector<Vector<String>> temp_data = conf_file.get_table_meta_data();
@@ -70,7 +68,6 @@ public:
 		for(int i=0; i<temp_data_size; i+=4) {
 			this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
 		}
-
 
 		// decrypt the csv file data related to the table and copy the info
 		int table_size = tables.get_size();
@@ -91,77 +88,73 @@ public:
 			int num_of_types = data_types.get_size();
 			int num_of_rows = table_data_from_file.get_size();
 			for (int j=0; j<num_of_rows; j++) {
-                Vector<Cell> single_line_cell_data;
-                for (int k=0; k<num_of_types; k++) {
+				Vector<Cell> single_line_cell_data;
+				for (int k=0; k<num_of_types; k++) {
 					if (data_types[k] == String("INT")) {
-                        // Conversion to int
-                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toInt()));
-                    } else if (data_types[k] == String("DOUBLE")) {
-                        // Conversion to double
-                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toDouble()));
-                    } else if (data_types[k] == String("BOOLEAN")) {
-                        // Conversion to boolean
-                        // single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toBool()));
-                    } else {
-                        // Default case (e.g., assume it's a string)
-                        single_line_cell_data.push_back(Cell(table_data_from_file[j][k]));
-                    }
-                }
-                cell_data.push_back(single_line_cell_data);
-            }
-            tables[i].updateRecords(cell_data);
-        }
-    }
+						// Conversion to int
+						single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toInt()));
+					} else if (data_types[k] == String("DOUBLE")) {
+						// Conversion to double
+						single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toDouble()));
+					} else if (data_types[k] == String("BOOLEAN")) {
+						// Conversion to boolean
+						// single_line_cell_data.push_back(Cell(table_data_from_file[j][k].toBool()));
+					} else {
+						// Default case (e.g., assume it's a string)
+						single_line_cell_data.push_back(Cell(table_data_from_file[j][k]));
+					}
+				}
+				cell_data.push_back(single_line_cell_data);
+			}
+			tables[i].updateRecords(cell_data);
+		}
+	}
 
 	//void saveDBMetaData() {}
 
-
 	void saveTableData(){
+		int table_size = tables.get_size();
+		for (int i=0; i<table_size; i++) {
+			String table_name = tables[i].getTableName();
+			int num_columns = tables[i].getHeaders().get_size();
 
-	    int table_size = tables.get_size();
-        for (int i=0; i<table_size; i++) {
-            String table_name = tables[i].getTableName();
-            int num_columns = tables[i].getHeaders().get_size();
+			Vector<Vector<Cell>> cells = tables[i].getTableData();
+			Vector<Vector<String>> table_data;
 
-            Vector<Vector<Cell>> cells = tables[i].getTableData();
-            Vector<Vector<String>> table_data;
+			int num_rows = cells.get_size();
+			for (int j=0; j<num_rows; j++) {
+				Vector<String> row_data;
+				for (int k=0; k<num_columns; k++) {
+					DataType dataType = cells[j][k].getDataType();
 
-            int num_rows = cells.get_size();
-            for (int j=0; j<num_rows; j++) {
-            	Vector<String> row_data;
-                for (int k=0; k<num_columns; k++) {
-                    DataType dataType = cells[j][k].getDataType();
+					if (dataType == DataType::INTEGER) {
+						// conversion from int to string
+						row_data.push_back(String::toString(cells[j][k].getInt()));
+					} else if (dataType == DataType::DOUBLE) {
+						// conversion from double to string
+						row_data.push_back(String::toString(cells[j][k].getDouble()));
+					} else if (dataType == DataType::BOOLEAN) {
+						// conversion from boolean to string
+						row_data.push_back(String::toString(cells[j][k].getBoolean()));
+					} else {
+						// code to execute if none of the cases match
+						row_data.push_back(cells[j][k].getString());
+					}
+					table_data.push_back(row_data);
+				}
+			}
 
-                    if (dataType == DataType::INTEGER) {
-                        // conversion from int to string
-                        row_data.push_back(String::toString(cells[j][k].getInt()));
-                    } else if (dataType == DataType::DOUBLE) {
-                        // conversion from double to string
-                        row_data.push_back(String::toString(cells[j][k].getDouble()));
-                    } else if (dataType == DataType::BOOLEAN) {
-                        // conversion from boolean to string
-                        row_data.push_back(String::toString(cells[j][k].getBoolean()));
-                    } else {
-                        // code to execute if none of the cases match
-                        row_data.push_back(cells[j][k].getString());
-                    }
-                    table_data.push_back(row_data);
-                }
-            }
+			StringVectorConverter converter;
+			Encryptor encryptor(String(key).toInt());
 
+			String file_data = converter.vector2DToString(table_data, delimiter);  // converts vector data to string for writing
+			file_data = encryptor.encryptData(file_data);   // encrypts the data
 
-            StringVectorConverter converter;
-            Encryptor encryptor(String(key).toInt());
+			FileHandler table_file(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
 
-            String file_data = converter.vector2DToString(table_data, delimiter);  // converts vector data to string for writing
-            file_data = encryptor.encryptData(file_data);   // encrypts the data
-
-
-            FileHandler table_file(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
-
-            table_file.createFile();
-            table_file.writeToFile(file_data);
-        }
+			table_file.createFile();
+			table_file.writeToFile(file_data);
+		}
 	}
 
 	void saveTableMetaData(){
@@ -194,43 +187,70 @@ public:
 		//saveDBMetaData();
 	}
 
-	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data){
-        int tables_num = tables.get_size();
-        for(int i=0; i<tables_num; i++) {
-            if (table_name == tables[i].getTableName()){
-                Vector<String> data_types = tables[i].getDataTypes();
-                Vector<String> headers = tables[i].getHeaders();
-                int num_of_columns = headers.get_size();
+	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
+		int tables_num = tables.get_size();
 
-                Vector<Cell> single_line_cell_data;
-                for(int j=0; j<num_of_columns; j++) {
-                    if (headers[j] == cols[j]){
-                        if (data_types[j] == String("INT")) {
-                        // Conversion to int
-                        single_line_cell_data.push_back(Cell(cell_data[j].toInt()));
-                        } else if (data_types[j] == String("DOUBLE")) {
-                            // Conversion to double
-                            single_line_cell_data.push_back(Cell(cell_data[j].toDouble()));
-                        } else if (data_types[j] == String("BOOLEAN")) {
-                            // Conversion to boolean
-                            // single_line_cell_data.push_back(Cell(cell_data[j].toBool()));
-                        } else {
-                            // Default case (e.g., assume it's a string)
-                            single_line_cell_data.push_back(Cell(cell_data[j]));
-                        }
-                    }
+		for (int i = 0; i < tables_num; i++) {
+			if (table_name == tables[i].getTableName()) {
+				Vector<String> data_types = tables[i].getDataTypes();
+				Vector<String> headers = tables[i].getHeaders();
+				int num_of_columns = headers.get_size();
 
-                }
-                tables[i].updateSingleRecord(single_line_cell_data);
-				return true;
-            }
+				// Check if cols and cell_data match the table's headers
+				if (cols.get_size() != cell_data.get_size() || cols.get_size() > num_of_columns) {
+					cout << "Error: Column and data size mismatch." << endl;
+					cout << "Expected columns: " << num_of_columns << ", but got: " << cols.get_size() << endl;
+					return false;
+				}
+
+				Vector<Cell> single_line_cell_data;
+
+				for (int j = 0; j < num_of_columns; j++) {
+					bool column_matched = false;
+
+					// Check if headers[j] exists in cols
+					for (int k = 0; k < cols.get_size(); k++) {
+						if (headers[j] == cols[k]) {
+							column_matched = true;
+							
+							// Debug output
+							cout << "Matching column " << headers[j] << " with data " << cell_data[k] << endl;
+
+							// Add cell data according to the data type
+							if (data_types[j] == String("INT")) {
+								single_line_cell_data.push_back(Cell(cell_data[k].toInt()));
+							} else if (data_types[j] == String("DOUBLE")) {
+								single_line_cell_data.push_back(Cell(cell_data[k].toDouble()));
+							} else if (data_types[j] == String("BOOLEAN")) {
+								//single_line_cell_data.push_back(Cell(cell_data[k].toBool()));
+							} else {
+								single_line_cell_data.push_back(Cell(cell_data[k]));
+							}
+							break;
+						}
+					}
+
+					// If column not found in cols, add a default value or handle as needed
+					if (!column_matched) {
+						cout << "Warning: Column " << headers[j] << " not found in input cols. Adding default value." << endl;
+						single_line_cell_data.push_back(Cell());  // Assuming default constructor in Cell
+					}
+				}
+
+				// Update the table with the new row data
+				tables[i].updateSingleRecord(single_line_cell_data);
+				return true;  // Insertion successful
+			}
 		}
-	}
 
+		// Table not found
+		cout << "Error: Table " << table_name << " not found." << endl;
+		return false;
+	}
 
 	//function for printing a table
 	void printTable(const Table& table) {
-    	// Print table name
+		// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;
 
 		// Get the column headers
@@ -256,26 +276,35 @@ public:
 				String c_data;
 				DataType dataType = rows[i][j].getDataType();
 
-                    if (dataType == DataType::INTEGER) {
-                        // conversion from int to string
-                        c_data = String::toString(rows[i][j].getInt());
-                    } else if (dataType == DataType::DOUBLE) {
-                        // conversion from double to string
-                        c_data = String::toString(rows[i][j].getDouble());
-                    } else if (dataType == DataType::BOOLEAN) {
-                        // conversion from boolean to string
-                        c_data = String::toString(rows[i][j].getBoolean());
-                    } else {
-                        // code to execute if none of the cases match
-                        c_data = rows[i][j].getString();
-                    }
+				if (dataType == DataType::INTEGER) {
+					// conversion from int to string
+					c_data = String::toString(rows[i][j].getInt());
+				} else if (dataType == DataType::DOUBLE) {
+					// conversion from double to string
+					c_data = String::toString(rows[i][j].getDouble());
+				} else if (dataType == DataType::BOOLEAN) {
+					// conversion from boolean to string
+					c_data = String::toString(rows[i][j].getBoolean());
+				} else {
+					// code to execute if none of the cases match
+					c_data = rows[i][j].getString();
+				}
 
-                    cellLength = c_data.length();
+				cellLength = c_data.length();
 				if (cellLength > colWidths[j]) {
 					colWidths[j] = cellLength;  // Update column width if the cell's length is greater
 				}
 			}
 		}
+		// --- Added roof line here ---
+		for (int i = 0; i < headers.get_size(); ++i) {
+			std::cout << "+";
+			for (size_t j = 0; j < colWidths[i] + 2; ++j) {
+				std::cout << "-";  // Create a separator line with appropriate width
+			}
+		}
+		std::cout << "+" << std::endl;  // End line for the roof
+		// --- End of roof line ---
 
 		// Print column headers with dynamic widths
 		for (int i = 0; i < headers.get_size(); ++i) {
@@ -303,22 +332,22 @@ public:
 		} else {
 			for (int i = 0; i < rows.get_size(); ++i) {
 				for (int j = 0; j < rows[i].get_size(); ++j) {
-                    String cell_data;
-                    DataType dataType = rows[i][j].getDataType();
+					String cell_data;
+					DataType dataType = rows[i][j].getDataType();
 
-                    if (dataType == DataType::INTEGER) {
-                        // conversion from int to string
-                        cell_data = String::toString(rows[i][j].getInt());
-                    } else if (dataType == DataType::DOUBLE) {
-                        // conversion from double to string
-                        cell_data = String::toString(rows[i][j].getDouble());
-                    } else if (dataType == DataType::BOOLEAN) {
-                        // conversion from boolean to string
-                        cell_data = String::toString(rows[i][j].getBoolean());
-                    } else {
-                        // code to execute if none of the cases match
-                        cell_data = rows[i][j].getString();
-                    }
+					if (dataType == DataType::INTEGER) {
+						// conversion from int to string
+						cell_data = String::toString(rows[i][j].getInt());
+					} else if (dataType == DataType::DOUBLE) {
+						// conversion from double to string
+						cell_data = String::toString(rows[i][j].getDouble());
+					} else if (dataType == DataType::BOOLEAN) {
+						// conversion from boolean to string
+						cell_data = String::toString(rows[i][j].getBoolean());
+					} else {
+						// code to execute if none of the cases match
+						cell_data = rows[i][j].getString();
+					}
 
 					std::cout << "| " << cell_data;
 					// Pad each column to the dynamic width
@@ -345,7 +374,6 @@ public:
 	Vector<Table>& get_tables() {
 		return tables;
 	}
-
 
 };
 #endif

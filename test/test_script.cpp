@@ -15,17 +15,15 @@ int main(){
 		{"student_name", "STRING", "NOT_NULL"},
 		{"cgpa", "INT","DEFAULT"},
 	});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", "4"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Utsho", "0"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
+	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
 
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", "4"});
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Utsho", "0"});
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "3"});
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
-	testDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
-
-    testDB.select("students", {});
-	testDB.saveDB();
-
+    testdb.select("students", {});
+	testdb.saveDB();
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042153", "Uthuth", 4});
