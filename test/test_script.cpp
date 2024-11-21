@@ -19,7 +19,7 @@ int main(){
 	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
 	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
 
-    testdb.select("students", {});
+    testdb.select("students", {"studnet_name", "student_id"});
 	testdb.saveDB();
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
@@ -32,7 +32,7 @@ int main(){
 	// studentdb.selectWhere("student", {}, "name LIKE 'A___'";
 
 	// // update data
-	// studentdb.update("student", {{"cgpa", "3.9"}}, "student_id=220042152");
+	testdb.update("students", {"cgpa", "3.9"}, {"student_id","=","220042152"});
 
 	// // delete data
 	// studentdb.deleteFrom("student", "cgpa<2.0");
