@@ -10,35 +10,45 @@
 using namespace std;
 class StringVectorConverter{
 public:
-	Vector<Vector<String>> stringToVector(String data, String delimiter){
+	Vector<Vector<String>> stringToVector(String data, String delimiter) {
 		Vector<Vector<String>> table_cell_data;
 
 		int start_pos = 0;
 		int str_length = data.length();
-		while (start_pos<str_length) {
+
+		while (start_pos < str_length) {
+			// Find the end of the current line
 			int end_pos = start_pos;
-			while (end_pos != '\n') {
-                	++end_pos;
+			while (end_pos < str_length && data[end_pos] != '\n') {
+				++end_pos;
 			}
 
 			// Extract a single line
 			String line = data.substr(start_pos, end_pos - start_pos);
 			Vector<String> line_data;
 
+			// Split the line by the delimiter
 			size_t pos = 0;
-            while ((pos = line.findSubstring(delimiter)) != -1) {
+			while ((pos = line.findSubstring(delimiter)) != -1) {
 				line_data.push_back(line.substr(0, pos).trim());
-				line = line.substr(pos + 1, line.length()-(pos+1));
-                	}
-                	line_data.push_back(line.trim()); // Last table after the last comma
+				line = line.substr(pos + delimiter.length(), line.length() - (pos + delimiter.length()));
+			}
+
+			// Add the last segment (after the last delimiter)
+			if (line.length() > 0) {
+				line_data.push_back(line.trim());
+			}
+
+			// Add the parsed line to the result
 			table_cell_data.push_back(line_data);
 
 			// Move to the next line
 			start_pos = end_pos + 1;
-
 		}
-        	return table_cell_data;
+
+		return table_cell_data;
 	}
+
 
     //used in saveTabl
 	String vectorToString(Vector<String> vec_data) {
@@ -61,18 +71,24 @@ public:
 		String data("");
 		int num_rows = vec_data.get_size();
 		int num_columns = 0;
-		if(vec_data.get_size()>0)
-			num_columns = vec_data[0].get_size();
+		// if(vec_data.get_size()>0)
+		// 	num_columns = vec_data[0].get_size();
 
 		//extract a single line from a 1D Vector
 		for (int i=0; i<num_rows; i++) {
+			num_columns = vec_data[i].get_size();
             int j=0;
-            for(j; j<num_columns-1; j++) {
+			if (j != num_columns-1) {
+				for(j; j<num_columns-1; j++) {
                 data += vec_data[i][j];
                 data += String(delimiter);
             }
 			data += vec_data[i][j];
-            data += String("\n");
+			if (i!=num_rows-1) data += String("\n");
+			} else {
+				data += vec_data[i][j];
+				if (i!=num_rows-1) data += String("\n");
+			}
 		}
 
 		return data;

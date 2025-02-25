@@ -67,6 +67,90 @@ public:
         return conf_data.substr(start_pos, end_pos - start_pos); // Extract the delimiter value
     }
 
+    // Vector<Vector<String>> get_permissions() {
+    //     Vector<Vector<String>> permissions;
+
+    //     	// Find the start position of the [Tables] section in conf_data
+    //     	int start_pos = conf_data.findSubstring(String("[Permission]"));
+    //     	if (start_pos == -1) return permissions; // Return an empty vector if no [Tables] section is found
+
+    //     	// Move the start position to after "[Users]"
+    //     	start_pos += String("[Permission]").length();
+
+    //     	// Read each line until the next section or end of conf_data
+    //         while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+    //             int end_pos = start_pos;
+    //             while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+    //                 ++end_pos;
+	// 		    }
+
+    //             // Extract a single line
+    //             String line = conf_data.substr(start_pos, end_pos - start_pos);
+    //             Vector<String> line_data;
+    //             int pos = 0;
+    //             while ((pos = line.find(',')) != -1) {
+    //                 line_data.push_back(line.substr(0, pos).trim());
+    //                 line = line.substr(pos + 1, line.length()-(pos+1));
+    //             }
+    //             line_data.push_back(line.trim()); // Last value after the last comma
+    //             permissions.push_back(line_data);
+
+    //             // Move to the next line
+    //             start_pos = end_pos + 1;
+    //     	}
+    //     return permissions;
+    // }
+
+    Vector<Vector<String>> get_permissions() {
+        Vector<Vector<String>> permissions;
+
+        // Find the start position of the [Permission] section in conf_data
+        int start_pos = conf_data.findSubstring(String("[Permission]"));
+        if (start_pos == -1) return permissions; // Return an empty vector if no [Permission] section is found
+
+        // Move the start position to after "[Permission]"
+        start_pos += String("[Permission]").length();
+
+        // Read each line until the next section or end of conf_data
+        while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+            int end_pos = start_pos;
+            
+            // Find the end of the current line
+            while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+                ++end_pos;
+            }
+
+            // Extract a single line
+            String line = conf_data.substr(start_pos, end_pos - start_pos).trim();
+
+            // Skip empty lines
+            if (line.length() > 0) {
+                Vector<String> line_data;
+                int pos = 0;
+
+                // Split the line by commas
+                while ((pos = line.find(',')) != -1) {
+                    line_data.push_back(line.substr(0, pos).trim());
+                    line = line.substr(pos + 1, line.length() - (pos + 1));
+                }
+
+                // Add the last segment (after the last comma)
+                if (line.length() > 0) {
+                    line_data.push_back(line.trim());
+                }
+
+                // Add non-empty parsed line to permissions
+                permissions.push_back(line_data);
+            }
+
+            // Move to the next line
+            start_pos = end_pos + 1;
+        }
+
+        return permissions;
+    }
+
+
     String get_admin() {
         int start_pos = conf_data.findSubstring(String("username = ")); // Find the start of the admin username
         if (start_pos == -1) return String(""); // Not found
@@ -138,39 +222,86 @@ public:
         return true;
 	}
 
-	Vector<Vector<String>> get_table_meta_data(){
-        	Vector<Vector<String>> table_meta_data;
+	// Vector<Vector<String>> get_table_meta_data(){
+    //     	Vector<Vector<String>> table_meta_data;
 
-        	// Find the start position of the [Tables] section in conf_data
-        	int start_pos = conf_data.findSubstring(String("[Tables]"));
-        	if (start_pos == -1) return table_meta_data; // Return an empty vector if no [Tables] section is found
+    //     	// Find the start position of the [Tables] section in conf_data
+    //     	int start_pos = conf_data.findSubstring(String("[Tables]"));
+    //     	if (start_pos == -1) return table_meta_data; // Return an empty vector if no [Tables] section is found
 
-        	// Move the start position to after "[Users]"
-        	start_pos += String("[Tables]").length();
+    //     	// Move the start position to after "[Users]"
+    //     	start_pos += String("[Tables]").length();
 
-        	// Read each line until the next section or end of conf_data
-            while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
-                int end_pos = start_pos;
-                while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
-                    ++end_pos;
-			}
+    //     	// Read each line until the next section or end of conf_data
+    //         while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+    //             int end_pos = start_pos;
+    //             while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+    //                 ++end_pos;
+	// 		}
 
-            // Extract a single line
-			String line = conf_data.substr(start_pos, end_pos - start_pos);
-			Vector<String> line_data;
-			int pos = 0;
+    //         // Extract a single line
+	// 		String line = conf_data.substr(start_pos, end_pos - start_pos);
+	// 		Vector<String> line_data;
+	// 		int pos = 0;
+    //         while ((pos = line.find(',')) != -1) {
+    //             line_data.push_back(line.substr(0, pos).trim());
+    //             line = line.substr(pos + 1, line.length()-(pos+1));
+    //         }
+    //         line_data.push_back(line.trim()); // Last table after the last comma
+	// 		table_meta_data.push_back(line_data);
+
+	// 		// Move to the next line
+	// 		start_pos = end_pos + 1;
+    //     	}
+    //     return table_meta_data;
+	// }
+
+
+    Vector<Vector<String>> get_table_meta_data() {
+    Vector<Vector<String>> table_meta_data;
+
+    // Find the start position of the [Tables] section in conf_data
+    int start_pos = conf_data.findSubstring(String("[Tables]"));
+    if (start_pos == -1) return table_meta_data; // Return an empty vector if no [Tables] section is found
+
+    // Move the start position to after "[Tables]"
+    start_pos += String("[Tables]").length();
+
+    // Read each line until the next section or end of conf_data
+    while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
+        int end_pos = start_pos;
+
+        // Find the end of the current line
+        while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
+            ++end_pos;
+        }
+
+        // Extract a single line
+        String line = conf_data.substr(start_pos, end_pos - start_pos).trim();
+
+        // Skip empty lines
+        if (line.length() > 0) {
+            Vector<String> line_data;
+            int pos = 0;
+
+            // Split the line by commas
             while ((pos = line.find(',')) != -1) {
                 line_data.push_back(line.substr(0, pos).trim());
-                line = line.substr(pos + 1, line.length()-(pos+1));
+                line = line.substr(pos + 1, line.length() - (pos + 1));
             }
-            line_data.push_back(line.trim()); // Last table after the last comma
-			table_meta_data.push_back(line_data);
+            line_data.push_back(line.trim()); // Add the last segment after the last comma
 
-			// Move to the next line
-			start_pos = end_pos + 1;
-        	}
-        return table_meta_data;
-	}
+            // Add the parsed line to the metadata
+            table_meta_data.push_back(line_data);
+        }
+
+        // Move to the next line
+        start_pos = end_pos + 1;
+    }
+
+    return table_meta_data;
+}
+
 
 
 	Vector<String> get_table_names() {

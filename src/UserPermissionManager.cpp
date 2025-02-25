@@ -1,110 +1,138 @@
-// #ifndef USER_PERMISSION_MANAGER_H
-// #define USER_PERMISSION_MANAGER_H
+#ifndef USER_PERMISSION_MANAGER_H
+#define USER_PERMISSION_MANAGER_H
 
-// #include "ConfigManager.cpp"
-// #include "String.cpp"
-// #include "Vector.cpp"
+#include "Database.cpp"
+#include "String.cpp"
+#include "Vector.cpp"
 
-// class UserPermissionManager {
-// private:
-//     ConfigManager configManager;
+class UserPermissionManager {
+private:
+    Database& db;
 
-// public:
-//     // Constructor that initializes the ConfigManager
-//     UserPermissionManager(const String& configFilePath)
-//         : configManager(configFilePath) {}
+public:
+    // Constructor that initializes the ConfigManager
+    UserPermissionManager(Database& db)
+        : db(db) {}
 
-//     // Add a new user to the permissions section
-//     void addUser(const String& username) {
-//         String newUserEntry = username + String(" = \n");
-//         configManager.appendConfig(newUserEntry, true); // Append to the config file
-//     }
+    void addUser(const String& username, const String& tableName) {
+        if (!db.isAdmin()) {
+            std::cout << "You are not the admin. Only the admin can modify access permissions." << std::endl;
+            return;
+        }
 
-//     // Grant a user access to a table
-//     void grantPermission(const String& username, const String& tableName) {
-//         Vector<String> currentPermissions = getPermissions(username);
-//         if (currentPermissions.contains(tableName)) {
-//             std::cout << "User already has access to table " << tableName << std::endl;
-//             return;
-//         }
-//         currentPermissions.push_back(tableName);
-//         updatePermissions(username, currentPermissions);
-//     }
+        if (userExists(username)) {
+            std::cout << "User already exists, use grantPermission to grant the user specific permission." << std::endl;
+            return;
+        } else {
+            // Add new user with permissions
+            Vector<String> user;
+            Vector<String> permission;
+            user.push_back(username);
+            permission.push_back(tableName);
 
-//     // Revoke a user's access to a table
-//     void revokePermission(const String& username, const String& tableName) {
-//         Vector<String> currentPermissions = getPermissions(username);
-//         Vector<String> updatedPermissions;
-//         for (size_t i = 0; i < currentPermissions.get_size(); ++i) {
-//             if (currentPermissions[i] != tableName) {
-//                 updatedPermissions.push_back(currentPermissions[i]);
-//             }
-//         }
-//         updatePermissions(username, updatedPermissions);
-//     }
+            // Work directly on the reference to allUserPermissionsInfo
+            db.get_allUserPermissionsInfo().push_back(user);
+            db.get_allUserPermissionsInfo().push_back(permission);
+        }
+    }
 
-//     // Get the list of tables a user has access to
-//     Vector<String> getPermissions(const String& username) {
-//         String configData = configManager.getConfigData();
-//         int start_pos = configData.findSubstring(username + " = ");
-//         if (start_pos == -1) return Vector<String>(); // User not found
-//         start_pos += (username + " = ").length();
 
-//         int end_pos = start_pos;
-//         while (end_pos < configData.length() && configData[end_pos] != '\n') {
-//             ++end_pos;
-//         }
+    // Grant a user access to a table
+    void grantPermission(const String& username, const String& tableName) {
+        if (!db.isAdmin()) {
+            std::cout<< "You are not the admin. Only the admin can modify access permissions." << std::endl;
+            return;
+        }
 
-//         String permissionsStr = configData.substr(start_pos, end_pos - start_pos).trim();
-//         return splitPermissions(permissionsStr);
-//     }
+        if (userExists(username)) {
+            if (!userPermissionExists(username, tableName)){
+                // update existing user permissions
+                Vector<Vector<String>>& allUserPermissionsInfo = db.get_allUserPermissionsInfo();
 
-// private:
-//     // Split a permission string into a vector of table names
-//     Vector<String> splitPermissions(const String& permissionsStr) {
-//         Vector<String> permissions;
-//         size_t pos = 0;
-//         String remaining = permissionsStr;
+                int size = allUserPermissionsInfo.get_size();
+                for (int i=0; i<size; i+=2) {
+                    if (username == allUserPermissionsInfo[i][0]) { 
+                        // we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
+                        allUserPermissionsInfo[i+1].push_back(tableName);
+                        return;
+                    }
+                }
+            } else {
+                std::cout << "User already has access to table : " << tableName << std::endl; 
+            }
+        } else {
+            std::cout << "User doesn't exist. Please, add new user or search for a different one." << std::endl;
+        }
+    }
 
-//         while ((pos = remaining.find(',')) != -1) {
-//             permissions.push_back(remaining.substr(0, pos).trim());
-//             remaining = remaining.substr(pos + 1);
-//         }
+    // Revoke a user's access to a table
+    void revokePermission(const String& username, const String& tableName) {
+        if (!db.isAdmin()) {
+            std::cout<< "You are not the admin. Only the admin can modify access permissions." << std::endl;
+            return;
+        }
 
-//         if (remaining.length() > 0) {
-//             permissions.push_back(remaining.trim());
-//         }
+        if (userExists(username)) {
+            if (userPermissionExists(username, tableName)){
+                // update existing user permissions by removing the tablename
+                Vector<Vector<String>>& allUserPermissionsInfo = db.get_allUserPermissionsInfo();
 
-//         return permissions;
-//     }
+                int size = allUserPermissionsInfo.get_size();
+                for (int i=0; i<size; i+=2) {
+                    if (username == allUserPermissionsInfo[i][0]) { 
+                        // we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
+                        int sizeOfPermission = allUserPermissionsInfo[i+1].get_size();
+                        for (int j=0; j<sizeOfPermission; j++) {
+                            if (allUserPermissionsInfo[i+1][j] == tableName) {
+                                allUserPermissionsInfo[i+1].erase(j);
+                                return;
+                            }
+                        }
+                    }
+                }
+            } else {
+                std::cout << "User doesn't have access to table : " << tableName << std::endl; 
+            }
+        } else {
+            std::cout << "User doesn't exist. Please, add new user or search for a different one." << std::endl;
+        }
+    }
 
-//     // Update a user's permissions in the config file
-//     void updatePermissions(const String& username, const Vector<String>& permissions) {
-//         String permissionsStr;
-//         for (size_t i = 0; i < permissions.get_size(); ++i) {
-//             permissionsStr += permissions[i];
-//             if (i != permissions.get_size() - 1) {
-//                 permissionsStr += ", ";
-//             }
-//         }
+private:
+    bool userExists(String username) {
+        Vector<Vector<String>> allUserPermissionsInfo;
+        allUserPermissionsInfo = this->db.get_allUserPermissionsInfo();
 
-//         String configData = configManager.getConfigData();
-//         int start_pos = configData.findSubstring(username + " = ");
-//         if (start_pos == -1) {
-//             // User not found, add a new entry
-//             addUser(username);
-//             start_pos = configData.findSubstring(username + " = ");
-//         }
-//         start_pos += (username + " = ").length();
+        int size = allUserPermissionsInfo.get_size();
+        for (int i=0; i<size; i+=2) {
+            if (username == allUserPermissionsInfo[i][0]) { 
+                // we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
+                return true;
+            }
+        }
+        return false;
+    }
 
-//         int end_pos = start_pos;
-//         while (end_pos < configData.length() && configData[end_pos] != '\n') {
-//             ++end_pos;
-//         }
+    bool userPermissionExists(String username, String inputPermission) {
+        Vector<Vector<String>> allUserPermissionsInfo;
+        allUserPermissionsInfo = this->db.get_allUserPermissionsInfo();
 
-//         configData = configData.substr(0, start_pos) + permissionsStr + configData.substr(end_pos);
-//         configManager.updateConfig(configData); // Write the updated config back to the file
-//     }
-// };
+        int size = allUserPermissionsInfo.get_size();
+        for (int i=0; i<size; i+=2) {
+            if (username == allUserPermissionsInfo[i][0]) { 
+                // we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
+                Vector<String> permissions;
+                permissions = allUserPermissionsInfo[i+1];
+                int sizeOfPermissions = permissions.get_size();
+                for(int j=0; j<sizeOfPermissions; j++) {
+                    if (inputPermission == permissions[j]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
 
-// #endif // USER_PERMISSION_MANAGER_H
+#endif // USER_PERMISSION_MANAGER_H

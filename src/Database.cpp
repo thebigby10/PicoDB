@@ -15,22 +15,23 @@ class Database{
 private:
 	String db_name;
 	String db_path;
-	String username;
 	String key;
 	String delimiter;
 	bool encryption = true;
 	String admin;
+	String currentUser; //need to modify database constructor, loadCurrenttables and other things for this as per necessity
 	Vector<Table> tables;
-	// Vector<>permissions;
+	Vector<Vector<String>> allUserPermissionsInfo; //need to add separate implementation in loadCurrentTables; needed for checking existing user persmissions while adding users or granting permissions
+	Vector<String> currentUserPermissions; // need to add separate implementation in loadCurrentTables; needed for working with the current user permissions
 public:
 
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
 		this->db_name = db_name;
 		this->db_path = db_path;
-		this->username = username;
+		this->currentUser = username;
 		this->key = key;
-		this->delimiter = delimiter;
+		this->delimiter = table_delimiter;
 		this->admin = username;
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
@@ -39,14 +40,34 @@ public:
 			// Conf manager fetches raw data ✅
 			ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
 
-			// convert the config file into variables
+			// convert the config file into variables ✅
 			this->delimiter = conf_manager.get_t_delimiter();
 			this->admin = conf_manager.get_admin();
-			//this->db_data = conf_manager.get_table_header();
-			// TODO : must check if the user exists
+			this->allUserPermissionsInfo = conf_manager.get_permissions();
+			
+			// check if the user exists ✅
+			bool user_exists = false;
+			
+			if (!isAdmin()) {
+				int permissions_size = allUserPermissionsInfo.get_size(); 
+				for (int i=0; i<permissions_size; i+=2) {
+					if (username == allUserPermissionsInfo[i][0]) { 
+						// we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
+						Vector<String> temp = allUserPermissionsInfo[i+1];
+						this->currentUserPermissions = temp;
+						user_exists = true;
+						break;
+					}
+				}
+			}
+			
 
-			//convert the tables into vector ✅
-			//loadCurrentTables(db_name, db_path);
+			if (user_exists || isAdmin()) {
+				//convert the tables into vector ✅
+				loadCurrentTables(conf_manager);
+			} else {
+				// throw exception
+			}
 
 		}
 		else{
@@ -57,18 +78,32 @@ public:
 	};
 	// Database e(string db_name, bool encryption);
 
-	void loadCurrentTables(String database_name, String file_path){
-		ConfigManager conf_file(file_path+String("/")+database_name+String(".config"));
+	void loadCurrentTables(ConfigManager conf_manager){
+		ConfigManager conf_file = conf_manager;
 		StringVectorConverter converter;
 		Encryptor encryptor(String(key).toInt());
-
+		
 		// fetch the config file data and add it to table_name, headers, types and constraints
 		Vector<Vector<String>> temp_data = conf_file.get_table_meta_data();
 		int temp_data_size = temp_data.get_size();
-		for(int i=0; i<temp_data_size; i+=4) {
-			this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
-		}
 
+		if (!isAdmin()) {
+			for(int i=0; i<temp_data_size; i+=4) {
+				int current_permission_size = currentUserPermissions.get_size();
+				for (int j=0; j<current_permission_size; j++) {
+					if (temp_data[i][0] == currentUserPermissions[j]){
+						this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
+					}
+				}
+			}
+			
+		} else {
+			for(int i=0; i<temp_data_size; i+=4) {
+				this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
+			}
+		}
+		
+		
 		// decrypt the csv file data related to the table and copy the info
 		int table_size = tables.get_size();
 		for(int i=0; i<table_size; i++) {
@@ -82,8 +117,11 @@ public:
 			FileHandler table_file = FileHandler(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
 			table_string_data = table_file.readFromFile();
 			table_string_data = encryptor.decryptData(table_string_data); // decrypt fetched string data
+			
+			//converter.stringToVector(table_string_data, delimiter);
 			table_data_from_file = converter.stringToVector(table_string_data, delimiter);
 
+			
 			// load the data to table cells
 			int num_of_types = data_types.get_size();
 			int num_of_rows = table_data_from_file.get_size();
@@ -110,7 +148,10 @@ public:
 		}
 	}
 
-	//void saveDBMetaData() {}
+	bool isAdmin() {
+    return this->currentUser == this->admin; // Compares the current user with the stored admin username
+	}
+
 
 	void saveTableData(){
 		int table_size = tables.get_size();
@@ -140,8 +181,8 @@ public:
 						// code to execute if none of the cases match
 						row_data.push_back(cells[j][k].getString());
 					}
-					table_data.push_back(row_data);
 				}
+				table_data.push_back(row_data);
 			}
 
 			StringVectorConverter converter;
@@ -157,34 +198,84 @@ public:
 		}
 	}
 
-	void saveTableMetaData(){
-		String table_meta_data;
+	void saveDBMetaData() {
 		StringVectorConverter converter;
-		int tables_num = tables.get_size();
-		for(int i=0; i<tables_num; i++) {
-			//for table names
-			table_meta_data += tables[i].getTableName();
-			table_meta_data += String("\n");
+		String conf_data;
+		conf_data+=String("[Database]\n");
+		conf_data+=String("database_name = ") + db_name + String("\n"); //Check
+		conf_data+=String("file_path = ") + db_path+String("/")+ db_name + ".config" + String("\n");
+		conf_data+=String("table_delimiter = ") + delimiter + String("\n");
+		conf_data+=String("\n");
+        conf_data+=String("[Admin]\n");
+		conf_data+=String("username = ") + admin + String("\n");
+		conf_data+=String("\n");
+		conf_data+=String("[Permission]\n");
+		conf_data+= converter.vector2DToString(allUserPermissionsInfo, ",");
+		conf_data+=String("\n");
+		conf_data+=String("\n");
+		conf_data+=String("[Encryption]\n");
+        if(encryption) conf_data+=String("enabled = true\n");
+		else conf_data+=String("enabled = false\n");
+		conf_data+=String("\n");
+		conf_data+=String("[Tables]\n");
 
-			//for headers
-			table_meta_data += converter.vectorToString(tables[i].getHeaders());
-
-			//for data_types
-			table_meta_data += converter.vectorToString(tables[i].getDataTypes());
-
-			//for constraints
-			table_meta_data += converter.vectorToString(tables[i].getConstraints());
-		}
+		String table_metadata = TableMetaData();
+		conf_data += table_metadata;
 
 		ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
-		conf_manager.appendConfig(table_meta_data, true);
+		conf_manager.updateConfig(conf_data);
+
+		// FileHandler config_file(db_path+String("/")+db_name+String(".config"));
+
+		// config_file.createFile();
+		// config_file.writeToFile(conf_data);
+	}
+
+	String TableMetaData(){
+		String table_meta_data;
+		StringVectorConverter converter;
+		ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
+
+		if (isAdmin()) {
+			int tables_num = tables.get_size();
+			for(int i=0; i<tables_num; i++) {
+				//for table names
+				table_meta_data += tables[i].getTableName();
+				table_meta_data += String("\n");
+
+				//for headers
+				table_meta_data += converter.vectorToString(tables[i].getHeaders());
+
+				//for data_types
+				table_meta_data += converter.vectorToString(tables[i].getDataTypes());
+
+				//for constraints
+				table_meta_data += converter.vectorToString(tables[i].getConstraints());
+			}
+		} else {
+			Vector<Vector<String>> temp_table_meta_data = conf_manager.get_table_meta_data();
+
+			int temp_table_meta_data_size = temp_table_meta_data.get_size();
+			int tables_num = tables.get_size();
+			for (int i=0; i<tables_num; i++) {
+				for (int j=0; j<temp_table_meta_data_size; j+=4) {
+					if (tables[i].getTableName() == temp_table_meta_data[j][0]) {
+						temp_table_meta_data[j+1] = tables[i].getHeaders();
+						temp_table_meta_data[j+2] = tables[i].getDataTypes();
+						temp_table_meta_data[j+3] = tables[i].getConstraints();
+					}
+				}
+			}
+
+			table_meta_data += converter.vector2DToString(temp_table_meta_data, delimiter);
+		}
+		return table_meta_data;
 	}
 
 	bool saveDB(){
-		saveTableMetaData();
+		saveDBMetaData();
 		saveTableData();
 		return true;
-		//saveDBMetaData();
 	}
 
 	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
@@ -212,9 +303,6 @@ public:
 					for (int k = 0; k < cols.get_size(); k++) {
 						if (headers[j] == cols[k]) {
 							column_matched = true;
-							
-							// Debug output
-							cout << "Matching column " << headers[j] << " with data " << cell_data[k] << endl;
 
 							// Add cell data according to the data type
 							if (data_types[j] == String("INT")) {
@@ -375,5 +463,12 @@ public:
 		return tables;
 	}
 
+	Vector<Vector<String>>& get_allUserPermissionsInfo() {
+    	return allUserPermissionsInfo;
+	}
+
+	Vector<String>& get_currentUserPermissions() {
+		return currentUserPermissions;
+	}
 };
 #endif

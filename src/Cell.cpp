@@ -16,9 +16,12 @@ enum class DataType {
 class Cell{
 public:
     // Default constructor - compile hoy na naile, pore thik korte hobe
-    Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {
-        // Alternatively, you could set datatype to a more appropriate type if needed
-    }
+    //Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {
+    // Alternatively, you could set datatype to a more appropriate type if needed
+    //}
+
+	// alternative default constructor
+	Cell() : datatype(DataType::STRING), data_s("") {}
 
 	Cell(int data){
 		this->data_i = data;
