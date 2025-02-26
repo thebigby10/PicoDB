@@ -46,6 +46,10 @@ public:
 	// 	}
 	// }
 
+	void update(String table_name, Vector<String>update_data, Vector<int >condition){
+		Database(table_name, update_data, condition);
+	}
+
 	void select(String table_name, Vector<String> cols) {
 		Table input_table;
 
