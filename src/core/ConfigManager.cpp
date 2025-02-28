@@ -1,5 +1,4 @@
 #include "../../include/PicoDB/ConfigManager.h"
-#include "../../include/PicoDB/FileHandler.h"
 
 void ConfigManager::createConfig(String database_name, String table_delimiter, String admin_username, bool encryption = true ){
 		String conf_data;

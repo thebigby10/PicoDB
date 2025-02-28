@@ -1,105 +1,52 @@
-#ifndef DATABASE_H // Include guard start
-#define DATABASE_H
-#include<iostream>
-#include<filesystem>
-#include "Vector.cpp"
-#include "Encryptor.cpp"
-#include "String.cpp"
-#include "Table.cpp"
-#include "FileHandler.cpp"
-#include "Cell.cpp"
-#include "ConfigManager.cpp"
-#include "StringVectorConverter.cpp"
+#include "../../include/PicoDB/Database.h"
 
-class Database{
-private:
-	String db_name;
-	String db_path;
-	String username;
-	String key;
-	String delimiter;
-	bool encryption = true;
-	String admin;
-	Vector<Table> tables;
-	// Vector<>permissions;
-public:
+// Database e(string db_name, bool encryption);
 
-	// Database(string db_name, bool force_create, bool encryption, string file_path )
-	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
-		this->db_name = db_name;
-		this->db_path = db_path;
-		this->username = username;
-		this->key = key;
-		this->delimiter = delimiter;
-		this->admin = username;
-		//check if file exists
-		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
-		if(conf_file.fileExists()){
+// needs fixing
 
-			// Conf manager fetches raw data ✅
-			ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
+	// void Database::update(String table_name, Vector<String>update_data, Vector<int >condition){
+	// 	Table table;
+	// 	for(int i=0;i<tables.get_size();i++){
+	// 		if(tables[i].getTableName() == table_name){
+	// 			table = tables[i];
+	// 			break;
+	// 		}
+	// 		else{
+	// 			//add exception
+	// 		}
+	// 	}
+	// 	//check condition
+	// 	Table condition_data;
+	// 	if(condition[1]=="=="){
+	// 		for(int i=0;i<table.get_RowSize();i++){
+	// 			for(int j=0;j<table[i].;j++){
 
-			// convert the config file into variables
-			this->delimiter = conf_manager.get_t_delimiter();
-			this->admin = conf_manager.get_admin();
-			//this->db_data = conf_manager.get_table_header();
-			// TODO : must check if the user exists
+	// 			}
+	// 		}
+	// 	}
+	// 	else if(condition[1]==">"){
 
-			//convert the tables into vector ✅
-			//loadCurrentTables(db_name, db_path);
+	// 	}
+	// 	else if(condition[1]=="<"){
 
-		}
-		else{
-			//create config file
-			ConfigManager conf_manager(db_path+String("/")+db_name+".config");
-			conf_manager.createConfig(db_name,table_delimiter,username );
-		}
-	};
-	// Database e(string db_name, bool encryption);
+	// 	}
+	// 	else if(condition[1]==">="){
 
-	void update(String table_name, Vector<String>update_data, Vector<int >condition){
-		Table table;
-		for(int i=0;i<tables.get_size();i++){
-			if(tables[i].getTableName() == table_name){
-				table = tables[i];
-				break;
-			}
-			else{
-				//add exception
-			}
-		}
-		//check condition
-		Table condition_data;
-		if(condition[1]=="=="){
-			for(int i=0;i<table.get_RowSize();i++){
-				for(int j=0;j<table[i].;j++){
-					
-				}
-			}
-		}
-		else if(condition[1]==">"){
+	// 	}
+	// 	else if(condition[1]=="<="){
 
-		}
-		else if(condition[1]=="<"){
+	// 	}
+	// 	else if(condition[1]=="!="){
 
-		}
-		else if(condition[1]==">="){
+	// 	}
+	// 	else{
+	// 		//exception
+	// 	}
 
-		}
-		else if(condition[1]=="<="){
-
-		}
-		else if(condition[1]=="!="){
-
-		}
-		else{
-			//exception
-		}
-
-	}
+	// }
 
 
-	void loadCurrentTables(String database_name, String file_path){
+	void Database::loadCurrentTables(String database_name, String file_path){
 		ConfigManager conf_file(file_path+String("/")+database_name+String(".config"));
 		StringVectorConverter converter;
 		Encryptor encryptor(String(key).toInt());
@@ -154,7 +101,7 @@ public:
 
 	//void saveDBMetaData() {}
 
-	void saveTableData(){
+	void Database::saveTableData(){
 		int table_size = tables.get_size();
 		for (int i=0; i<table_size; i++) {
 			String table_name = tables[i].getTableName();
@@ -199,7 +146,7 @@ public:
 		}
 	}
 
-	void saveTableMetaData(){
+	void Database::saveTableMetaData(){
 		String table_meta_data;
 		StringVectorConverter converter;
 		int tables_num = tables.get_size();
@@ -222,14 +169,14 @@ public:
 		conf_manager.appendConfig(table_meta_data, true);
 	}
 
-	bool saveDB(){
+	bool Database::saveDB(){
 		saveTableMetaData();
 		saveTableData();
 		return true;
 		//saveDBMetaData();
 	}
 
-	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
+	bool Database::insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
 		int tables_num = tables.get_size();
 
 		for (int i = 0; i < tables_num; i++) {
@@ -254,7 +201,7 @@ public:
 					for (int k = 0; k < cols.get_size(); k++) {
 						if (headers[j] == cols[k]) {
 							column_matched = true;
-							
+
 							// Debug output
 							cout << "Matching column " << headers[j] << " with data " << cell_data[k] << endl;
 
@@ -291,7 +238,7 @@ public:
 	}
 
 	//function for printing a table
-	void printTable(const Table& table) {
+	void Database::printTable(const Table& table) {
 		// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;
 
@@ -413,9 +360,6 @@ public:
 	}
 
 	//getter for tables
-	Vector<Table>& get_tables() {
+	Vector<Table>& Database::get_tables() {
 		return tables;
 	}
-
-};
-#endif
