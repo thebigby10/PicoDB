@@ -20,14 +20,14 @@ public:
     String() : data(new char[1]), size(0) {
         data[0] = '\0';
     }
-    
+
     // Constructor from string
     String(const char* str) {
         size = strLength(str);
         data = new char[size + 1]; // Allocate memory
         strCopy(data, str);
     }
-    
+
     String(size_t count, char c) {
         size = count;
         data = new char[size + 1]; // +1 for null terminator
@@ -36,14 +36,14 @@ public:
         }
         data[size] = '\0'; // Null terminate the string
     }
-    
+
     // Copy constructor
     String(const String& other) {
         size = other.size;
         data = new char[size + 1];
         strCopy(data, other.data);
     }
-    
+
     // Destructor
     ~String() {
         delete[] data;
@@ -109,6 +109,14 @@ public:
     static String toString(int num);
     static String toString(double num);
     static String toString(bool val) ;
+
+    bool empty() const {
+        return size == 0;
+    }
+
+    bool operator==(const char* str) const {
+        return *this == String(str); // Convert to String and compare
+    }
 };
 
 // Helper function to reverse a char array (used in intToString and doubleToString)

@@ -359,14 +359,14 @@
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
-
-	Table select(String table_name, Vector<String> cols, String condition = "") {
+Table Database::select(String table_name, Vector<String> cols, String condition) {
     Table input_table;
     bool table_found = false;
 
-    for (int i = 0; i < db.get_tables().get_size(); i++) {
-        if (db.get_tables()[i].getTableName() == table_name) {
-            input_table = db.get_tables()[i];
+    // Find the table by name
+    for (int i = 0; i < tables.get_size(); i++) {
+        if (tables[i].getTableName() == table_name) {
+            input_table = tables[i];
             table_found = true;
             break;
         }
@@ -377,6 +377,7 @@
         return Table();
     }
 
+    // Store selected column indices
     Vector<int> selected_column_indices;
     for (int i = 0; i < cols.get_size(); i++) {
         for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
@@ -387,57 +388,75 @@
         }
     }
 
-    Vector<Vector<Cell>> filtered_data;
+    // Parse complex conditions
+    Vector<int> condition_indices;
+    Vector<String> condition_ops;
+    Vector<String> condition_values;
+    Vector<String> logical_ops;
+
     if (condition != "") {
-        String condition_col;
-        String condition_op;
-        String condition_val;
+        Vector<String> tokens;
+        String current_token;
+        String op;
+        bool in_string = false;
 
-        int space1 = condition.find(' ');
-        int space2 = condition.find(' ', space1 + 1);
+        for (size_t i = 0; i < condition.length(); i++) {
+            char c = condition[i];
 
-        if (space1 != -1 && space2 != -1) {
-            condition_col = condition.substr(0, space1);
-            condition_op = condition.substr(space1 + 1, space2 - space1 - 1);
-            condition_val = condition.substr(space2 + 1);
-        }
-
-        int condition_col_index = -1;
-        for (int i = 0; i < input_table.getHeaders().get_size(); i++) {
-            if (input_table.getHeaders()[i] == condition_col) {
-                condition_col_index = i;
-                break;
+            if (c == ' ' && !in_string) {
+                if (!current_token.trim().empty()) {
+                    tokens.push_back(current_token.trim());
+                    current_token.clear();
+                }
+            } else if (c == '"') {
+                in_string = !in_string;
+            } else {
+                current_token = current_token + c;
             }
         }
-
-        if (condition_col_index == -1) {
-            std::cerr << "Invalid condition column: " << condition_col << std::endl;
-            return Table();
+        if (!current_token.empty()) {
+            tokens.push_back(current_token.trim());
         }
 
-        for (int i = 0; i < input_table.getTableData().get_size(); i++) {
-            String cell_data = input_table.getTableData()[i][condition_col_index].getString();
-
-            bool match = false;
-            if (condition_op == "=") {
-                match = (cell_data == condition_val);
-            } else if (condition_op == "!=") {
-                match = (cell_data != condition_val);
-            } else if (condition_op == ">") {
-                match = (cell_data.toInt() > condition_val.toInt());
-            } else if (condition_op == "<") {
-                match = (cell_data.toInt() < condition_val.toInt());
-            }
-
-            if (match) {
-                filtered_data.push_back(input_table.getTableData()[i]);
+        for (size_t i = 0; i < tokens.get_size(); i++) {
+            if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+                logical_ops.push_back(tokens[i]);
+            } else if (tokens[i] == String("=") || tokens[i] == String("!=") ||
+                       tokens[i] == String(">") || tokens[i] == String("<") ||
+                       tokens[i] == String(">=") || tokens[i] == String("<=") ||
+                       tokens[i] == String("LIKE")) {
+                condition_ops.push_back(tokens[i]);
+            } else if (condition_ops.get_size() < condition_values.get_size()) {
+                condition_values.push_back(tokens[i]);
             }
         }
-    } else {
-        filtered_data = input_table.getTableData();
     }
 
+    // Apply condition filtering
+    Vector<Vector<Cell>> filtered_data;
+    for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+        if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
+            filtered_data.push_back(input_table.getTableData()[i]);
+        }
+    }
+
+    // Create new table with selected columns
     Table selected_table;
-    selected_table.updateRecords(filtered_data);
+    Vector<String> selected_headers;
+    for (int i = 0; i < selected_column_indices.get_size(); i++) {
+        selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
+    }
+    selected_table.setHeaders(selected_headers);
+
+    Vector<Vector<Cell>> selected_data;
+    for (int i = 0; i < filtered_data.get_size(); i++) {
+        Vector<Cell> row;
+        for (int j = 0; j < selected_column_indices.get_size(); j++) {
+            row.push_back(filtered_data[i][selected_column_indices[j]]);
+        }
+        selected_data.push_back(row);
+    }
+    selected_table.updateRecords(selected_data);
+
     return selected_table;
 }

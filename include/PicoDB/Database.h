@@ -22,8 +22,8 @@ private:
 	String admin;
 	Vector<Table> tables;
 	// Vector<>permissions;
-public:
 
+public:
 	// Database(string db_name, bool force_create, bool encryption, string file_path )
 	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
 		this->db_name = db_name;
@@ -78,6 +78,9 @@ public:
 	//getter for tables
 	Vector<Table>& get_tables();
 
-	Table select(String table_name, Vector<String> cols, String condition = "")
+	Table select(String table_name, Vector<String> cols, String condition = "");
+	bool evaluateCondition(const Cell& cell, String op, String value);
+	bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops);
+
 };
 #endif
