@@ -359,7 +359,85 @@
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
-	//getter for tables
-	Vector<Table>& Database::get_tables() {
-		return tables;
-	}
+
+	Table select(String table_name, Vector<String> cols, String condition = "") {
+    Table input_table;
+    bool table_found = false;
+
+    for (int i = 0; i < db.get_tables().get_size(); i++) {
+        if (db.get_tables()[i].getTableName() == table_name) {
+            input_table = db.get_tables()[i];
+            table_found = true;
+            break;
+        }
+    }
+
+    if (!table_found) {
+        std::cerr << "Table not found: " << table_name << std::endl;
+        return Table();
+    }
+
+    Vector<int> selected_column_indices;
+    for (int i = 0; i < cols.get_size(); i++) {
+        for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+            if (input_table.getHeaders()[j] == cols[i]) {
+                selected_column_indices.push_back(j);
+                break;
+            }
+        }
+    }
+
+    Vector<Vector<Cell>> filtered_data;
+    if (condition != "") {
+        String condition_col;
+        String condition_op;
+        String condition_val;
+
+        int space1 = condition.find(' ');
+        int space2 = condition.find(' ', space1 + 1);
+
+        if (space1 != -1 && space2 != -1) {
+            condition_col = condition.substr(0, space1);
+            condition_op = condition.substr(space1 + 1, space2 - space1 - 1);
+            condition_val = condition.substr(space2 + 1);
+        }
+
+        int condition_col_index = -1;
+        for (int i = 0; i < input_table.getHeaders().get_size(); i++) {
+            if (input_table.getHeaders()[i] == condition_col) {
+                condition_col_index = i;
+                break;
+            }
+        }
+
+        if (condition_col_index == -1) {
+            std::cerr << "Invalid condition column: " << condition_col << std::endl;
+            return Table();
+        }
+
+        for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+            String cell_data = input_table.getTableData()[i][condition_col_index].getString();
+
+            bool match = false;
+            if (condition_op == "=") {
+                match = (cell_data == condition_val);
+            } else if (condition_op == "!=") {
+                match = (cell_data != condition_val);
+            } else if (condition_op == ">") {
+                match = (cell_data.toInt() > condition_val.toInt());
+            } else if (condition_op == "<") {
+                match = (cell_data.toInt() < condition_val.toInt());
+            }
+
+            if (match) {
+                filtered_data.push_back(input_table.getTableData()[i]);
+            }
+        }
+    } else {
+        filtered_data = input_table.getTableData();
+    }
+
+    Table selected_table;
+    selected_table.updateRecords(filtered_data);
+    return selected_table;
+}

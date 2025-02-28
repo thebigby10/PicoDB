@@ -78,5 +78,6 @@ public:
 	//getter for tables
 	Vector<Table>& get_tables();
 
+	Table select(String table_name, Vector<String> cols, String condition = "")
 };
 #endif
