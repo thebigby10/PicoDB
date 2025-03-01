@@ -1,105 +1,52 @@
-#ifndef DATABASE_H // Include guard start
-#define DATABASE_H
-#include<iostream>
-#include<filesystem>
-#include "Vector.cpp"
-#include "Encryptor.cpp"
-#include "String.cpp"
-#include "Table.cpp"
-#include "FileHandler.cpp"
-#include "Cell.cpp"
-#include "ConfigManager.cpp"
-#include "StringVectorConverter.cpp"
+#include "../../include/PicoDB/Database.h"
 
-class Database{
-private:
-	String db_name;
-	String db_path;
-	String username;
-	String key;
-	String delimiter;
-	bool encryption = true;
-	String admin;
-	Vector<Table> tables;
-	// Vector<>permissions;
-public:
+// Database e(string db_name, bool encryption);
 
-	// Database(string db_name, bool force_create, bool encryption, string file_path )
-	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
-		this->db_name = db_name;
-		this->db_path = db_path;
-		this->username = username;
-		this->key = key;
-		this->delimiter = delimiter;
-		this->admin = username;
-		//check if file exists
-		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
-		if(conf_file.fileExists()){
+// needs fixing
 
-			// Conf manager fetches raw data ✅
-			ConfigManager conf_manager(db_path+String("/")+db_name+String(".config"));
+	// void Database::update(String table_name, Vector<String>update_data, Vector<int >condition){
+	// 	Table table;
+	// 	for(int i=0;i<tables.get_size();i++){
+	// 		if(tables[i].getTableName() == table_name){
+	// 			table = tables[i];
+	// 			break;
+	// 		}
+	// 		else{
+	// 			//add exception
+	// 		}
+	// 	}
+	// 	//check condition
+	// 	Table condition_data;
+	// 	if(condition[1]=="=="){
+	// 		for(int i=0;i<table.get_RowSize();i++){
+	// 			for(int j=0;j<table[i].;j++){
 
-			// convert the config file into variables
-			this->delimiter = conf_manager.get_t_delimiter();
-			this->admin = conf_manager.get_admin();
-			//this->db_data = conf_manager.get_table_header();
-			// TODO : must check if the user exists
+	// 			}
+	// 		}
+	// 	}
+	// 	else if(condition[1]==">"){
 
-			//convert the tables into vector ✅
-			//loadCurrentTables(db_name, db_path);
+	// 	}
+	// 	else if(condition[1]=="<"){
 
-		}
-		else{
-			//create config file
-			ConfigManager conf_manager(db_path+String("/")+db_name+".config");
-			conf_manager.createConfig(db_name,table_delimiter,username );
-		}
-	};
-	// Database e(string db_name, bool encryption);
+	// 	}
+	// 	else if(condition[1]==">="){
 
-	void update(String table_name, Vector<String>update_data, Vector<int >condition){
-		Table table;
-		for(int i=0;i<tables.get_size();i++){
-			if(tables[i].getTableName() == table_name){
-				table = tables[i];
-				break;
-			}
-			else{
-				//add exception
-			}
-		}
-		//check condition
-		Table condition_data;
-		if(condition[1]=="=="){
-			for(int i=0;i<table.get_RowSize();i++){
-				for(int j=0;j<table[i].;j++){
-					
-				}
-			}
-		}
-		else if(condition[1]==">"){
+	// 	}
+	// 	else if(condition[1]=="<="){
 
-		}
-		else if(condition[1]=="<"){
+	// 	}
+	// 	else if(condition[1]=="!="){
 
-		}
-		else if(condition[1]==">="){
+	// 	}
+	// 	else{
+	// 		//exception
+	// 	}
 
-		}
-		else if(condition[1]=="<="){
-
-		}
-		else if(condition[1]=="!="){
-
-		}
-		else{
-			//exception
-		}
-
-	}
+	// }
 
 
-	void loadCurrentTables(String database_name, String file_path){
+	void Database::loadCurrentTables(String database_name, String file_path){
 		ConfigManager conf_file(file_path+String("/")+database_name+String(".config"));
 		StringVectorConverter converter;
 		Encryptor encryptor(String(key).toInt());
@@ -154,7 +101,7 @@ public:
 
 	//void saveDBMetaData() {}
 
-	void saveTableData(){
+	void Database::saveTableData(){
 		int table_size = tables.get_size();
 		for (int i=0; i<table_size; i++) {
 			String table_name = tables[i].getTableName();
@@ -199,7 +146,7 @@ public:
 		}
 	}
 
-	void saveTableMetaData(){
+	void Database::saveTableMetaData(){
 		String table_meta_data;
 		StringVectorConverter converter;
 		int tables_num = tables.get_size();
@@ -222,14 +169,14 @@ public:
 		conf_manager.appendConfig(table_meta_data, true);
 	}
 
-	bool saveDB(){
+	bool Database::saveDB(){
 		saveTableMetaData();
 		saveTableData();
 		return true;
 		//saveDBMetaData();
 	}
 
-	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
+	bool Database::insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
 		int tables_num = tables.get_size();
 
 		for (int i = 0; i < tables_num; i++) {
@@ -254,7 +201,7 @@ public:
 					for (int k = 0; k < cols.get_size(); k++) {
 						if (headers[j] == cols[k]) {
 							column_matched = true;
-							
+
 							// Debug output
 							cout << "Matching column " << headers[j] << " with data " << cell_data[k] << endl;
 
@@ -291,7 +238,7 @@ public:
 	}
 
 	//function for printing a table
-	void printTable(const Table& table) {
+	void Database::printTable( const Table& table) {
 		// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;
 
@@ -412,10 +359,155 @@ public:
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
-	//getter for tables
-	Vector<Table>& get_tables() {
-		return tables;
-	}
+Vector<Table>& Database::get_tables() {
+	return tables;
+}
 
-};
-#endif
+Table Database::select(String table_name, Vector<String> cols, String condition) {
+    Table input_table;
+    bool table_found = false;
+
+    // Find the table by name
+    for (int i = 0; i < tables.get_size(); i++) {
+        if (tables[i].getTableName() == table_name) {
+            input_table = tables[i];
+            table_found = true;
+            break;
+        }
+    }
+
+    if (!table_found) {
+        std::cerr << "Table not found: " << table_name << std::endl;
+        return Table();
+    }
+
+    // Store selected column indices
+    Vector<int> selected_column_indices;
+    for (int i = 0; i < cols.get_size(); i++) {
+        for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+            if (input_table.getHeaders()[j] == cols[i]) {
+                selected_column_indices.push_back(j);
+                break;
+            }
+        }
+    }
+
+    // Parse complex conditions
+    Vector<int> condition_indices;
+    Vector<String> condition_ops;
+    Vector<String> condition_values;
+    Vector<String> logical_ops;
+
+    if (condition != "") {
+        Vector<String> tokens;
+        String current_token;
+        String op;
+        bool in_string = false;
+
+        for (size_t i = 0; i < condition.length(); i++) {
+            char c = condition[i];
+
+            if (c == ' ' && !in_string) {
+                if (!current_token.trim().empty()) {
+                    tokens.push_back(current_token.trim());
+                    current_token.clear();
+                }
+            } else if (c == '"') {
+                in_string = !in_string;
+            } else {
+                current_token = current_token + c;
+            }
+        }
+        if (!current_token.empty()) {
+            tokens.push_back(current_token.trim());
+        }
+
+        for (size_t i = 0; i < tokens.get_size(); i++) {
+            if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+                logical_ops.push_back(tokens[i]);
+            } else if (tokens[i] == String("=") || tokens[i] == String("!=") ||
+                       tokens[i] == String(">") || tokens[i] == String("<") ||
+                       tokens[i] == String(">=") || tokens[i] == String("<=") ||
+                       tokens[i] == String("LIKE")) {
+                condition_ops.push_back(tokens[i]);
+            } else if (condition_ops.get_size() < condition_values.get_size()) {
+                condition_values.push_back(tokens[i]);
+            }
+        }
+    }
+
+    // Apply condition filtering
+    Vector<Vector<Cell>> filtered_data;
+    for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+        if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
+            filtered_data.push_back(input_table.getTableData()[i]);
+        }
+    }
+
+    // Create new table with selected columns
+    Table selected_table;
+    Vector<String> selected_headers;
+    for (int i = 0; i < selected_column_indices.get_size(); i++) {
+        selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
+    }
+    selected_table.setHeaders(selected_headers);
+
+    Vector<Vector<Cell>> selected_data;
+    for (int i = 0; i < filtered_data.get_size(); i++) {
+        Vector<Cell> row;
+        for (int j = 0; j < selected_column_indices.get_size(); j++) {
+            row.push_back(filtered_data[i][selected_column_indices[j]]);
+        }
+        selected_data.push_back(row);
+    }
+    selected_table.updateRecords(selected_data);
+
+    return selected_table;
+}
+
+bool Database::evaluateCondition( const Cell& cell, String op, String value) {
+    if (cell.getDataType() == DataType::INTEGER) {
+        int cellValue = cell.getInt();
+        int intValue = value.toInt();
+        if (op == "=") return cellValue == intValue;
+        if (op == "!=") return cellValue != intValue;
+        if (op == ">") return cellValue > intValue;
+        if (op == "<") return cellValue < intValue;
+        if (op == ">=") return cellValue >= intValue;
+        if (op == "<=") return cellValue <= intValue;
+    } else if (cell.getDataType() == DataType::DOUBLE) {
+        double cellValue = cell.getDouble();
+        double doubleValue = value.toDouble();
+        if (op == "=") return cellValue == doubleValue;
+        if (op == "!=") return cellValue != doubleValue;
+        if (op == ">") return cellValue > doubleValue;
+        if (op == "<") return cellValue < doubleValue;
+        if (op == ">=") return cellValue >= doubleValue;
+        if (op == "<=") return cellValue <= doubleValue;
+    } else if (cell.getDataType() == DataType::BOOLEAN) {
+        bool cellValue = cell.getBoolean();
+        bool boolValue = (value == "true");
+        return (op == "=") ? (cellValue == boolValue) : (cellValue != boolValue);
+    } else {
+        if (op == "=") return cell.getString() == value;
+        if (op == "!=") return cell.getString() != value;
+        if (op == "LIKE") return cell.getString().findSubstring(value) != -1;
+    }
+    return false;
+}
+
+bool Database::evaluateComplexCondition( const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
+    if (condition_indices.get_size() == 0) return true;
+
+    bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
+
+    for (size_t i = 1; i < condition_indices.get_size(); i++) {
+        bool next_result = evaluateCondition(row[condition_indices[i]], condition_ops[i], condition_values[i]);
+        if (logical_ops[i - 1] == "AND") {
+            result = result && next_result;
+        } else if (logical_ops[i - 1] == "OR") {
+            result = result || next_result;
+        }
+    }
+    return result;
+}

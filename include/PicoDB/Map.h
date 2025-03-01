@@ -12,16 +12,16 @@ private:
 
 public:
     // Add a new key-value pair
-    void insert(const K& key, const V& value);
+    void insert( const K& key, const V& value);
 
     // Get the value for a given key
-    V get(const K& key) const ;
+    V get( const K& key) const ;
 
     // Remove a key-value pair
-    void remove(const K& key) ;
+    void remove( const K& key) ;
 
     // Check if a key exists in the map
-    bool contains(const K& key) const;
+    bool contains( const K& key) const ;
 
     // Return the size of the map
     size_t size() const;
