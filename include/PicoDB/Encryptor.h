@@ -1,3 +1,4 @@
+
 #ifndef ENCRYPTOR_H // Include guard start
 #define ENCRYPTOR_H
 
@@ -15,7 +16,7 @@ public:
     Encryptor(int key);
 
     // Encryption & decryption functions
-    String encryptData(String data) const;
+    String encryptData(String data) const ;
     String decryptData(String data) const;
 };
 

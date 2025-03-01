@@ -1,6 +1,6 @@
 #include "../../include/PicoDB/ConfigManager.h"
 
-void ConfigManager::createConfig(String database_name, String table_delimiter, String admin_username, bool encryption = true ){
+void ConfigManager::createConfig(String database_name, String table_delimiter, String admin_username, bool encryption){
 		String conf_data;
 		conf_data+=String("[Database]\n");
 		conf_data+=String("database_name = ") + database_name + String("\n"); //Check
@@ -189,5 +189,4 @@ void ConfigManager::createConfig(String database_name, String table_delimiter, S
 	void ConfigManager::deleteConfig(){
 		FileHandler conf_file(conf_path);
 		conf_file.removeFile();
-
 	}

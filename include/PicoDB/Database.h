@@ -57,7 +57,7 @@ public:
 	};
 	// Database e(string db_name, bool encryption);
 
-	void update(String table_name, Vector<String>update_data, Vector<int >condition);
+	// void update(String table_name, Vector<String>update_data, Vector<int >condition);
 
 
 	void loadCurrentTables(String database_name, String file_path);
@@ -73,14 +73,14 @@ public:
 	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data);
 
 	//function for printing a table
-	void printTable(const Table& table) ;
+	void printTable( const Table& table) ;
 
 	//getter for tables
 	Vector<Table>& get_tables();
 
 	Table select(String table_name, Vector<String> cols, String condition = "");
-	bool evaluateCondition(const Cell& cell, String op, String value);
-	bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops);
+	bool evaluateCondition( const Cell& cell, String op, String value);
+	bool evaluateComplexCondition( const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops);
 
 };
 #endif

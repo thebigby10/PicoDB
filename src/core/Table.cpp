@@ -44,27 +44,27 @@ Vector<String> Table::get_Row(){
 	}
 
    // Getter for table_name
-	String Table::getTableName() const {
+	String Table::getTableName()   {
    		return table_name;
 	}
 
 	// Getter for headers
-	Vector<String> Table::getHeaders() const {
+	Vector<String> Table::getHeaders()   {
 		return headers;
 	}
 
 	// Getter for data_types
-	Vector<String> Table::getDataTypes() const {
+	Vector<String> Table::getDataTypes()   {
 		return data_types;
 	}
 
 	// Getter for constraints
-	Vector<String> Table::getConstraints() const {
+	Vector<String> Table::getConstraints()   {
 		return constraints;
 	}
 
 	// Getter for table_data
-	Vector<Vector<Cell>> Table::getTableData() const {
+	Vector<Vector<Cell>> Table::getTableData()   {
 		return table_data;
 	}
 

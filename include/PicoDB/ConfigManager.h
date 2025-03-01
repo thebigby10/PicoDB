@@ -34,6 +34,7 @@ public:
     /*
 	Map<String, Vector<String>>  get_users()*/
 
+// always returns true - could lead to bugs
 	bool is_encrypted();
 
 	Vector<Vector<String>> get_table_meta_data();

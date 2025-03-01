@@ -63,19 +63,19 @@ public:
 	void updateSingleRecord (Vector<Cell> cell_data) ;
 
     // Getter for table_name
-	String getTableName() const ;
+	String getTableName()  ;
 
 	// Getter for headers
-	Vector<String> getHeaders() const ;
+	Vector<String> getHeaders()  ;
 
 	// Getter for data_types
-	Vector<String> getDataTypes() const ;
+	Vector<String> getDataTypes()  ;
 
 	// Getter for constraints
-	Vector<String> getConstraints() const ;
+	Vector<String> getConstraints()  ;
 
 	// Getter for table_data
-	Vector<Vector<Cell>> getTableData() const;
+	Vector<Vector<Cell>> getTableData() ;
 
 	// set header
 	void setHeaders(Vector<String> headers);

@@ -238,7 +238,7 @@
 	}
 
 	//function for printing a table
-	void Database::printTable(const Table& table) {
+	void Database::printTable( const Table& table) {
 		// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;
 
@@ -359,6 +359,10 @@
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
+Vector<Table>& Database::get_tables() {
+	return tables;
+}
+
 Table Database::select(String table_name, Vector<String> cols, String condition) {
     Table input_table;
     bool table_found = false;
@@ -459,4 +463,51 @@ Table Database::select(String table_name, Vector<String> cols, String condition)
     selected_table.updateRecords(selected_data);
 
     return selected_table;
+}
+
+bool Database::evaluateCondition( const Cell& cell, String op, String value) {
+    if (cell.getDataType() == DataType::INTEGER) {
+        int cellValue = cell.getInt();
+        int intValue = value.toInt();
+        if (op == "=") return cellValue == intValue;
+        if (op == "!=") return cellValue != intValue;
+        if (op == ">") return cellValue > intValue;
+        if (op == "<") return cellValue < intValue;
+        if (op == ">=") return cellValue >= intValue;
+        if (op == "<=") return cellValue <= intValue;
+    } else if (cell.getDataType() == DataType::DOUBLE) {
+        double cellValue = cell.getDouble();
+        double doubleValue = value.toDouble();
+        if (op == "=") return cellValue == doubleValue;
+        if (op == "!=") return cellValue != doubleValue;
+        if (op == ">") return cellValue > doubleValue;
+        if (op == "<") return cellValue < doubleValue;
+        if (op == ">=") return cellValue >= doubleValue;
+        if (op == "<=") return cellValue <= doubleValue;
+    } else if (cell.getDataType() == DataType::BOOLEAN) {
+        bool cellValue = cell.getBoolean();
+        bool boolValue = (value == "true");
+        return (op == "=") ? (cellValue == boolValue) : (cellValue != boolValue);
+    } else {
+        if (op == "=") return cell.getString() == value;
+        if (op == "!=") return cell.getString() != value;
+        if (op == "LIKE") return cell.getString().findSubstring(value) != -1;
+    }
+    return false;
+}
+
+bool Database::evaluateComplexCondition( const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
+    if (condition_indices.get_size() == 0) return true;
+
+    bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
+
+    for (size_t i = 1; i < condition_indices.get_size(); i++) {
+        bool next_result = evaluateCondition(row[condition_indices[i]], condition_ops[i], condition_values[i]);
+        if (logical_ops[i - 1] == "AND") {
+            result = result && next_result;
+        } else if (logical_ops[i - 1] == "OR") {
+            result = result || next_result;
+        }
+    }
+    return result;
 }

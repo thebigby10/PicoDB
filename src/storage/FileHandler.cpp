@@ -28,7 +28,7 @@ String FileHandler::readFromFile() {
 }
 // Function to write data to a file (same as before)
 // The 'append' flag determines if the data should overwrite (false) or append (true) to the file
-void FileHandler::writeToFile(const String& data, bool append = false) {
+void FileHandler::writeToFile( const String& data, bool append) {
     std::ofstream fileStream;
 
     // Choose file mode based on append flag

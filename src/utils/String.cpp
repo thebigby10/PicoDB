@@ -1,6 +1,6 @@
 #include "../../include/PicoDB/String.h"
 
-String& String::operator=(const String& other) {
+String& String::operator=( const String& other) {
     if (this != &other) {
         delete[] data;
         size = other.size;
@@ -11,7 +11,7 @@ String& String::operator=(const String& other) {
 }
 
 // Overload the + operator to support concatenation (String + String)
-String String::operator+(const String& other) const {
+String String::operator+( const String& other)  const {
     String result;
     result.size = size + other.size;
     result.data = new char[result.size + 1];
@@ -21,13 +21,13 @@ String String::operator+(const String& other) const {
 }
 
 // Overload the += operator (String += String)
-String& String::operator+=(const String& other) {
+String& String::operator+=( const String& other) {
     *this = *this + other;
     return *this;
 }
 
-// Concatenation of String + const char*
-String String::operator+(const char* str) const {
+// Concatenation of String +   char*
+String String::operator+(const  char* str) const  {
     size_t str_len = strLength(str);
     size_t new_len = size + str_len;
     char* new_data = new char[new_len + 1];
@@ -39,21 +39,17 @@ String String::operator+(const char* str) const {
 }
 
 // Length of the string
-size_t String::length() const {
+size_t String::length() const  {
     return size;
 }
 
 // Direct character access
-char& String::operator[](size_t index) {
-    return data[index];
-}
-
-const char& String::operator[](size_t index) const {
+const char& String::operator[](size_t index)const {
     return data[index];
 }
 
 // Equality operator overloading
-bool String::operator==(const String& other) const {
+bool String::operator==( const String& other) const  {
     if (size != other.size) return false;
     for (size_t i = 0; i < size; ++i) {
         if (data[i] != other.data[i]) return false;
@@ -62,7 +58,7 @@ bool String::operator==(const String& other) const {
 }
 
 // Find a character in a string
-int String::find(char c) const {
+int String::find(char c) const  {
     for (size_t i = 0; i < size; ++i) {
         if (data[i] == c) return i;
     }
@@ -70,7 +66,7 @@ int String::find(char c) const {
 }
 
 // Find a substring
-int String::findSubstring(const String& substr) const {
+int String::findSubstring( const String& substr) const  {
     if (substr.size > size) return -1; // Substring larger than the string: not possible
 
     for (size_t i = 0; i <= size - substr.size; ++i) {
@@ -84,7 +80,7 @@ int String::findSubstring(const String& substr) const {
 }
 
 // Return substring
-String String::substr(size_t start, size_t sub_len) const {
+String String::substr(size_t start, size_t sub_len) const  {
     if (start >= size) return String(); // Out of bound, return empty
     if (start + sub_len > size) sub_len = size - start; // Resize if needed
 
@@ -106,7 +102,7 @@ void String::clear() {
 }
 
 // Trim leading and trailing spaces
-String String::trim() const {
+String String::trim() const  {
     size_t start = 0;
     while (start < size && data[start] == ' ') ++start;
 
@@ -125,7 +121,7 @@ String String::trim() const {
 }
 
 // Split string by delimiter
-String* String::split(char delimiter, size_t& count) const {
+String* String::split(char delimiter, size_t& count) const  {
     count = 1; // At least one substring exists: full string
     for (size_t i = 0; i < size; ++i) {
         if (data[i] == delimiter) ++count;
@@ -146,7 +142,7 @@ String* String::split(char delimiter, size_t& count) const {
 }
 
 // Join a vector of strings with a delimiter
-String String::join(const Vector<String>& vec, char d, size_t columnCount) {
+String String::join(const  Vector<String>& vec, char d, size_t columnCount) {
     if (vec.get_size() == 0) return "";  // Return empty string if the vector is empty
     String delimiter(1, d);
     String result = vec[0];  // Copy the first element
@@ -167,7 +163,7 @@ String String::join(const Vector<String>& vec, char d, size_t columnCount) {
 
     return result;
 }
-const char* String::c_str() const {
+const  char* String::c_str() const   {
     return data;  // Return the data pointer
 }
 
@@ -241,88 +237,3 @@ void reverse(char* str, size_t length) {
         --end;
     }
 }*/
-
-void String::reverse(char* str, size_t length) {
-        size_t start = 0;
-        size_t end = length - 1;
-        while (start < end) {
-            char temp = str[start];
-            str[start] = str[end];
-            str[end] = temp;
-            ++start;
-            --end;
-        }
-    }
-
-// Convert integer to String
-
-String String::toString(int num) {
-    bool isNegative = false;
-    if (num < 0) {
-        isNegative = true;
-        num = -num;
-    }
-
-    char buffer[20];  // Enough to store largest 32-bit int
-    size_t i = 0;
-
-    do {
-        buffer[i++] = (num % 10) + '0';
-        num /= 10;
-    } while (num > 0);
-
-    if (isNegative) {
-        buffer[i++] = '-';
-    }
-
-    buffer[i] = '\0';
-    String::reverse(buffer, i);
-
-    return String(buffer);
-}
-
-// Convert double to String (simple version)
-
-String String::toString(double num) {
-    bool isNegative = false;
-    if (num < 0) {
-        isNegative = true;
-        num = -num;
-    }
-
-    char buffer[40]; // Large enough to handle most doubles
-    size_t i = 0;
-
-    // Extract integer part
-    int integerPart = static_cast<int>(num);
-    double fractionalPart = num - integerPart;
-
-    // Convert integer part to string
-    do {
-        buffer[i++] = (integerPart % 10) + '0';
-        integerPart /= 10;
-    } while (integerPart > 0);
-
-    // Add negative sign if necessary
-    if (isNegative) {
-        buffer[i++] = '-';
-    }
-
-    // Reverse the integer part to get correct order
-    String::reverse(buffer, i);
-
-    // Add decimal point
-    buffer[i++] = '.';
-
-    // Convert fractional part to string (precision: 6 decimal places)
-    for (int j = 0; j < 6; ++j) {
-        fractionalPart *= 10;
-        int digit = static_cast<int>(fractionalPart);
-        buffer[i++] = digit + '0';
-        fractionalPart -= digit;
-    }
-
-    buffer[i] = '\0';  // Null-terminate the string
-
-    return String(buffer);
-}

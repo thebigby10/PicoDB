@@ -14,7 +14,7 @@
 #include "Map.h"
 
 class PicoDB{
-private:
+public:
 	Database db;
 
 public:
@@ -30,7 +30,7 @@ public:
 
 	bool createTable(String table_name, Vector<Vector<String>> col_data);
 
-	void update(String table_name, Vector<String>update_data, Vector<int >condition);
+	// void update(String table_name, Vector<String>update_data, Vector<int >condition);
 
 	// bool insertInto(String table_name, Vector<String> col_data, Vector<String> col_values);
 	bool insertInto(String table_name, Vector<String> col_names, Vector<String> values);

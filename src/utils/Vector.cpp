@@ -2,7 +2,7 @@
 
 // Vector assignment operator
 template<typename T>
-Vector<T>& Vector<T>::operator =(const Vector<T>& other) {
+Vector<T>& Vector<T>::operator =(  Vector<T>& other) {
     if (this != &other) {
         delete[] arr;
         size = other.size;
@@ -17,7 +17,7 @@ Vector<T>& Vector<T>::operator =(const Vector<T>& other) {
 
 // Push back an element to the vector
 template<typename T>
-void Vector<T>::push_back(const T& value) {
+void Vector<T>::push_back(  T& value) {
     if (size == capacity) {
         resize();
     }
@@ -26,7 +26,7 @@ void Vector<T>::push_back(const T& value) {
 
 // Add an element at a specific index
 template<typename T>
-void Vector<T>::add(size_t index, const T& value) {
+void Vector<T>::add(size_t index,   T& value) {
     if (index > size) {
         throw std::out_of_range("Index out of range");
     }
@@ -68,13 +68,13 @@ void Vector<T>::sort() {
 
 // Return the number of elements in the vector
 template<typename T>
-size_t Vector<T>::get_size() const {
+size_t Vector<T>::get_size()   {
     return size;
 }
 
 // Search for an element in the vector, returns the index or -1 if not found
 template<typename T>
-int Vector<T>::search(const T& value) const {
+int Vector<T>::search(  T& value)   {
     for (size_t i = 0; i < size; ++i) {
         if (arr[i] == value) {
             return i;
@@ -93,7 +93,7 @@ T& Vector<T>::at(size_t index) {
 }
 
 template<typename T>
-const T& Vector<T>::at(size_t index) const {
+  T& Vector<T>::at(size_t index)   {
     if (index >= size) {
         throw std::out_of_range("Index out of range");
     }
@@ -134,6 +134,6 @@ T& Vector<T>::operator[](size_t index) {
 }
 
 template<typename T>
-const T& Vector<T>::operator[](size_t index) const {
+  T& Vector<T>::operator[](size_t index)   {
     return at(index);
 }
