@@ -15,9 +15,6 @@ enum class DataType {
 
 class Cell{
 public:
-
-
-
     // Default constructor - compile hoy na naile, pore thik korte hobe
     Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {
         // Alternatively, you could set datatype to a more appropriate type if needed
@@ -37,29 +34,28 @@ public:
 	};
 	Cell(bool data){
 		this->data_b = data;
-
 		this->datatype = DataType::BOOLEAN;
 	};
 
     // Getters for each data type
-    DataType getDataType() const;
+    DataType getDataType() const {return datatype;}
 
-    int getInt() const;
+    int getInt() const {return data_i;}
 
-    double getDouble() const;
+    double getDouble() const {return data_d;}
 
-    String getString() const;
+    String getString() const {return data_s;}
 
-    bool getBoolean() const;
+    bool getBoolean() const {return data_b;}
 
 private:
-DataType datatype;
+	DataType datatype;
 	//data field:
 	int data_i;
 	double data_d;
 	String data_s;
 	bool data_b;
 	//implement date
-// Constrains constrains;
+    // Constrains constrains;
 };
 #endif
