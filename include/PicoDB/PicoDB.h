@@ -1,17 +1,17 @@
 #include<iostream>
 
 #include "../../src/Database.cpp"
-#include "../../src/Table.cpp"
-#include "../../src/Cell.cpp"
+#include "../src/PicoDB/Table.h"
+#include "../src/Cell.cpp"
 
-#include "../../src/FileHandler.cpp"
-#include "../../src/Encryptor.cpp"
+#include "../src/FileHandler.cpp"
+#include "../src/Encryptor.cpp"
 
-#include "../../src/Vector.cpp"
-// #include "../../src/Date.cpp"
+#include "../src/PicoDB/Vector.h"
+// #include "../src/Date.cpp"
 
-#include "../../src/String.cpp"
-//#include "../../src/Map.cpp"
+#include "../src/String.h"
+//#include "../src/Map.cpp"
 
 class PicoDB{
 private:
