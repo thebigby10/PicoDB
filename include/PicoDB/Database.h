@@ -11,7 +11,7 @@
 #include "ConfigManager.h"
 #include "StringVectorConverter.h"
 
-#define DEBUG true
+#define DEBUG false
 
 class Database{
 private:
