@@ -93,9 +93,9 @@ bool insertInto(String table_name, Vector<String> col_names, Vector<String> valu
 	}
 	*/
 	Table select(String table_name, Vector<String> cols, String condition){
-	   return db.select(table_name, cols, condition);
+	   return this->db.select(table_name, cols, condition);
 	}
 	void printTable(Table& table){
-	      db.printTable(table);
+	      this->db.printTable(table);
 	}
 };

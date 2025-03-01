@@ -14,15 +14,16 @@ int main(){
 
         // Insert sample data
         testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"1", "John", "20", "true"});
-        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Alice", "18", "false"});
-        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Bob", "22", "true"});
-        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"4", "Charlie", "19", "true"});
+        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Alice", "18", "true"});
 
         // Select records where age > 18 and name is NOT "Alice"
-        Table result = testdb.select("students", {"id", "name", "age"}, "age > 18 AND name != \"Alice\"");
+        Table result = testdb.select("students", {"id", "name", "age"}, "age = 18 AND id != 1");
 
         // Display the result
         testdb.printTable(result);
+
+        // testdb.saveDB();
+
 
         return 0;
 

@@ -11,6 +11,8 @@
 #include "ConfigManager.h"
 #include "StringVectorConverter.h"
 
+#define DEBUG true
+
 class Database{
 private:
 	String db_name;
@@ -373,25 +375,36 @@ public:
 	//getter for tables
 	Vector<Table>& get_tables() {
 		return tables;
-	}
+}
 
-	Table select(String table_name, Vector<String> cols, String condition) {
+Table select(String table_name, Vector<String> cols, String condition) {
+if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
     Table input_table;
     bool table_found = false;
 
     // Find the table by name
+
     for (int i = 0; i < tables.get_size(); i++) {
+    if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
         if (tables[i].getTableName() == table_name) {
             input_table = tables[i];
             table_found = true;
+            if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
             break;
         }
     }
+    if(DEBUG) cout<<endl;
 
     if (!table_found) {
         std::cerr << "Table not found: " << table_name << std::endl;
         return Table();
     }
+
+if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
+for (int i = 0; i < cols.get_size(); i++) {
+    std::cout << cols[i] << " ";
+}
+std::cout << std::endl<<std::endl;}
 
     // Store selected column indices
     Vector<int> selected_column_indices;
@@ -399,10 +412,12 @@ public:
         for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
             if (input_table.getHeaders()[j] == cols[i]) {
                 selected_column_indices.push_back(j);
+            if(DEBUG) cout << "[DEBUG] Column " << cols[i] << " found at index " << j << std::endl;
                 break;
             }
         }
     }
+    if(DEBUG) cout<<endl;
 
     // Parse complex conditions
     Vector<int> condition_indices;
@@ -410,7 +425,9 @@ public:
     Vector<String> condition_values;
     Vector<String> logical_ops;
 
-    if (condition != "") {
+
+// tokenize the conditions
+    if (condition != String("")) {
         Vector<String> tokens;
         String current_token;
         String op;
@@ -418,7 +435,6 @@ public:
 
         for (size_t i = 0; i < condition.length(); i++) {
             char c = condition[i];
-
             if (c == ' ' && !in_string) {
                 if (!current_token.trim().empty()) {
                     tokens.push_back(current_token.trim());
@@ -434,13 +450,20 @@ public:
             tokens.push_back(current_token.trim());
         }
 
+        bool expecting_value = false;  // Track when an operator is found
+
         for (size_t i = 0; i < tokens.get_size(); i++) {
             if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
                 logical_ops.push_back(tokens[i]);
-            } else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") || tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") || tokens[i] == String("LIKE")) {
+                expecting_value = false;  // Reset flag after logical operator
+            } else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
+                       tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
+                       tokens[i] == String("LIKE")) {
                 condition_ops.push_back(tokens[i]);
-            } else if (condition_ops.get_size() < condition_values.get_size()) {
+                expecting_value = true;  // Next token should be a value
+            } else if (expecting_value) {
                 condition_values.push_back(tokens[i]);
+                expecting_value = false;  // Reset flag after capturing a value
             } else {
                 for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
                     if (input_table.getHeaders()[j] == tokens[i]) {
@@ -450,6 +473,32 @@ public:
                 }
             }
         }
+if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
+std::cout << "[DEBUG] Parsed tokens: ";
+for (int i = 0; i < tokens.get_size(); i++) {
+    std::cout << tokens[i] << " ";
+}
+std::cout << std::endl;
+
+std::cout << "[DEBUG] Condition Indices: ";
+for (int i = 0; i < condition_indices.get_size(); i++) {
+    std::cout << condition_indices[i] << " ";
+}
+std::cout << std::endl;
+
+std::cout << "[DEBUG] Condition Operators: ";
+for (int i = 0; i < condition_ops.get_size(); i++) {
+    std::cout << condition_ops[i] << " ";
+}
+std::cout << std::endl;
+
+std::cout << "[DEBUG] Condition Values: ";
+for (int i = 0; i < condition_values.get_size(); i++) {
+    std::cout << condition_values[i] << " ";
+}
+std::cout << std::endl;
+}
+
     }
 
     // Apply condition filtering
@@ -478,9 +527,16 @@ public:
     }
     selected_table.updateRecords(selected_data);
 
+//debugging
+    // std::cout << "\tFiltering table: " << table_name << std::endl;
+    // std::cout << "\tCondition: " << condition << std::endl;
+    // std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
+
     return selected_table;
 }
 bool evaluateCondition(const Cell& cell, String op, String value) {
+    if(DEBUG) cout<<"INSIDE evaluateCondition"<<endl;
+    if(DEBUG) std::cout << "Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
     if (cell.getDataType() == DataType::INTEGER) {
         int cellValue = cell.getInt();
         int intValue = value.toInt();
@@ -512,6 +568,7 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 }
 
 bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
+    // cout<<"INSIDE evaluateComplexCondition \t"<<(condition_indices.get_size() == 0)<<endl;
     if (condition_indices.get_size() == 0) return true;
 
     bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
@@ -524,6 +581,7 @@ bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_ind
             result = result || next_result;
         }
     }
+
     return result;
 }
 

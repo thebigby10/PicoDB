@@ -307,6 +307,17 @@ public:
     bool empty() const {
         return size == 0;
     }
+
+    String operator+(char c) const {
+        size_t newSize = size + 1;
+        char* newData = new char[newSize + 1]; // +1 for null terminator
+
+        strCopy(newData, data); // Copy existing string
+        newData[size] = c;      // Append character
+        newData[newSize] = '\0'; // Null terminate
+
+        return String(newData);
+    }
 };
 
 // Helper function to reverse a char array (used in intToString and doubleToString)

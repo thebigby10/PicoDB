@@ -26,16 +26,20 @@ void testConcatenation() {
     String s2 = " World";
     String s3 = s1 + s2;
     assert(s3 == String("Hello World"));
-    
+
     s1 += "!!!";
     assert(s1 == String("Hello!!!"));
+
+    s1 = "Hello";
+    s1 = s1 + '!';
+    assert(s1 == String("Hello!"));
 }
 
 void testEquality() {
     String s1 = "test";
     String s2 = "test";
     String s3 = "different";
-    
+
     assert(s1 == s2);
     assert(!(s1 == s3));
 }
@@ -88,7 +92,7 @@ int main() {
     testTrim();
     testSplit();
     testConversion();
-    
+
     std::cout << "All String tests passed!" << std::endl;
     return 0;
 }
