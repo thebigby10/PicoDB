@@ -11,7 +11,8 @@
 #include "ConfigManager.h"
 #include "StringVectorConverter.h"
 
-#define DEBUG true
+#define DEBUG false
+
 
 class Database{
 private:
@@ -535,37 +536,48 @@ std::cout << std::endl;
     return selected_table;
 }
 bool evaluateCondition(const Cell& cell, String op, String value) {
-    if(DEBUG) cout<<"\n[DEBUG]evaluateCondition"<<endl;
-    if(DEBUG) std::cout << "[DEBUD]Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
-    if (cell.getDataType() == DataType::INTEGER) {
-        int cellValue = cell.getInt();
-        int intValue = value.toInt();
-        if (op == String("=")) return cellValue == intValue;
-        if (op == String("!=")) return cellValue != intValue;
-        if (op == String(">")) return cellValue > intValue;
-        if (op == String("<")) return cellValue < intValue;
-        if (op == String(">=")) return cellValue >= intValue;
-        if (op == String("<=")) return cellValue <= intValue;
-    } else if (cell.getDataType() == DataType::DOUBLE) {
-        double cellValue = cell.getDouble();
-        double doubleValue = value.toDouble();
-        if (op == String("=")) return cellValue == doubleValue;
-        if (op == String("!=")) return cellValue != doubleValue;
-        if (op == String(">")) return cellValue > doubleValue;
-        if (op == String("<")) return cellValue < doubleValue;
-        if (op == String(">=")) return cellValue >= doubleValue;
-        if (op == String("<=")) return cellValue <= doubleValue;
-    } else if (cell.getDataType() == DataType::BOOLEAN) {
-        bool cellValue = cell.getBoolean();
-        bool boolValue = (value == String("true"));
-        return (op == String("=")) ? (cellValue == boolValue) : (cellValue != boolValue);
-    } else {
-        if (op == String("=")) return cell.getString() == value;
-        if (op == String("!=")) return cell.getString() != value;
-        if (op == String("LIKE")) return cell.getString().findSubstring(value) != -1;
-    }
-    return false;
-}
+		if(DEBUG) {
+			std::cout << "[DEBUG] Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
+			std::cout << "[DEBUG] DataType: " << static_cast<int>(cell.getDataType()) << std::endl;
+		}
+
+		switch (cell.getDataType()) {
+			case DataType::INTEGER: {
+				int cellValue = cell.getInt();
+				int intValue = value.toInt();
+				return (op == String("=")) ? (cellValue == intValue) :
+				       (op == String("!=")) ? (cellValue != intValue) :
+				       (op == String(">")) ? (cellValue > intValue) :
+				       (op == String("<")) ? (cellValue < intValue) :
+				       (op == String(">=")) ? (cellValue >= intValue) :
+				       (op == String("<=")) ? (cellValue <= intValue) : false;
+			}
+			case DataType::DOUBLE: {
+				double cellValue = cell.getDouble();
+				double doubleValue = value.toDouble();
+				return (op == String("=")) ? (cellValue == doubleValue) :
+				       (op == String("!=")) ? (cellValue != doubleValue) :
+				       (op == String(">")) ? (cellValue > doubleValue) :
+				       (op == String("<")) ? (cellValue < doubleValue) :
+				       (op == String(">=")) ? (cellValue >= doubleValue) :
+				       (op == String("<=")) ? (cellValue <= doubleValue) : false;
+			}
+			case DataType::BOOLEAN: {
+				bool cellValue = cell.getBoolean();
+				bool boolValue = (value == String("true"));
+				return (op == String("=")) ? (cellValue == boolValue) :
+				       (op == String("!=")) ? (cellValue != boolValue) : false;
+			}
+			case DataType::STRING: {
+				return (op == String("=")) ? (cell.getString() == value) :
+				       (op == String("!=")) ? (cell.getString() != value) :
+				       (op == String("LIKE")) ? (cell.getString().findSubstring(value) != -1) : false;
+			}
+			default:
+				std::cerr << "[ERROR] Unknown DataType encountered!" << std::endl;
+				return false;
+		}
+	}
 
 bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
     // cout<<"INSIDE evaluateComplexCondition \t"<<endl;

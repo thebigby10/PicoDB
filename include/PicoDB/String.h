@@ -238,7 +238,7 @@ public:
         return data;  // Return the data pointer
     }
 
-    int toInt() {
+    int toInt() const{
         String str = data;
         int num = 0;
         bool isNegative = false;
@@ -262,7 +262,7 @@ public:
         return isNegative ? -num : num;
     }
     // Convert String to double
-    double toDouble() {
+    double toDouble() const{
         String str = data;
         double num = 0.0;
         bool isNegative = false;
