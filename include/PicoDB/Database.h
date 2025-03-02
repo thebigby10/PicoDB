@@ -11,7 +11,7 @@
 #include "ConfigManager.h"
 #include "StringVectorConverter.h"
 
-#define DEBUG false
+#define DEBUG true
 
 class Database{
 private:
@@ -535,8 +535,8 @@ std::cout << std::endl;
     return selected_table;
 }
 bool evaluateCondition(const Cell& cell, String op, String value) {
-    if(DEBUG) cout<<"INSIDE evaluateCondition"<<endl;
-    if(DEBUG) std::cout << "Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
+    if(DEBUG) cout<<"\n[DEBUG]evaluateCondition"<<endl;
+    if(DEBUG) std::cout << "[DEBUD]Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
     if (cell.getDataType() == DataType::INTEGER) {
         int cellValue = cell.getInt();
         int intValue = value.toInt();
@@ -568,11 +568,10 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 }
 
 bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
-    // cout<<"INSIDE evaluateComplexCondition \t"<<(condition_indices.get_size() == 0)<<endl;
+    // cout<<"INSIDE evaluateComplexCondition \t"<<endl;
     if (condition_indices.get_size() == 0) return true;
 
     bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
-
     for (size_t i = 1; i < condition_indices.get_size(); i++) {
         bool next_result = evaluateCondition(row[condition_indices[i]], condition_ops[i], condition_values[i]);
         if (logical_ops[i - 1] == String("AND")) {
@@ -581,7 +580,7 @@ bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_ind
             result = result || next_result;
         }
     }
-
+    if(DEBUG) cout<<"[DEBUG] Evaluation Result: "<<result<<endl;
     return result;
 }
 
