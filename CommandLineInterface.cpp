@@ -1,12 +1,12 @@
-#include <bits/stdc++.h>
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <filesystem>
 #include "include/PicoDB/PicoDB.h"
 
-
 using namespace std;
+namespace fs = std::filesystem;
 
 void printHelp() {
     cout << "Available commands:\n";
@@ -14,6 +14,7 @@ void printHelp() {
     cout << "  insert_into <table_name> <col1> <value1> <col2> <value2> ...\n";
     cout << "  select <table_name> <col1> <col2> ...\n";
     cout << "  save_db\n";
+    cout << "  list_databases\n";
     cout << "  help\n";
     cout << "  exit\n";
 }
@@ -83,6 +84,20 @@ void selectFromTable(PicoDB& db, const vector<string>& tokens) {
     db.printTable(result);
 }
 
+// Function to list available databases
+void listDatabases(const string& db_path) {
+    cout << "Available databases:\n";
+    try {
+        for (const auto& entry : fs::directory_iterator(db_path)) {
+            if (entry.is_directory()) {
+                cout << "  " << entry.path().filename().string() << "\n";
+            }
+        }
+    } catch (const fs::filesystem_error& e) {
+        cerr << "Error accessing directory: " << e.what() << "\n";
+    }
+}
+
 int main() {
     // Initialize PicoDB instance
     PicoDB db("studentdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");
@@ -111,6 +126,8 @@ int main() {
         } else if (command == "save_db") {
             db.saveDB();
             cout << "Database saved successfully.\n";
+        } else if (command == "list_databases") {
+            listDatabases("/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb");
         } else if (command == "help") {
             printHelp();
         } else if (command == "exit") {
