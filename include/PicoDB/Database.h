@@ -595,7 +595,10 @@ bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_ind
     if(DEBUG) cout<<"[DEBUG] Evaluation Result: "<<result<<endl;
     return result;
 }
-
-
+//getname function
+String get_db_name() const {
+    return db_name;
+}
 };
+
 #endif

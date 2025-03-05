@@ -98,4 +98,13 @@ bool insertInto(String table_name, Vector<String> col_names, Vector<String> valu
 	void printTable(Table& table){
 	      this->db.printTable(table);
 	}
+// Add these to your PicoDB class
+String getDBName() const {
+	return db.get_db_name();
+}
+
+Vector<Table>& getTables() {
+	return db.get_tables();
+}
+
 };
