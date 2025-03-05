@@ -12,27 +12,31 @@
 #include "ConfigManager.h"
 #include "StringVectorConverter.h"
 
-class Database {
+#define DEBUG false
+
+
+class Database{
 private:
 	String db_name;
 	String db_path;
+	String username;
 	String key;
 	String delimiter;
 	bool encryption = true;
 	String admin;
-	String currentUser; //need to modify database constructor, loadCurrentTables, and other things for this as per necessity
 	Vector<Table> tables;
 	Vector<Vector<String>> allUserPermissionsInfo; //needed for checking existing user permissions while adding users or granting permissions
-	Vector<String> currentUserPermissions; //needed for working with the current user permissions
-
+	Vector<String> currentUserPermissions;
+	// Vector<>permissions;
 public:
-	// Constructor
-	Database(String db_name, String db_path, String username, String key, String table_delimiter){
+
+	// Database(string db_name, bool force_create, bool encryption, string file_path )
+	Database(String db_name, String db_path, String username, String key, String table_delimiter = String(";_;pico;_;")){
 		this->db_name = db_name;
 		this->db_path = db_path;
-		this->currentUser = username;
+		this->username = username;
 		this->key = key;
-		this->delimiter = table_delimiter;
+		this->delimiter = delimiter;
 		this->admin = username;
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
@@ -191,7 +195,7 @@ public:
 
 	// Check if the current user is an admin
 	bool isAdmin() {
-		return this->currentUser == this->admin; // Compares the current user with the stored admin username
+		return this->username == this->admin; // Compares the current user with the stored admin username
 	}
 
 	// Save all table data to files
@@ -382,8 +386,8 @@ public:
 		return false;
 	}
 
-	// Print a specific table
-	void printTable(const Table& table) {
+	//function for printing a table
+	void printTable(Table& table) {
 		// Print table name
 		std::cout << "Table: " << table.getTableName() << std::endl;
 
@@ -504,148 +508,212 @@ public:
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
-	void select(String table_name, Vector<String> cols, String condition) {
-		Table input_table;
-		bool table_found = false;
+Table select(String table_name, Vector<String> cols, String condition) {
+if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
+    Table input_table;
+    bool table_found = false;
 
-		// Find the table by name
-		for (int i = 0; i < tables.get_size(); i++) {
-			if (tables[i].getTableName() == table_name) {
-				input_table = tables[i];
-				table_found = true;
-				break;
+    // Find the table by name
+
+    for (int i = 0; i < tables.get_size(); i++) {
+    if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
+        if (tables[i].getTableName() == table_name) {
+            input_table = tables[i];
+            table_found = true;
+            if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
+            break;
+        }
+    }
+    if(DEBUG) cout<<endl;
+
+    if (!table_found) {
+        std::cerr << "Table not found: " << table_name << std::endl;
+        return Table();
+    }
+
+if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
+for (int i = 0; i < cols.get_size(); i++) {
+    std::cout << cols[i] << " ";
+}
+std::cout << std::endl<<std::endl;}
+
+    // Store selected column indices
+    Vector<int> selected_column_indices;
+    for (int i = 0; i < cols.get_size(); i++) {
+        for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+            if (input_table.getHeaders()[j] == cols[i]) {
+                selected_column_indices.push_back(j);
+            if(DEBUG) cout << "[DEBUG] Column " << cols[i] << " found at index " << j << std::endl;
+                break;
+            }
+        }
+    }
+    if(DEBUG) cout<<endl;
+
+    // Parse complex conditions
+    Vector<int> condition_indices;
+    Vector<String> condition_ops;
+    Vector<String> condition_values;
+    Vector<String> logical_ops;
+
+
+// tokenize the conditions
+    if (condition != String("")) {
+        Vector<String> tokens;
+        String current_token;
+        String op;
+        bool in_string = false;
+
+        for (size_t i = 0; i < condition.length(); i++) {
+            char c = condition[i];
+            if (c == ' ' && !in_string) {
+                if (!current_token.trim().empty()) {
+                    tokens.push_back(current_token.trim());
+                    current_token.clear();
+                }
+            } else if (c == '"') {
+                in_string = !in_string;
+            } else {
+                current_token = current_token + c;
+            }
+        }
+        if (!current_token.empty()) {
+            tokens.push_back(current_token.trim());
+        }
+
+        bool expecting_value = false;  // Track when an operator is found
+
+        for (size_t i = 0; i < tokens.get_size(); i++) {
+            if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+                logical_ops.push_back(tokens[i]);
+                expecting_value = false;  // Reset flag after logical operator
+            } else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
+                       tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
+                       tokens[i] == String("LIKE")) {
+                condition_ops.push_back(tokens[i]);
+                expecting_value = true;  // Next token should be a value
+            } else if (expecting_value) {
+                condition_values.push_back(tokens[i]);
+                expecting_value = false;  // Reset flag after capturing a value
+            } else {
+                for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+                    if (input_table.getHeaders()[j] == tokens[i]) {
+                        condition_indices.push_back(j);
+                        break;
+                    }
+                }
+            }
+        }
+		if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
+			std::cout << "[DEBUG] Parsed tokens: ";
+			for (int i = 0; i < tokens.get_size(); i++) {
+				std::cout << tokens[i] << " ";
 			}
+			std::cout << std::endl;
+
+			std::cout << "[DEBUG] Condition Indices: ";
+			for (int i = 0; i < condition_indices.get_size(); i++) {
+				std::cout << condition_indices[i] << " ";
+			}
+			std::cout << std::endl;
+
+			std::cout << "[DEBUG] Condition Operators: ";
+			for (int i = 0; i < condition_ops.get_size(); i++) {
+				std::cout << condition_ops[i] << " ";
+			}
+			std::cout << std::endl;
+
+			std::cout << "[DEBUG] Condition Values: ";
+			for (int i = 0; i < condition_values.get_size(); i++) {
+				std::cout << condition_values[i] << " ";
+			}
+			std::cout << std::endl;
 		}
 
-		if (!table_found) {
-			std::cerr << "Table not found: " << table_name << std::endl;
-			//return Table();
-			return;
+    }
+
+    // Apply condition filtering
+    Vector<Vector<Cell>> filtered_data;
+    for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+        if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
+            filtered_data.push_back(input_table.getTableData()[i]);
+        }
+    }
+
+    // Create new table with selected columns
+    Table selected_table;
+    Vector<String> selected_headers;
+    for (int i = 0; i < selected_column_indices.get_size(); i++) {
+        selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
+    }
+    selected_table.setHeaders(selected_headers);
+
+    Vector<Vector<Cell>> selected_data;
+    for (int i = 0; i < filtered_data.get_size(); i++) {
+        Vector<Cell> row;
+        for (int j = 0; j < selected_column_indices.get_size(); j++) {
+            row.push_back(filtered_data[i][selected_column_indices[j]]);
+        }
+        selected_data.push_back(row);
+    }
+    selected_table.updateRecords(selected_data);
+
+//debugging
+    // std::cout << "\tFiltering table: " << table_name << std::endl;
+    // std::cout << "\tCondition: " << condition << std::endl;
+    // std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
+
+    return selected_table;
+}
+bool evaluateCondition(const Cell& cell, String op, String value) {
+		if(DEBUG) {
+			std::cout << "[DEBUG] Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
+			std::cout << "[DEBUG] DataType: " << static_cast<int>(cell.getDataType()) << std::endl;
 		}
 
-		// Store selected column indices
-		Vector<int> selected_column_indices;
-		for (int i = 0; i < cols.get_size(); i++) {
-			for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
-				if (input_table.getHeaders()[j] == cols[i]) {
-					selected_column_indices.push_back(j);
-					break;
-				}
+		switch (cell.getDataType()) {
+			case DataType::INTEGER: {
+				int cellValue = cell.getInt();
+				int intValue = value.toInt();
+				return (op == String("=")) ? (cellValue == intValue) :
+				       (op == String("!=")) ? (cellValue != intValue) :
+				       (op == String(">")) ? (cellValue > intValue) :
+				       (op == String("<")) ? (cellValue < intValue) :
+				       (op == String(">=")) ? (cellValue >= intValue) :
+				       (op == String("<=")) ? (cellValue <= intValue) : false;
 			}
+			case DataType::DOUBLE: {
+				double cellValue = cell.getDouble();
+				double doubleValue = value.toDouble();
+				return (op == String("=")) ? (cellValue == doubleValue) :
+				       (op == String("!=")) ? (cellValue != doubleValue) :
+				       (op == String(">")) ? (cellValue > doubleValue) :
+				       (op == String("<")) ? (cellValue < doubleValue) :
+				       (op == String(">=")) ? (cellValue >= doubleValue) :
+				       (op == String("<=")) ? (cellValue <= doubleValue) : false;
+			}
+			case DataType::BOOLEAN: {
+				bool cellValue = cell.getBoolean();
+				bool boolValue = (value == String("true"));
+				return (op == String("=")) ? (cellValue == boolValue) :
+				       (op == String("!=")) ? (cellValue != boolValue) : false;
+			}
+			case DataType::STRING: {
+				return (op == String("=")) ? (cell.getString() == value) :
+				       (op == String("!=")) ? (cell.getString() != value) :
+				       (op == String("LIKE")) ? (cell.getString().findSubstring(value) != -1) : false;
+			}
+			default:
+				std::cerr << "[ERROR] Unknown DataType encountered!" << std::endl;
+				return false;
 		}
-
-		// Parse complex conditions
-		Vector<int> condition_indices;
-		Vector<String> condition_ops;
-		Vector<String> condition_values;
-		Vector<String> logical_ops;
-
-		if (condition != "") {
-			Vector<String> tokens;
-			String current_token;
-			String op;
-			bool in_string = false;
-
-			for (size_t i = 0; i < condition.length(); i++) {
-				char c = condition[i];
-
-				if (c == ' ' && !in_string) {
-					if (!current_token.trim().empty()) {
-						tokens.push_back(current_token.trim());
-						current_token.clear();
-					}
-				} else if (c == '"') {
-					in_string = !in_string;
-				} else {
-					current_token = current_token + c;
-				}
-			}
-			if (!current_token.empty()) {
-				tokens.push_back(current_token.trim());
-			}
-
-			for (size_t i = 0; i < tokens.get_size(); i++) {
-				if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
-					logical_ops.push_back(tokens[i]);
-				} else if (tokens[i] == String("=") || tokens[i] == String("!=") ||
-						tokens[i] == String(">") || tokens[i] == String("<") ||
-						tokens[i] == String(">=") || tokens[i] == String("<=") ||
-						tokens[i] == String("LIKE")) {
-					condition_ops.push_back(tokens[i]);
-				} else if (condition_ops.get_size() < condition_values.get_size()) {
-					condition_values.push_back(tokens[i]);
-				}
-			}
-		}
-
-		// Apply condition filtering
-		Vector<Vector<Cell>> filtered_data;
-		for (int i = 0; i < input_table.getTableData().get_size(); i++) {
-			if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
-				filtered_data.push_back(input_table.getTableData()[i]);
-			}
-		}
-
-		// Create new table with selected columns
-		Table selected_table;
-		Vector<String> selected_headers;
-		for (int i = 0; i < selected_column_indices.get_size(); i++) {
-			selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
-		}
-		selected_table.setHeaders(selected_headers);
-
-		Vector<Vector<Cell>> selected_data;
-		for (int i = 0; i < filtered_data.get_size(); i++) {
-			Vector<Cell> row;
-			for (int j = 0; j < selected_column_indices.get_size(); j++) {
-				row.push_back(filtered_data[i][selected_column_indices[j]]);
-			}
-			selected_data.push_back(row);
-		}
-		selected_table.updateRecords(selected_data);
-
-		// Print the selected table
-        printTable(selected_table);
-
-		//return selected_table;
 	}
 
-	bool evaluateCondition( const Cell& cell, String op, String value) {
-		if (cell.getDataType() == DataType::INTEGER) {
-			int cellValue = cell.getInt();
-			int intValue = value.toInt();
-			if (op == String("=")) return cellValue == intValue;
-			if (op == String("!=")) return cellValue != intValue;
-			if (op == String(">")) return cellValue > intValue;
-			if (op == String("<")) return cellValue < intValue;
-			if (op == String(">=")) return cellValue >= intValue;
-			if (op == String("<=")) return cellValue <= intValue;
-		} else if (cell.getDataType() == DataType::DOUBLE) {
-			double cellValue = cell.getDouble();
-			double doubleValue = value.toDouble();
-			if (op == String("=")) return cellValue == doubleValue;
-			if (op == String("!=")) return cellValue != doubleValue;
-			if (op == String(">")) return cellValue > doubleValue;
-			if (op == String("<")) return cellValue < doubleValue;
-			if (op == String(">=")) return cellValue >= doubleValue;
-			if (op == String("<=")) return cellValue <= doubleValue;
-		} else if (cell.getDataType() == DataType::BOOLEAN) {
-			bool cellValue = cell.getBoolean();
-			bool boolValue = (value == String("true"));
-			return (op == String("=")) ? (cellValue == boolValue) : (cellValue != boolValue);
-		} else {
-			if (op == String("=")) return cell.getString() == value;
-			if (op == String("!=")) return cell.getString() != value;
-			if (op == String("LIKE")) return cell.getString().findSubstring(value) != -1;
-		}
-		return false;
-	}
-
-	bool evaluateComplexCondition( const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
+	bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
+		// cout<<"INSIDE evaluateComplexCondition \t"<<endl;
 		if (condition_indices.get_size() == 0) return true;
 
 		bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
-
 		for (size_t i = 1; i < condition_indices.get_size(); i++) {
 			bool next_result = evaluateCondition(row[condition_indices[i]], condition_ops[i], condition_values[i]);
 			if (logical_ops[i - 1] == String("AND")) {
@@ -654,6 +722,7 @@ public:
 				result = result || next_result;
 			}
 		}
+		if(DEBUG) cout<<"[DEBUG] Evaluation Result: "<<result<<endl;
 		return result;
 	}
 
@@ -662,5 +731,4 @@ public:
 	Vector<Vector<String>>& get_allUserPermissionsInfo() {return allUserPermissionsInfo;}
 	Vector<String>& get_currentUserPermissions() {return currentUserPermissions;}
 };
-
-#endif // DATABASE_H
+#endif

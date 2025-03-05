@@ -70,20 +70,18 @@ public:
 		String data("");
 		int num_rows = vec_data.get_size();
 		int num_columns = 0;
-		// if(vec_data.get_size()>0)
-		// 	num_columns = vec_data[0].get_size();
+		if(vec_data.get_size()>0)
+			num_columns = vec_data[0].get_size();
 
 		//extract a single line from a 1D Vector
 		for (int i=0; i<num_rows; i++) {
-			num_columns = vec_data[i].get_size();
             int j=0;
-			if (j != num_columns-1) {
-				for(j; j<num_columns-1; j++) {
+            for(j; j<num_columns-1; j++) {
                 data += vec_data[i][j];
                 data += String(delimiter);
             }
 			data += vec_data[i][j];
-			if (i!=num_rows-1) data += String("\n");
+			if (i!=num_rows-1) {data += String("\n");
 			} else {
 				data += vec_data[i][j];
 				if (i!=num_rows-1) data += String("\n");

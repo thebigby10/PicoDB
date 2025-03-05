@@ -30,8 +30,8 @@ public:
 		return true;
 	}
 
-    void select(String table_name, Vector<String> cols, String condition) {
-        this->db.select(table_name, cols, condition);
+    Table select(String table_name, Vector<String> cols, String condition) {
+        return this->db.select(table_name, cols, condition);
     }
 
     bool insertInto(String table_name, Vector<String> col_names, Vector<String> values) {
@@ -58,9 +58,11 @@ public:
         return true;
     }
 
-// bool dropTable(){
+    void printTable(Table& table){
+        this->db.printTable(table);
+	}
+    // bool dropTable(){}
 
-// }
 };
 
 #endif // PICODB_H

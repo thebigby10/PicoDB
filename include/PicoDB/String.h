@@ -276,7 +276,7 @@ public:
         return data;  // Return the data pointer
     }
 
-    int toInt() {
+    int toInt() const{
         String str = data;
         int num = 0;
         bool isNegative = false;
@@ -300,7 +300,7 @@ public:
         return isNegative ? -num : num;
     }
     // Convert String to double
-    double toDouble() {
+    double toDouble() const{
         String str = data;
         double num = 0.0;
         bool isNegative = false;
@@ -340,7 +340,6 @@ public:
         }
         return false;
     }
-
     // Helper function to reverse a char array (used in intToString and doubleToString)
     static void reverse(char* str, size_t length);
 
@@ -348,6 +347,17 @@ public:
     static String toString(double num);
     static String toString(bool val) {
         return val ? String("true") : String("false");
+    }
+
+    String operator+(char c) const {
+        size_t newSize = size + 1;
+        char* newData = new char[newSize + 1]; // +1 for null terminator
+
+        strCopy(newData, data); // Copy existing string
+        newData[size] = c;      // Append character
+        newData[newSize] = '\0'; // Null terminate
+
+        return String(newData);
     }
 };
 
