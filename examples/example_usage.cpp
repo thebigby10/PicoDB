@@ -18,7 +18,7 @@ int main(){
         // testdb.insertInto(String table_name, Vector<String> col_names, Vector<String> values)
 
         // Select records where age > 18 and name is NOT "Alice"
-        Table result = testdb.select("students", {"id", "name", "age"}, "age > 18");
+        Table result = testdb.select("students", {"id", "name", "age"}, "");
 
         // Display the result
         testdb.printTable(result);
