@@ -191,65 +191,50 @@ public:
 	}
 
 	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
-		int tables_num = tables.get_size();
+    // Find the corresponding table
+    Table* table = nullptr;
+    for (int i = 0; i < tables.get_size(); ++i) {
+        if (tables[i].getTableName() == table_name) {
+            table = &tables[i];
+            break;
+        }
+    }
 
-		for (int i = 0; i < tables_num; i++) {
-			if (table_name == tables[i].getTableName()) {
-				Vector<String> data_types = tables[i].getDataTypes();
-				Vector<String> headers = tables[i].getHeaders();
-				int num_of_columns = headers.get_size();
+    if (!table) {
+        std::cerr << "Table not found: " << table_name << std::endl;
+        return false;
+    }
 
-				// Check if cols and cell_data match the table's headers
-				if (cols.get_size() != cell_data.get_size() || cols.get_size() > num_of_columns) {
-					cout << "Error: Column and data size mismatch." << endl;
-					cout << "Expected columns: " << num_of_columns << ", but got: " << cols.get_size() << endl;
-					return false;
-				}
+    // Check primary key constraint
+    Vector<Cell> row;
+    for (int i = 0; i < cols.get_size(); ++i) {
+        row.push_back(Cell(cell_data[i]));  // Assuming all values are strings
+    }
 
-				Vector<Cell> single_line_cell_data;
+    if (table->primaryKeyExists(row)) {
+        std::cerr << "Error: Duplicate primary key value." << std::endl;
+        return false;
+    }
 
-				for (int j = 0; j < num_of_columns; j++) {
-					bool column_matched = false;
+    // Check foreign key constraints
+    for (int i = 0; i < cols.get_size(); ++i) {
+        for (int j = 0; j < table->getForeignKeyIndices().get_size(); ++j) {
+            auto& fk = table->getForeignKeyIndices()[j];  // Access the foreign key pair
+            if (fk.first == i) { // If the column is a foreign key
+                if (!table->foreignKeyExists(i, cell_data[i])) {
+                    std::cerr << "Error: Foreign key constraint failed for column: " << cols[i] << std::endl;
+                    return false;
+                }
+            }
+        }
+    }
 
-					// Check if headers[j] exists in cols
-					for (int k = 0; k < cols.get_size(); k++) {
-						if (headers[j] == cols[k]) {
-							column_matched = true;
+    // If no violations, insert the data
+    table->updateSingleRecord(row);
+    return true;
+}
 
-							// Debug output
-							cout << "Matching column " << headers[j] << " with data " << cell_data[k] << endl;
 
-							// Add cell data according to the data type
-							if (data_types[j] == String("INT")) {
-								single_line_cell_data.push_back(Cell(cell_data[k].toInt()));
-							} else if (data_types[j] == String("DOUBLE")) {
-								single_line_cell_data.push_back(Cell(cell_data[k].toDouble()));
-							} else if (data_types[j] == String("BOOLEAN")) {
-								//single_line_cell_data.push_back(Cell(cell_data[k].toBool()));
-							} else {
-								single_line_cell_data.push_back(Cell(cell_data[k]));
-							}
-							break;
-						}
-					}
-
-					// If column not found in cols, add a default value or handle as needed
-					if (!column_matched) {
-						cout << "Warning: Column " << headers[j] << " not found in input cols. Adding default value." << endl;
-						single_line_cell_data.push_back(Cell());  // Assuming default constructor in Cell
-					}
-				}
-
-				// Update the table with the new row data
-				tables[i].updateSingleRecord(single_line_cell_data);
-				return true;  // Insertion successful
-			}
-		}
-
-		// Table not found
-		cout << "Error: Table " << table_name << " not found." << endl;
-		return false;
-	}
 
 	//function for printing a table
 	void printTable(Table& table) {
