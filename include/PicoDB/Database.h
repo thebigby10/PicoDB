@@ -190,7 +190,7 @@ public:
 		//saveDBMetaData();
 	}
 
-	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
+bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
     // Find the corresponding table
     Table* table = nullptr;
     for (int i = 0; i < tables.get_size(); ++i) {
@@ -205,35 +205,50 @@ public:
         return false;
     }
 
-    // Check primary key constraint
+    // Prepare the row of cells
     Vector<Cell> row;
     for (int i = 0; i < cols.get_size(); ++i) {
-        row.push_back(Cell(cell_data[i]));  // Assuming all values are strings
+        row.push_back(Cell(cell_data[i]));  // Assuming all values are strings (can be enhanced based on types)
     }
 
-    if (table->primaryKeyExists(row)) {
-        std::cerr << "Error: Duplicate primary key value." << std::endl;
-        return false;
+    // 1. Check Primary Key Constraints (ensure no duplicate primary key)
+    Vector<int> primary_key_indices = table->getPrimaryKeyIndices();
+    std::cout << "Primary Key Indices: " << primary_key_indices.get_size() << std::endl; // Debugging
+
+    for (int i = 0; i < primary_key_indices.get_size(); ++i) {
+        int pk_index = primary_key_indices[i];
+        if (pk_index >= cols.get_size()) {
+            std::cerr << "Error: Primary key index out of bounds!" << std::endl;
+            return false;  // Index out of bounds
+        }
+
+        std::cout << "Checking primary key at index: " << pk_index << std::endl;  // Debugging
+        for (int j = 0; j < table->getTableData().get_size(); ++j) {
+            if (table->getTableData()[j][pk_index].getString() == row[pk_index].getString()) {
+                std::cerr << "Error: Duplicate primary key value for column " << cols[pk_index] << std::endl;
+                return false;  // Duplicate primary key found, abort insertion
+            }
+        }
     }
 
-    // Check foreign key constraints
+    // 2. Check Foreign Key Constraints
+    Vector<pair<int, String>> foreign_key_indices = table->getForeignKeyIndices();
     for (int i = 0; i < cols.get_size(); ++i) {
-        for (int j = 0; j < table->getForeignKeyIndices().get_size(); ++j) {
-            auto& fk = table->getForeignKeyIndices()[j];  // Access the foreign key pair
+        for (int j = 0; j < foreign_key_indices.get_size(); ++j) {
+            auto& fk = foreign_key_indices[j];  // Access the foreign key pair
             if (fk.first == i) { // If the column is a foreign key
                 if (!table->foreignKeyExists(i, cell_data[i])) {
-                    std::cerr << "Error: Foreign key constraint failed for column: " << cols[i] << std::endl;
-                    return false;
+                    std::cerr << "Error: Foreign key constraint failed for column " << cols[i] << " with value " << cell_data[i] << std::endl;
+                    return false;  // Foreign key value not found in the referenced table
                 }
             }
         }
     }
 
-    // If no violations, insert the data
+    // 3. If no constraint violations, insert the data into the table
     table->updateSingleRecord(row);
     return true;
 }
-
 
 
 	//function for printing a table
