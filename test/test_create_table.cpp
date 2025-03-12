@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "../include/PicoDB/PicoDB.h"
-#include "../CommandLineInterface.cpp"
+
 
 TEST(CreateTableTest, BasicAssertions) {
     // Initialize PicoDB instance
@@ -39,4 +39,3 @@ int main(int argc, char **argv) {
   -I/opt/homebrew/include \
   -L/opt/homebrew/lib \
   -lgtest -lgtest_main -pthread
-
