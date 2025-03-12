@@ -153,6 +153,30 @@ examples/example_usage.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/examples/example_usage.cpp.s
 .PHONY : examples/example_usage.cpp.s
 
+src/Database.o: src/Database.cpp.o
+.PHONY : src/Database.o
+
+# target to build an object file
+src/Database.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/Database.cpp.o
+.PHONY : src/Database.cpp.o
+
+src/Database.i: src/Database.cpp.i
+.PHONY : src/Database.i
+
+# target to preprocess a source file
+src/Database.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/Database.cpp.i
+.PHONY : src/Database.cpp.i
+
+src/Database.s: src/Database.cpp.s
+.PHONY : src/Database.s
+
+# target to generate assembly for a file
+src/Database.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/Database.cpp.s
+.PHONY : src/Database.cpp.s
+
 src/PicoDB.o: src/PicoDB.cpp.o
 .PHONY : src/PicoDB.o
 
@@ -453,6 +477,9 @@ help:
 	@echo "... examples/example_usage.o"
 	@echo "... examples/example_usage.i"
 	@echo "... examples/example_usage.s"
+	@echo "... src/Database.o"
+	@echo "... src/Database.i"
+	@echo "... src/Database.s"
 	@echo "... src/PicoDB.o"
 	@echo "... src/PicoDB.i"
 	@echo "... src/PicoDB.s"

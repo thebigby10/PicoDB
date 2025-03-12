@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/examples/example_usage.cpp" "CMakeFiles/example_usage.dir/examples/example_usage.cpp.o" "gcc" "CMakeFiles/example_usage.dir/examples/example_usage.cpp.o.d"
+  "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/Database.cpp" "CMakeFiles/example_usage.dir/src/Database.cpp.o" "gcc" "CMakeFiles/example_usage.dir/src/Database.cpp.o.d"
   "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/PicoDB.cpp" "CMakeFiles/example_usage.dir/src/PicoDB.cpp.o" "gcc" "CMakeFiles/example_usage.dir/src/PicoDB.cpp.o.d"
   "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/Cell.cpp" "CMakeFiles/example_usage.dir/src/core/Cell.cpp.o" "gcc" "CMakeFiles/example_usage.dir/src/core/Cell.cpp.o.d"
   "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/ConfigManager.cpp" "CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o" "gcc" "CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o.d"

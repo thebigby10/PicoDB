@@ -83,10 +83,24 @@ CMakeFiles/example_usage.dir/examples/example_usage.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/example_usage.dir/examples/example_usage.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/examples/example_usage.cpp" -o CMakeFiles/example_usage.dir/examples/example_usage.cpp.s
 
+CMakeFiles/example_usage.dir/src/Database.cpp.o: CMakeFiles/example_usage.dir/flags.make
+CMakeFiles/example_usage.dir/src/Database.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/Database.cpp
+CMakeFiles/example_usage.dir/src/Database.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/example_usage.dir/src/Database.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/Database.cpp.o -MF CMakeFiles/example_usage.dir/src/Database.cpp.o.d -o CMakeFiles/example_usage.dir/src/Database.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/Database.cpp"
+
+CMakeFiles/example_usage.dir/src/Database.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/example_usage.dir/src/Database.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/Database.cpp" > CMakeFiles/example_usage.dir/src/Database.cpp.i
+
+CMakeFiles/example_usage.dir/src/Database.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/example_usage.dir/src/Database.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/Database.cpp" -o CMakeFiles/example_usage.dir/src/Database.cpp.s
+
 CMakeFiles/example_usage.dir/src/PicoDB.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/PicoDB.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/PicoDB.cpp
 CMakeFiles/example_usage.dir/src/PicoDB.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/example_usage.dir/src/PicoDB.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/example_usage.dir/src/PicoDB.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/PicoDB.cpp.o -MF CMakeFiles/example_usage.dir/src/PicoDB.cpp.o.d -o CMakeFiles/example_usage.dir/src/PicoDB.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/PicoDB.cpp"
 
 CMakeFiles/example_usage.dir/src/PicoDB.cpp.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/example_usage.dir/src/PicoDB.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/core/Cell.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/core/Cell.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/core/Cell.cpp
 CMakeFiles/example_usage.dir/src/core/Cell.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/example_usage.dir/src/core/Cell.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/example_usage.dir/src/core/Cell.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/core/Cell.cpp.o -MF CMakeFiles/example_usage.dir/src/core/Cell.cpp.o.d -o CMakeFiles/example_usage.dir/src/core/Cell.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/Cell.cpp"
 
 CMakeFiles/example_usage.dir/src/core/Cell.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/example_usage.dir/src/core/Cell.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/core/ConfigManager.cpp
 CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o -MF CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o.d -o CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/ConfigManager.cpp"
 
 CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/core/Database.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/core/Database.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/core/Database.cpp
 CMakeFiles/example_usage.dir/src/core/Database.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/example_usage.dir/src/core/Database.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/example_usage.dir/src/core/Database.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/core/Database.cpp.o -MF CMakeFiles/example_usage.dir/src/core/Database.cpp.o.d -o CMakeFiles/example_usage.dir/src/core/Database.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/Database.cpp"
 
 CMakeFiles/example_usage.dir/src/core/Database.cpp.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/example_usage.dir/src/core/Database.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/core/Table.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/core/Table.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/core/Table.cpp
 CMakeFiles/example_usage.dir/src/core/Table.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/example_usage.dir/src/core/Table.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/example_usage.dir/src/core/Table.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/core/Table.cpp.o -MF CMakeFiles/example_usage.dir/src/core/Table.cpp.o.d -o CMakeFiles/example_usage.dir/src/core/Table.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/core/Table.cpp"
 
 CMakeFiles/example_usage.dir/src/core/Table.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/example_usage.dir/src/core/Table.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/storage/Encryptor.cpp
 CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o -MF CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o.d -o CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/storage/Encryptor.cpp"
 
 CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/storage/FileHandler.cpp
 CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o -MF CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o.d -o CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/storage/FileHandler.cpp"
 
 CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/utils/Date.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/utils/Date.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/utils/Date.cpp
 CMakeFiles/example_usage.dir/src/utils/Date.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Date.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Date.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/utils/Date.cpp.o -MF CMakeFiles/example_usage.dir/src/utils/Date.cpp.o.d -o CMakeFiles/example_usage.dir/src/utils/Date.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/utils/Date.cpp"
 
 CMakeFiles/example_usage.dir/src/utils/Date.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/example_usage.dir/src/utils/Date.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/utils/Map.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/utils/Map.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/utils/Map.cpp
 CMakeFiles/example_usage.dir/src/utils/Map.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Map.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/utils/Map.cpp.o -MF CMakeFiles/example_usage.dir/src/utils/Map.cpp.o.d -o CMakeFiles/example_usage.dir/src/utils/Map.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/utils/Map.cpp"
 
 CMakeFiles/example_usage.dir/src/utils/Map.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/example_usage.dir/src/utils/Map.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/utils/String.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/utils/String.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/utils/String.cpp
 CMakeFiles/example_usage.dir/src/utils/String.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/example_usage.dir/src/utils/String.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/example_usage.dir/src/utils/String.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/utils/String.cpp.o -MF CMakeFiles/example_usage.dir/src/utils/String.cpp.o.d -o CMakeFiles/example_usage.dir/src/utils/String.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/utils/String.cpp"
 
 CMakeFiles/example_usage.dir/src/utils/String.cpp.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/example_usage.dir/src/utils/String.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/utils/StringVectorConverter.cpp
 CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o -MF CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o.d -o CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/utils/StringVectorConverter.cpp"
 
 CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.s: cmake_force
 CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o: CMakeFiles/example_usage.dir/flags.make
 CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o: /Users/musaddiqrafi/Desktop/codes/3rdSem/SPL\ project/PicoDB/src/utils/Vector.cpp
 CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o: CMakeFiles/example_usage.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o -MF CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o.d -o CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o -c "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/src/utils/Vector.cpp"
 
 CMakeFiles/example_usage.dir/src/utils/Vector.cpp.i: cmake_force
@@ -254,6 +268,7 @@ CMakeFiles/example_usage.dir/src/utils/Vector.cpp.s: cmake_force
 # Object files for target example_usage
 example_usage_OBJECTS = \
 "CMakeFiles/example_usage.dir/examples/example_usage.cpp.o" \
+"CMakeFiles/example_usage.dir/src/Database.cpp.o" \
 "CMakeFiles/example_usage.dir/src/PicoDB.cpp.o" \
 "CMakeFiles/example_usage.dir/src/core/Cell.cpp.o" \
 "CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o" \
@@ -271,6 +286,7 @@ example_usage_OBJECTS = \
 example_usage_EXTERNAL_OBJECTS =
 
 example_usage: CMakeFiles/example_usage.dir/examples/example_usage.cpp.o
+example_usage: CMakeFiles/example_usage.dir/src/Database.cpp.o
 example_usage: CMakeFiles/example_usage.dir/src/PicoDB.cpp.o
 example_usage: CMakeFiles/example_usage.dir/src/core/Cell.cpp.o
 example_usage: CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o
@@ -285,7 +301,7 @@ example_usage: CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.
 example_usage: CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o
 example_usage: CMakeFiles/example_usage.dir/build.make
 example_usage: CMakeFiles/example_usage.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable example_usage"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable example_usage"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/example_usage.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
