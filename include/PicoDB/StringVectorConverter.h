@@ -15,7 +15,7 @@ public:
 		int start_pos = 0;
 		int str_length = data.length();
 
-		while (start_pos < str_length) {
+		while (start_pos < str_length -1) {
 			// Find the end of the current line
 			int end_pos = start_pos;
 			while (end_pos < str_length && data[end_pos] != '\n') {

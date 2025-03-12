@@ -3,7 +3,7 @@
 
 int main() {
     // Initialize Database
-    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "rapi", "5", ",");
+    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
 
     // Create a table
     // zawadDB.createTable("students", {
@@ -16,9 +16,21 @@ int main() {
     // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
 
     // Print full table (no condition)
-    std::cout << "🔹 SELECT * FROM students;" << std::endl;
-    Table result1 = zawadDB.select("teachers", {"id", "name", "salary", "is_employed"}, "");
-    zawadDB.printTable(result1);
+    // std::cout << "🔹 SELECT * FROM students;" << std::endl;
+    // Table result1 = zawadDB.select("students", {"id", "name", "salary", "is_employed"}, "");
+    // zawadDB.printTable(result1);
+
+    // // Create a table BY NON ADMIN USER
+    // zawadDB.createTable("department", {
+    //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}
+    // });
+
+    // // Insert some data in new table by NON ADMIN USER
+    // zawadDB.insertInto("department", {"id", "name"}, {"1", "Mechanical"});
+    // zawadDB.insertInto("department", {"id", "name"}, {"2", "Computer Science"});
+    // zawadDB.insertInto("department", {"id", "name"}, {"3", "Electrical"});  
+
+
 
     // // Select with condition: age > 18
     // std::cout << "\n🔹 SELECT id, name FROM students WHERE age > 18;" << std::endl;
@@ -55,7 +67,7 @@ int main() {
     // std::cout << "\n🔹 Add new user named rapi with permissions on teachers" << std::endl;
 	// zawadDB.grantPermission("utsho", "teachers");
     // std::cout << "\n🔹 Granted access permissions on teachers to user utsho " << std::endl;
-	//testDB.revokePermission("utsho", "teachers");
+	zawadDB.revokePermission("utsho", "teachers");
 
     zawadDB.saveDB();
 
