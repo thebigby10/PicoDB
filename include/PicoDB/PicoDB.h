@@ -26,8 +26,7 @@ public:
 	// }
 
     bool createTable(String table_name, Vector<Vector<String>> col_data){
-		this->db.get_tables().push_back(Table(table_name, col_data));
-		return true;
+		return this->db.createTable(table_name, col_data);
 	}
 
     Table select(String table_name, Vector<String> cols, String condition) {

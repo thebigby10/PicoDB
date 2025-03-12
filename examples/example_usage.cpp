@@ -2,7 +2,7 @@
 
 int main(){
     // Initialize PicoDB instance
-        PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "admin", ",");
+        PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
 
         // Create Table
         zawadDB.createTable("students", {

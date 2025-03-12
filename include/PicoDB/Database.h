@@ -36,8 +36,9 @@ public:
 		this->db_path = db_path;
 		this->username = username;
 		this->key = key;
-		this->delimiter = delimiter;
+		this->delimiter = table_delimiter;
 		this->admin = username;
+
 		//check if file exists
 		FileHandler conf_file = FileHandler(db_path+String("/")+db_name+String(".config")); //path to config file
 		if(conf_file.fileExists()){
@@ -80,6 +81,35 @@ public:
 			ConfigManager conf_manager(db_path+String("/")+db_name+".config");
 			conf_manager.createConfig(db_name,table_delimiter,username, true);
 		}
+	}
+
+	bool createTable(String table_name, Vector<Vector<String>> col_data){
+		// check if user already has accecss to table
+		if (!isAdmin()) {
+			int current_permission_size = currentUserPermissions.get_size();
+			bool table_in_current_permissions = true;
+			for (int i=0; i<current_permission_size; i++) {
+				if (currentUserPermissions[i] == table_name) {
+					table_in_current_permissions = false;
+					currentUserPermissions.push_back(table_name);
+					break;
+				}
+			}
+
+			if (!table_in_current_permissions) {
+				// update the allUserPermissionsInfo
+				int all_user_permissions_size = allUserPermissionsInfo.get_size();
+				for (int i=0; i<all_user_permissions_size; i+=2) {
+					if (allUserPermissionsInfo[i][0] == username) {
+						allUserPermissionsInfo[i+1].push_back(table_name);
+						break;
+					}
+				}
+			}
+		}
+
+		tables.push_back(Table(table_name, col_data));
+		return true;
 	}
 
     void update(String table_name, Vector<String>update_data, Vector<int >condition){
@@ -259,12 +289,12 @@ public:
 		conf_data+=String("[Permission]\n");
 		conf_data+= converter.vector2DToString(allUserPermissionsInfo, ",");
 		conf_data+=String("\n");
-		conf_data+=String("\n");
 		conf_data+=String("[Encryption]\n");
 		if(encryption) conf_data+=String("enabled = true\n");
 		else conf_data+=String("enabled = false\n");
 		conf_data+=String("\n");
 		conf_data+=String("[Tables]\n");
+
 
 		String table_metadata = TableMetaData();
 		conf_data += table_metadata;

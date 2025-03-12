@@ -68,24 +68,30 @@ public:
 	String vector2DToString(Vector<Vector<String>> vec_data, String delimiter) {
 
 		String data("");
-		int num_rows = vec_data.get_size();
-		int num_columns = 0;
-		if(vec_data.get_size()>0)
-			num_columns = vec_data[0].get_size();
-
-		//extract a single line from a 1D Vector
+		int num_rows = vec_data.get_size(); // for traversing through the outer vector
+		
 		for (int i=0; i<num_rows; i++) {
-            int j=0;
-            for(j; j<num_columns-1; j++) {
+			int num_columns = vec_data[i].get_size(); // for traversing through the inner vector
+            
+            for(int j=0; j<=num_columns-1; j++) {
                 data += vec_data[i][j];
-                data += String(delimiter);
+				if (j!=num_columns-1) {
+					data += String(delimiter);
+				} else {
+					data += String("\n");
+				}
             }
-			data += vec_data[i][j];
-			if (i!=num_rows-1) {data += String("\n");
-			} else {
-				data += vec_data[i][j];
-				if (i!=num_rows-1) data += String("\n");
-			}
+
+			// if (i == num_rows-1) {
+			// 	data += String("\n");
+			// }
+
+			// data += vec_data[i][j];
+			// if (i!=num_rows-1) {data += String("\n");
+			// } else {
+			// 	data += vec_data[i][j];
+			// 	if (i!=num_rows-1) data += String("\n");
+			// }
 		}
 
 		return data;
