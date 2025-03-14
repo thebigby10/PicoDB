@@ -23,6 +23,8 @@ private:
 	Vector<String> data_types;
 	Vector<String> constraints;
 	Vector<Vector<Cell>> table_data;
+    Vector<int> primary_key_indices; // Indices of primary key columns
+    Vector<pair<int, String>> foreign_key_indices; // (column index, referenced table name)
 
 	/*
 		String constrain_key;
@@ -48,27 +50,22 @@ public:
 	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
 	}
 
-	// void extract_col_data(Vector<Vector<String>> temp_col_data) {
-    //     int num_headers = temp_col_data.get_size();
-	// 	for (int i=0; i<num_headers; i++) {
-    //         this->headers.push_back(temp_col_data[i][0]);
-    //         this->data_types.push_back(temp_col_data[i][1]);
-    //         this->constraints.push_back(temp_col_data[i][2]);
-    //     }
-	// }
-
 	//update table with new data
     void extract_col_data(Vector<Vector<String>> temp_col_data) {
         int num_headers = temp_col_data.get_size();
         for (int i = 0; i < num_headers; ++i) {
-            if (temp_col_data[i].get_size() > 0) {
-                headers.push_back(temp_col_data[i][0]);
+            if (temp_col_data[i].get_size() > 0) {headers.push_back(temp_col_data[i][0]);}
+            if (temp_col_data[i].get_size() > 1) {data_types.push_back(temp_col_data[i][1]);}
+            if (temp_col_data[i].get_size() > 2) {constraints.push_back(temp_col_data[i][2]);}
+
+			// Check for primary key constraint
+            if (constraints[i] == String("PRIMARY_KEY")) {
+                primary_key_indices.push_back(i);
             }
-            if (temp_col_data[i].get_size() > 1) {
-                data_types.push_back(temp_col_data[i][1]);
-            }
-            if (temp_col_data[i].get_size() > 2) {
-                constraints.push_back(temp_col_data[i][2]);
+
+            // Check for foreign key constraint
+            if (constraints[i] == String("FOREIGN_KEY")) {
+                foreign_key_indices.push_back({i, temp_col_data[i][3]});  // (index, referenced table name)
             }
         }
     }
@@ -121,6 +118,48 @@ public:
 	int get_RowSize() {
 		return table_data.get_size();
 	}
+
+	// Getter for primary key columns
+    Vector<int> getPrimaryKeyIndices() const {
+        return primary_key_indices;
+    }
+
+    // Getter for foreign key columns
+    Vector<pair<int, String>> getForeignKeyIndices() const {
+        return foreign_key_indices;
+    }
+
+    // // Method to check if primary key value exists
+    // bool primaryKeyExists(const Vector<Cell>& row) {
+    //     for (int i = 0; i < primary_key_indices.get_size(); ++i) {
+    //         for (int j = 0; j < table_data.get_size(); ++j) {
+    //             if (table_data[j][primary_key_indices[i]].getString() == row[primary_key_indices[i]].getString()) {
+    //                 return true; // Duplicate primary key found
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    // // Method to check if foreign key value exists in referenced table
+    // bool foreignKeyExists(int col_index, const String& value) {
+    //     String referenced_table = foreign_key_indices[col_index].second;
+    //     // Retrieve the referenced table and check for matching primary key
+    //     // Assuming 'get_table_by_name' retrieves a table by name (implement as needed)
+    //     Table ref_table = get_table_by_name(referenced_table);
+    //     for (int i = 0; i < ref_table.getTableData().get_size(); ++i) {
+    //         if (ref_table.getTableData()[i][primary_key_indices[0]].getString() == value) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+	// // Helper method to get the referenced table by name
+    // Table get_table_by_name(const String& name) {
+    //     // You would need to implement a way to get the table by name from the database or from stored tables
+    //     return Table(); // Placeholder implementation
+    // }
 
 };
 

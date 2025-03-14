@@ -114,45 +114,163 @@ public:
 		return true;
 	}
 
-    void update(String table_name, Vector<String>update_data, Vector<int >condition){
-		Table table;
-		for(int i=0;i<tables.get_size();i++){
-			if(tables[i].getTableName() == table_name){
-				table = tables[i];
-				break;
-			}
-			else{
-				//add exception
-			}
-		}
-		//check condition
-		// Table condition_data;
-		// if(condition[1]=="=="){
-		// 	for(int i=0;i<table.get_RowSize();i++){
-		// 		for(int j=0;j<table[i].;j++){
-					
-		// 		}
-		// 	}
-		// }
-		// else if(condition[1]==">"){
+    // bool update(String table_name, Vector<String> update_values, String condition){
+	// 	if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
+	// 	Table input_table;
+	// 	bool table_found = false;
 
-		// }
-		// else if(condition[1]=="<"){
+	// 	// Find the table by name
 
-		// }
-		// else if(condition[1]==">="){
+	// 	for (int i = 0; i < tables.get_size(); i++) {
+	// 		if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
+	// 		if (tables[i].getTableName() == table_name) {
+	// 			input_table = tables[i];
+	// 			table_found = true;
+	// 			if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
+	// 			break;
+	// 		}
+	// 	}
+	// 	if(DEBUG) cout<<endl;
 
-		// }
-		// else if(condition[1]=="<="){
+	// 	if (!table_found) {
+	// 		std::cerr << "Table not found: " << table_name << std::endl;
+	// 		return false;
+	// 	}
 
-		// }
-		// else if(condition[1]=="!="){
+	// if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
+	// for (int i = 0; i < update_values.get_size(); i++) {
+	// 	std::cout << update_values[i] << " ";
+	// }
+	// std::cout << std::endl<<std::endl;}
 
-		// }
-		// else{
-		// 	//exception
-		// }
-	}
+	// 	// Store selected column indices
+	// 	Vector<int> selected_column_indices;
+	// 	for (int i = 0; i < update_values.get_size(); i++) {
+	// 		for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+	// 			if (input_table.getHeaders()[j] == update_values[i]) {
+	// 				selected_column_indices.push_back(j);
+	// 			if(DEBUG) cout << "[DEBUG] Column " << update_values[i] << " found at index " << j << std::endl;
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	if(DEBUG) cout<<endl;
+
+	// 	// Parse complex conditions
+	// 	Vector<int> condition_indices;
+	// 	Vector<String> condition_ops;
+	// 	Vector<String> condition_values;
+	// 	Vector<String> logical_ops;
+
+
+	// // tokenize the conditions
+	// 	if (condition != String("")) {
+	// 		Vector<String> tokens;
+	// 		String current_token;
+	// 		String op;
+	// 		bool in_string = false;
+
+	// 		for (size_t i = 0; i < condition.length(); i++) {
+	// 			char c = condition[i];
+	// 			if (c == ' ' && !in_string) {
+	// 				if (!current_token.trim().empty()) {
+	// 					tokens.push_back(current_token.trim());
+	// 					current_token.clear();
+	// 				}
+	// 			} else if (c == '"') {
+	// 				in_string = !in_string;
+	// 			} else {
+	// 				current_token = current_token + c;
+	// 			}
+	// 		}
+	// 		if (!current_token.empty()) {
+	// 			tokens.push_back(current_token.trim());
+	// 		}
+
+	// 		bool expecting_value = false;  // Track when an operator is found
+
+	// 		for (size_t i = 0; i < tokens.get_size(); i++) {
+	// 			if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+	// 				logical_ops.push_back(tokens[i]);
+	// 				expecting_value = false;  // Reset flag after logical operator
+	// 			} else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
+	// 					tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
+	// 					tokens[i] == String("LIKE")) {
+	// 				condition_ops.push_back(tokens[i]);
+	// 				expecting_value = true;  // Next token should be a value
+	// 			} else if (expecting_value) {
+	// 				condition_values.push_back(tokens[i]);
+	// 				expecting_value = false;  // Reset flag after capturing a value
+	// 			} else {
+	// 				for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+	// 					if (input_table.getHeaders()[j] == tokens[i]) {
+	// 						condition_indices.push_back(j);
+	// 						break;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 		if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
+	// 			std::cout << "[DEBUG] Parsed tokens: ";
+	// 			for (int i = 0; i < tokens.get_size(); i++) {
+	// 				std::cout << tokens[i] << " ";
+	// 			}
+	// 			std::cout << std::endl;
+
+	// 			std::cout << "[DEBUG] Condition Indices: ";
+	// 			for (int i = 0; i < condition_indices.get_size(); i++) {
+	// 				std::cout << condition_indices[i] << " ";
+	// 			}
+	// 			std::cout << std::endl;
+
+	// 			std::cout << "[DEBUG] Condition Operators: ";
+	// 			for (int i = 0; i < condition_ops.get_size(); i++) {
+	// 				std::cout << condition_ops[i] << " ";
+	// 			}
+	// 			std::cout << std::endl;
+
+	// 			std::cout << "[DEBUG] Condition Values: ";
+	// 			for (int i = 0; i < condition_values.get_size(); i++) {
+	// 				std::cout << condition_values[i] << " ";
+	// 			}
+	// 			std::cout << std::endl;
+	// 		}
+
+	// 	}
+
+	// 	// Apply condition filtering
+	// 	Vector<Vector<Cell>> filtered_data;
+	// 	for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+	// 		if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
+	// 			filtered_data.push_back(input_table.getTableData()[i]);
+	// 		}
+	// 	}
+
+	// 	// Create new table with selected columns
+	// 	Table selected_table;
+	// 	Vector<String> selected_headers;
+	// 	for (int i = 0; i < selected_column_indices.get_size(); i++) {
+	// 		selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
+	// 	}
+	// 	selected_table.setHeaders(selected_headers);
+
+	// 	Vector<Vector<Cell>> selected_data;
+	// 	for (int i = 0; i < filtered_data.get_size(); i++) {
+	// 		Vector<Cell> row;
+	// 		for (int j = 0; j < selected_column_indices.get_size(); j++) {
+	// 			row.push_back(filtered_data[i][selected_column_indices[j]]);
+	// 		}
+	// 		selected_data.push_back(row);
+	// 	}
+	// 	selected_table.updateRecords(selected_data);
+
+	// //debugging
+	// 	// std::cout << "\tFiltering table: " << table_name << std::endl;
+	// 	// std::cout << "\tCondition: " << condition << std::endl;
+	// 	// std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
+
+	// 	return true;
+	// }
 
 	// Load tables from the configuration file
 	void loadCurrentTables(ConfigManager conf_manager){
@@ -374,62 +492,62 @@ public:
 
 	// Insert data into a specific table
 	bool insertInto(String table_name, Vector<String> cols, Vector<String> cell_data) {
-		int tables_num = tables.get_size();
+    // Find the corresponding table
+    Table* table = nullptr;
+    for (int i = 0; i < tables.get_size(); ++i) {
+        if (tables[i].getTableName() == table_name) {
+            table = &tables[i];
+            break;
+        }
+    }
 
-		for (int i = 0; i < tables_num; i++) {
-			if (table_name == tables[i].getTableName()) {
-				Vector<String> data_types = tables[i].getDataTypes();
-				Vector<String> headers = tables[i].getHeaders();
-				int num_of_columns = headers.get_size();
+    if (!table) {
+        std::cerr << "Table not found: " << table_name << std::endl;
+        return false;
+    }
 
-				// Check if cols and cell_data match the table's headers
-				if (cols.get_size() != cell_data.get_size() || cols.get_size() > num_of_columns) {
-					cout << "Error: Column and data size mismatch." << endl;
-					cout << "Expected columns: " << num_of_columns << ", but got: " << cols.get_size() << endl;
-					return false;
-				}
+    // Prepare the row of cells
+    Vector<Cell> row;
+    for (int i = 0; i < cols.get_size(); ++i) {
+        row.push_back(Cell(cell_data[i]));  // Assuming all values are strings (can be enhanced based on types)
+    }
 
-				Vector<Cell> single_line_cell_data;
+    // 1. Check Primary Key Constraints (ensure no duplicate primary key)
+    Vector<int> primary_key_indices = table->getPrimaryKeyIndices();
 
-				for (int j = 0; j < num_of_columns; j++) {
-					bool column_matched = false;
+    for (int i = 0; i < primary_key_indices.get_size(); ++i) {
+        int pk_index = primary_key_indices[i];
+        if (pk_index >= cols.get_size()) {
+            std::cerr << "Error: Primary key index out of bounds!" << std::endl;
+            return false;  // Index out of bounds
+        }
 
-					// Check if headers[j] exists in cols
-					for (int k = 0; k < cols.get_size(); k++) {
-						if (headers[j] == cols[k]) {
-							column_matched = true;
+        for (int j = 0; j < table->getTableData().get_size(); ++j) {
+            if (table->getTableData()[j][pk_index].getData() == row[pk_index].getData()) {
+                std::cerr << "Error: Duplicate primary key value for column " << cols[pk_index] << std::endl;
+                return false;  // Duplicate primary key found, abort insertion
+            }
+        }
+    }
 
-							// Add cell data according to the data type
-							if (data_types[j] == String("INT")) {
-								single_line_cell_data.push_back(Cell(cell_data[k].toInt()));
-							} else if (data_types[j] == String("DOUBLE")) {
-								single_line_cell_data.push_back(Cell(cell_data[k].toDouble()));
-							} else if (data_types[j] == String("BOOLEAN")) {
-								single_line_cell_data.push_back(Cell(cell_data[k].toBool()));
-							} else {
-								single_line_cell_data.push_back(Cell(cell_data[k]));
-							}
-							break;
-						}
-					}
+    // 2. Check Foreign Key Constraints
+    Vector<pair<int, String>> foreign_key_indices = table->getForeignKeyIndices();
+    for (int i = 0; i < cols.get_size(); ++i) {
+        for (int j = 0; j < foreign_key_indices.get_size(); ++j) {
+            auto& fk = foreign_key_indices[j];  // Access the foreign key pair
+            if (fk.first == i) { // If the column is a foreign key
+                if (!foreignKeyExists(table, i, cell_data[i])) {
+                    std::cerr << "Error: Foreign key constraint failed for column " << cols[i] << " with value " << cell_data[i] << std::endl;
+                    return false;  // Foreign key value not found in the referenced table
+                }
+            }
+        }
+    }
 
-					// If column not found in cols, add a default value or handle as needed
-					if (!column_matched) {
-						cout << "Warning: Column " << headers[j] << " not found in input cols. Adding default value." << endl;
-						single_line_cell_data.push_back(Cell());  // Assuming default constructor in Cell
-					}
-				}
-
-				// Update the table with the new row data
-				tables[i].updateSingleRecord(single_line_cell_data);
-				return true;  // Insertion successful
-			}
-		}
-
-		// Table not found
-		cout << "Error: Table " << table_name << " not found." << endl;
-		return false;
-	}
+    // 3. If no constraint violations, insert the data into the table
+    table->updateSingleRecord(row);
+    return true;
+}
 
 	//function for printing a table
 	void printTable(Table& table) {
@@ -775,5 +893,53 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 	Vector<Table>& get_tables() {return tables;}
 	Vector<Vector<String>>& get_allUserPermissionsInfo() {return allUserPermissionsInfo;}
 	Vector<String>& get_currentUserPermissions() {return currentUserPermissions;}
+
+	// these are for pk and fk
+	// Method to check if primary key value exists
+    bool primaryKeyExists(Table* table, const Vector<Cell>& row) {
+        for (int i = 0; i < table->getPrimaryKeyIndices().get_size(); ++i) {
+			Vector<Vector<Cell>> table_data = table->getTableData();
+			int table_data_size = table_data.get_size();
+            for (int j = 0; j < table_data_size; ++j) {
+                if (table_data[j][table->getPrimaryKeyIndices()[i]].getData() == row[table->getPrimaryKeyIndices()[i]].getData()) {
+                    return true; // Duplicate primary key found
+                }
+            }
+        }
+        return false;
+    }
+
+    // Method to check if foreign key value exists in referenced table
+    bool foreignKeyExists(Table *table, int col_index, const String& value) {
+        String referenced_table_name = table->getForeignKeyIndices()[0].second; 
+		// ekhane 0 deyar karon tablecreation logic e forKeyExist e push_back kora hoise rather than saving at that particular col_index
+        // Retrieve the referenced table and check for matching primary key
+        // Assuming 'get_table_by_name' retrieves a table by name (implement as needed)
+        Table ref_table = get_table_by_name(referenced_table_name);
+		Vector<Vector<Cell>> ref_table_data = ref_table.getTableData();
+		int ref_table_data_size = ref_table_data.get_size();
+
+        for (int i = 0; i < ref_table_data_size; ++i) {
+            if (ref_table_data[i][ref_table.getPrimaryKeyIndices()[0]].getData() == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+	// Helper method to get the referenced table by name
+    Table get_table_by_name(const String& table_name) {
+        // You would need to implement a way to get the table by name from the database or from stored tables
+		int tables_size = tables.get_size();
+		for (int i=0; i<tables_size; i++) {
+			if (tables[i].getTableName() == table_name) {
+				return tables[i];
+			}
+		}
+
+		// if no table by the given name has been found
+		std::cout << "No table found by the following name : " << table_name << std::endl;
+        return Table(); // Placeholder implementation
+    }
 };
 #endif

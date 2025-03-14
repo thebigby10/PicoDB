@@ -3,14 +3,14 @@
 
 int main() {
     // Initialize Database
-    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
+    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "rapi", "5", ",");
 
     // Create a table
     // zawadDB.createTable("students", {
     //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
     // });
 
-    // Insert some data
+    // // Insert some data
     // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"1", "John Doe", "20", "true"});
     // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
     // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
@@ -19,6 +19,10 @@ int main() {
     // std::cout << "🔹 SELECT * FROM students;" << std::endl;
     // Table result1 = zawadDB.select("students", {"id", "name", "salary", "is_employed"}, "");
     // zawadDB.printTable(result1);
+
+    std::cout << "🔹 SELECT * FROM students;" << std::endl;
+    Table result1 = zawadDB.select("department", {"id", "name"}, "");
+    zawadDB.printTable(result1);
 
     // // Create a table BY NON ADMIN USER
     // zawadDB.createTable("department", {
@@ -55,21 +59,21 @@ int main() {
     //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"salary", "INT", "NOT_NULL"}, {"is_employed", "BOOLEAN", "DEFAULT"}
     // });
 
-    // Insert some data
+    // // Insert some data
     // zawadDB.insertInto("teachers", {"id", "name", "salary", "is_employed"}, {"1", "John Doe", "2000", "true"});
     // zawadDB.insertInto("teachers", {"id", "name", "salary", "is_employed"}, {"2", "Jane Smith", "1800", "false"});
     // zawadDB.insertInto("teachers", {"id", "name", "salary", "is_employed"}, {"3", "Alice Brown", "1500", "true"});
 
-    // // User permissions
+    // // // // User permissions
 	// zawadDB.addUser("utsho", "students");
     // std::cout << "\n🔹 Added new user named utsho with permissions on students" << std::endl;
 	// zawadDB.addUser("rapi", "teachers");
     // std::cout << "\n🔹 Add new user named rapi with permissions on teachers" << std::endl;
 	// zawadDB.grantPermission("utsho", "teachers");
     // std::cout << "\n🔹 Granted access permissions on teachers to user utsho " << std::endl;
-	zawadDB.revokePermission("utsho", "teachers");
+	// zawadDB.revokePermission("utsho", "teachers");
 
-    zawadDB.saveDB();
+    // zawadDB.saveDB();
 
     return 0;
 }

@@ -31,14 +31,46 @@ public:
 		this->data_d = data;
 		this->datatype = DataType::DOUBLE;
 	};
-	Cell(String data){
-		this->data_s = data;
-		this->datatype = DataType::STRING;
-	};
+	// Cell(String data){
+	// 	this->data_s = data;
+	// 	this->datatype = DataType::STRING;
+	// };
 	Cell(bool data){
 		this->data_b = data;
 		this->datatype = DataType::BOOLEAN;
 	};
+
+	Cell(const String& data) {
+        if (data == String("true") || data == String("false")) {
+            datatype = DataType::BOOLEAN;
+            data_b = (data == String("true"));
+        } else if (isInteger(data)) {
+            datatype = DataType::INTEGER;
+            data_i = data.toInt();
+        } else if (isDouble(data)) {
+            datatype = DataType::DOUBLE;
+            data_d = data.toDouble();
+        } else {
+            datatype = DataType::STRING;
+            data_s = data;
+        }
+    }
+
+	// Function to get data based on the datatype
+	String getData() const {
+		switch (datatype) {
+			case DataType::INTEGER:
+				return String::toString(data_i);
+			case DataType::DOUBLE:
+				return String::toString(data_d);
+			case DataType::BOOLEAN:
+				return data_b ? String("true") : String("false");
+			case DataType::STRING:
+				return data_s;
+			default:
+				return String("Unknown DataType");
+		}
+	}
 
     // Getters for each data type
     DataType getDataType() const {return datatype;}
@@ -58,6 +90,29 @@ private:
 	double data_d;
 	String data_s;
 	bool data_b;
+
+	bool isInteger(const String& str) const {
+        for (size_t i = 0; i < str.length(); ++i) {
+            if (i == 0 && str[i] == '-') continue;
+            if (str[i] < '0' || str[i] > '9') return false;
+        }
+        return !str.empty();
+    }
+
+    bool isDouble(const String& str) const {
+        bool decimalPoint = false;
+        for (size_t i = 0; i < str.length(); ++i) {
+            if (i == 0 && str[i] == '-') continue;
+            if (str[i] == '.') {
+                if (decimalPoint) return false;
+                decimalPoint = true;
+            } else if (str[i] < '0' || str[i] > '9') {
+                return false;
+            }
+        }
+        return decimalPoint;
+    }
+
 	//implement date
     // Constrains constrains;
 };
