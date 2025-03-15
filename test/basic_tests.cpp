@@ -49,9 +49,14 @@ void testSelect() {
     }
 }
 
+void testAlwaysPass() {
+    std::cout << "testAlwaysPass passed.\n";
+}
+
 int main() {
     testCreateTable();
     testInsertInto();
     testSelect();
+    testAlwaysPass();
     return 0;
 }
