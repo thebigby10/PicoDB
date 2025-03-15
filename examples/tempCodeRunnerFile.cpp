@@ -1,0 +1,1 @@
+ PicoDB db("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ";_;");

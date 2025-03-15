@@ -3,11 +3,16 @@
 
 int main() {
     // Initialize Database
-    PicoDB zawadDB("zawadDB", "/home/thebigby01/Codes/_github_repos/PicoDB/examples/testdb/zawadDB", "rapi", "5", ",");
+    PicoDB zawadDB("zawadDB", "examples/testdb/zawadDB", "rapi", "5", ",");
 
     // Create a table
     zawadDB.createTable("students", {
         {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
+    });
+
+    // create a new table named courses
+    zawadDB.createTable("courses", {
+        {"course_id", "INT", "PRIMARY_KEY"}, {"course_name", "STRING", "NOT_NULL"}, {"student_id", "INT", "FOREIGN_KEY REFERENCES students(id)"}
     });
 
     // // Insert some data
@@ -15,10 +20,44 @@ int main() {
     zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
     zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
 
+    // insert into courses
+    zawadDB.insertInto("courses", {"course_id", "course_name", "student_id"}, {"1", "Math", "1"});
+    zawadDB.insertInto("courses", {"course_id", "course_name", "student_id"}, {"2", "Science", "2"});
+    zawadDB.insertInto("courses", {"course_id", "course_name", "student_id"}, {"3", "English", "3"});
+    zawadDB.insertInto("courses", {"course_id", "course_name", "student_id"}, {"4", "History", "1"});
+    zawadDB.insertInto("courses", {"course_id", "course_name", "student_id"}, {"5", "Geography", "2"});
+
+
+    // inner join portion
+    std::cout << "🔹 Performing INNER JOIN between students and courses..." << std::endl;
+    Table result = zawadDB.innerJoin(
+        "students",    // Left table
+        "courses",     // Right table
+        "students.id", // Left table column
+        "courses.student_id", // Right table column
+        {"students.id", "students.name", "courses.course_name"} // Selected columns
+    );
+
+    // Print the result of INNER JOIN
+    std::cout << "\n🔹 SELECT students.id, students.name, courses.course_name FROM students "
+                 "INNER JOIN courses ON students.id = courses.student_id;\n" << std::endl;
+    zawadDB.printTable(result);
+
+
+
     // Print full table (no condition)
     std::cout << "🔹 SELECT * FROM students;" << std::endl;
     Table result1 = zawadDB.select("students", {"id", "name"}, "");
     zawadDB.printTable(result1);
+
+    // print the courses table
+    std::cout << "🔹 SELECT * FROM courses;" << std::endl;
+    Table result2 = zawadDB.select("courses", {"course_id", "course_name", "student_id"}, "");
+    zawadDB.printTable(result2);
+
+
+    // inner join 
+    std::cout << "🔹 SELECT * FROM students INNER JOIN courses ON students.id = courses.student_id;" << std::endl;
 
     // // Create a table BY NON ADMIN USER
     // zawadDB.createTable("department", {
