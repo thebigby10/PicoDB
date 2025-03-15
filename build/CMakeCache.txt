@@ -224,15 +224,6 @@ PicoDBTests_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 PicoDBTests_SOURCE_DIR:STATIC=/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB
 
-//Value Computed by CMake
-SingleFile_BINARY_DIR:STATIC=/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build
-
-//Value Computed by CMake
-SingleFile_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-SingleFile_SOURCE_DIR:STATIC=/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB
-
 
 ########################
 # INTERNAL cache entries

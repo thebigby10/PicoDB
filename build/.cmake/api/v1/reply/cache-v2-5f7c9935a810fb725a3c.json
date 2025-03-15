@@ -1204,42 +1204,6 @@
 			],
 			"type" : "STATIC",
 			"value" : "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB"
-		},
-		{
-			"name" : "SingleFile_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/build"
-		},
-		{
-			"name" : "SingleFile_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "SingleFile_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB"
 		}
 	],
 	"kind" : "cache",
