@@ -151,17 +151,55 @@ public:
     }
 
     // Return substring
-    String substr(size_t start, size_t sub_len) const {
-        if (start >= size) return String(); // Out of bound, return empty
-        if (start + sub_len > size) sub_len = size - start; // Resize if needed
+    // String substr(size_t start, size_t sub_len) const {
+    //     if (start >= size) return String(); // Out of bound, return empty
+    //     if (start + sub_len > size) sub_len = size - start; // Resize if needed
 
+    //     char* sub_data = new char[sub_len + 1];
+    //     for (size_t i = 0; i < sub_len; ++i) {
+    //         sub_data[i] = data[start + i];
+    //     }
+    //     sub_data[sub_len] = '\0';
+
+    //     return String(sub_data);
+    // }
+    String substr(size_t start, size_t sub_len) const {
+        if (data == nullptr) {
+            std::cerr << "Error: data is null!" << std::endl;
+            return String(); // Return empty string if data is null
+        }
+
+        if (size == 0) {
+            std::cerr << "Error: String is empty!" << std::endl;
+            return String(); // Handle empty string
+        }
+
+        if (start >= size) {
+            std::cerr << "Error: start index out of bounds. start: " << start << ", size: " << size << std::endl;
+            return String(); // Out of bounds
+        }
+
+        if (start + sub_len > size) {
+            sub_len = size - start; // Adjust sub_len to fit within bounds
+        }
+
+        // Allocate memory for the substring
         char* sub_data = new char[sub_len + 1];
+
+        // Copy the substring data
         for (size_t i = 0; i < sub_len; ++i) {
             sub_data[i] = data[start + i];
         }
-        sub_data[sub_len] = '\0';
+        sub_data[sub_len] = '\0'; // Null-terminate the substring
 
-        return String(sub_data);
+        // Create and return a new String object
+        String result(sub_data);
+        delete[] sub_data; // Free temporary buffer
+        return result;
+    }
+
+    bool empty() const {
+        return size == 0 || data[0] == '\0';
     }
 
     // Clear string
@@ -295,6 +333,13 @@ public:
         return isNegative ? -num : num;
     }
 
+    bool toBool() const {
+        String trimmed = trim(); // Remove leading and trailing spaces
+        if (trimmed == String("true") || trimmed == String("1")) {
+            return true;
+        }
+        return false;
+    }
     // Helper function to reverse a char array (used in intToString and doubleToString)
     static void reverse(char* str, size_t length);
 
@@ -302,10 +347,6 @@ public:
     static String toString(double num);
     static String toString(bool val) {
         return val ? String("true") : String("false");
-    }
-
-    bool empty() const {
-        return size == 0;
     }
 
     String operator+(char c) const {

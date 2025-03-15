@@ -1,26 +1,52 @@
 //#include<bits/stdc++.h> //doesnt work on mac hehe
-
+#include<iostream>
 #include "../include/PicoDB/PicoDB.h"
-#include "../src/Database.cpp"
-int main(){
-	// create db or use db
-	PicoDB testdb("bankdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/bankdb", "thebigby01", "key?", ";,__,;");
+// #include "../include/PicoDB/Database.h"
+// #include "../include/PicoDB/String.h"
+// #include "../include/PicoDB/Encryptor.h"
 
-	// create table
-	testdb.createTable(String("students"), {
+using namespace std;
+
+int main(){
+	PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "utsho", "5", ",");
+
+	zawadDB.createTable(String("students"), {
 		{"student_id", "INT", "PRIMARY_KEY"},
 		{"student_name", "STRING", "NOT_NULL"},
 		{"cgpa", "INT","DEFAULT"},
 	});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", "4"});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Utsho", "0"});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "3"});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Labonno", "3"});
-	testdb.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Charlie", "4"});
 
-    testdb.select("students", {"studnet_name", "student_id"});
-	testdb.saveDB();
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042150", "Asif", "4"});
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042151", "Utsho", "0"});
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042152", "Mir", "2"});
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042153", "Zubayer", "3"});
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042154", "Labonno", "2"});
+	zawadDB.insertInto("students", {"student_id", "student_name", "cgpa"}, {"220042155", "Charlie", "4"});
+
+	zawadDB.createTable(String("teachers"), {
+		{"teacher_id", "INT", "PRIMARY_KEY"},
+		{"teacher_name", "STRING", "NOT_NULL"},
+		{"salary", "INT","DEFAULT"},
+	});
+
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2134", "Mir Mashkur", "40000"});
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2135", "Abu Zobayda", "30000"});
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2136", "Lalon Fakir", "45000"});
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2137", "Farhad Shikder", "35000"});
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2138", "Animesh Ray", "25000"});
+	zawadDB.insertInto("teachers", {"teacher_id", "teacher_name", "salary"}, {"2139", "Birbhum Chowdhury", "55000"});
+
+
+	// // User permissions
+	zawadDB.addUser("utsho", "students");
+	zawadDB.addUser("rapi", "teachers");
+	zawadDB.grantPermission("utsho", "students");
+	//testDB.revokePermission("utsho", "teachers");
+
+    zawadDB.select("teachers", {}, "cgpa > 2");
+	//testDB.grantPermission("utsho", "teachers");
+	//cout << "has reached the end of the programm" << endl;
+	zawadDB.saveDB();
 	// // insert data
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042152", "Asif", 0});
 	// studentdb.insertInto("student", {"student_id", "student_name", "cgpa"}, {"220042153", "Uthuth", 4});
@@ -32,7 +58,7 @@ int main(){
 	// studentdb.selectWhere("student", {}, "name LIKE 'A___'";
 
 	// // update data
-	testdb.update("students", {"cgpa", "3.9"}, {"student_id","=","220042152"});
+	//testdb.update("students", {"cgpa", "3.9"}, {"student_id","=","220042152"});
 
 	// // delete data
 	// studentdb.deleteFrom("student", "cgpa<2.0");
@@ -52,14 +78,11 @@ int main(){
 
 // }
 
- 	// string db_name = "test_db";
-    // string db_path = "."; // Current directory
+ 	//string db_name = "test_db";
+    //string db_path = "."; // Current directory
 
-    // Database db(db_name, db_path);
+    //Database db(db_name, db_path);
 
     return 0;
 
 }
-
-//let's have a look on the syntax (rafi - dev)
-//Database anotherDB("booksDB", "path/to/db");

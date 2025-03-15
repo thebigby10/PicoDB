@@ -1,4 +1,4 @@
-#include "../../include/PicoDB/Vector.h"
+// #include "../../include/PicoDB/Vector.h"
 
 // // Vector assignment operator
 // template<typename T>
@@ -17,7 +17,7 @@
 
 // // Push back an element to the vector
 // template<typename T>
-// void Vector<T>::push_back( const T& value) {
+// void Vector<T>::push_back(const T& value) {
 //     if (size == capacity) {
 //         resize();
 //     }
@@ -92,6 +92,14 @@
 //     return arr[index];
 // }
 
+// template<typename T>
+// const T& Vector<T>::at(size_t index) const {
+//     if (index >= size) {
+//         throw std::out_of_range("Index out of range");
+//     }
+//     return arr[index];
+// }
+
 // // Swap two elements in the vector
 // template<typename T>
 // void Vector<T>::swap(size_t i, size_t j) {
@@ -121,6 +129,11 @@
 
 // // Overloading the subscript operator for easier access
 // template<typename T>
-// const T& Vector<T>::operator[](size_t index) const {
+// T& Vector<T>::operator[](size_t index) {
 //     return at(index); // Uses at() to handle index checking
+// }
+
+// template<typename T>
+// const T& Vector<T>::operator[](size_t index) const {
+//     return at(index);
 // }
