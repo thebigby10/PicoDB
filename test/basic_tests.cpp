@@ -52,6 +52,9 @@ void testSelect() {
 void testAlwaysPass() {
     std::cout << "testAlwaysPass passed.\n";
 }
+void testAlwaysFail() {
+    std::cerr << "testAlwaysFail failed.\n";
+}
 
 int main() {
     testCreateTable();
