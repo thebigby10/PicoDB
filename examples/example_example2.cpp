@@ -48,16 +48,16 @@ int main() {
     // Print full table (no condition)
     std::cout << "🔹 SELECT * FROM students;" << std::endl;
     Table result1 = zawadDB.select("students", {"id", "name"}, "");
-    zawadDB.printTable(result1);
+  // zawadDB.printTable(result1);
 
     // print the courses table
     std::cout << "🔹 SELECT * FROM courses;" << std::endl;
     Table result2 = zawadDB.select("courses", {"course_id", "course_name", "student_id"}, "");
-    zawadDB.printTable(result2);
+   // zawadDB.printTable(result2);
 
 
     // inner join 
-    std::cout << "🔹 SELECT * FROM students INNER JOIN courses ON students.id = courses.student_id;" << std::endl;
+   // std::cout << "🔹 SELECT * FROM students INNER JOIN courses ON students.id = courses.student_id;" << std::endl;
 
     // // Create a table BY NON ADMIN USER
     // zawadDB.createTable("department", {
