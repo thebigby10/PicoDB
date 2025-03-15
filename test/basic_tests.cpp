@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/PicoDB/PicoDB.h"
+#include "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/CommandLineInterface.cpp"
 
 void testCreateTable() {
     PicoDB db("testdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");
@@ -55,11 +56,17 @@ void testAlwaysPass() {
 void testAlwaysFail() {
     std::cerr << "testAlwaysFail failed.\n";
 }
-
+ 
+void testCLI() {
+    // Initialize CommandLineInterface with the test database path
+    // implementation
+    
+}
 int main() {
     testCreateTable();
     testInsertInto();
     testSelect();
     testAlwaysPass();
+    testAlwaysFail();
     return 0;
 }
