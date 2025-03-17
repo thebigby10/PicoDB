@@ -8,18 +8,18 @@ int main() {
     PicoDB db("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ";_;");
 
     // Create a table for courses (primary key on `course_id`)
-    // cout << "SQL Query: CREATE TABLE courses (course_id INT PRIMARY_KEY, course_name STRING NOT_NULL);" << endl;
+    cout << "SQL Query: CREATE TABLE courses (course_id INT PRIMARY_KEY, course_name STRING NOT_NULL);" << endl;
     db.createTable("courses", {
         {"course_id", "INT", "PRIMARY_KEY"},
         {"course_name", "STRING", "NOT_NULL"},
     });
 
     // Create a table for students (primary key on `student_id` and foreign key on `course_id` referencing `courses.course_id`)
-    // cout << "SQL Query: CREATE TABLE students (student_id INT PRIMARY_KEY, student_name STRING NOT_NULL, course_id INT FOREIGN_KEY REFERENCES courses(course_id));" << endl;
+    cout << "SQL Query: CREATE TABLE students (student_id INT PRIMARY_KEY, student_name STRING NOT_NULL, course_id INT FOREIGN_KEY REFERENCES courses(course_id));" << endl;
     db.createTable("students", {
         {"student_id", "INT", "PRIMARY_KEY"},
         {"student_name", "STRING", "NOT_NULL"},
-        {"course_id", "INT", "FOREIGN_KEY", "courses"}  // Foreign key referencing `courses.course_id`
+        {"course_id", "INT", "FOREIGN_KEY", "courses", "CASCADE"}  // Foreign key referencing `courses.course_id`
     });
 
     // Insert data into `courses` table
@@ -43,7 +43,7 @@ int main() {
         cout << "Error: Foreign key constraint failed for student Alice Brown!" << endl;
     }
 
-    // Insert duplicate primary key (should trigger an error)
+    // // Insert duplicate primary key (should trigger an error)
     cout << "SQL Query: INSERT INTO students (student_id, student_name, course_id) VALUES (1, 'Charlie Brown', 101);" << endl;
     result = db.insertInto("students", {"student_id", "student_name", "course_id"}, {"1", "Charlie Brown", "101"});
     if (!result) {
@@ -55,7 +55,7 @@ int main() {
     Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
     db.printTable(courses_table);
 
-    cout << "SQL Query: SELECT * FROM students;" << endl;
+    // cout << "SQL Query: SELECT * FROM students;" << endl;
     Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
     db.printTable(students_table);
 

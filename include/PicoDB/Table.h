@@ -25,7 +25,8 @@ private:
 	Vector<Vector<Cell>> table_data;
     Vector<int> primary_key_indices; // Indices of primary key columns
     Vector<pair<int, String>> foreign_key_indices; // (column index, referenced table name)
-
+	Vector<String> is_referenced_in; // to ensure if table is referenced in another table with fk
+	String on_delete;
 	/*
 		String constrain_key;
 		// NOT_NULL, UNIQUE, PEIMARY_KEY, FOREIGN_KEY, DEFAULT, CHECK
@@ -46,13 +47,35 @@ public:
 	}
 
 	//constructor overloader - is used in loadCurrentTables in Database class
-	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
-	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
+	// Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
+	// : table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
+	// }
+
+	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints, Vector<String> primary_key_indices, Vector<String> foreign_key_indices, Vector<String> is_referenced_in, String on_delete){
+		this->table_name = table_name;
+		this->headers = headers;
+		this->data_types = data_types;
+		this->constraints = constraints;
+		if (primary_key_indices[0] != String("None")) {
+			this->primary_key_indices.push_back(primary_key_indices[0].toInt());
+		} else {
+			this->primary_key_indices.push_back(-1); // -1 to indicate no primary key
+		}
+		
+		if (foreign_key_indices[0] != String("None")) {
+			this->foreign_key_indices.push_back({foreign_key_indices[0].toInt(), foreign_key_indices[1]});
+		} else {
+			this->foreign_key_indices.push_back({-1, String("None")});
+		}
+		
+		this->is_referenced_in = is_referenced_in;
+		this->on_delete = on_delete;
 	}
 
 	//update table with new data
     void extract_col_data(Vector<Vector<String>> temp_col_data) {
         int num_headers = temp_col_data.get_size();
+		bool fk_exists = false;
         for (int i = 0; i < num_headers; ++i) {
             if (temp_col_data[i].get_size() > 0) {headers.push_back(temp_col_data[i][0]);}
             if (temp_col_data[i].get_size() > 1) {data_types.push_back(temp_col_data[i][1]);}
@@ -65,9 +88,16 @@ public:
 
             // Check for foreign key constraint
             if (constraints[i] == String("FOREIGN_KEY")) {
+				fk_exists = true;
                 foreign_key_indices.push_back({i, temp_col_data[i][3]});  // (index, referenced table name)
+				on_delete = temp_col_data[i][4];
             }
         }
+
+		if (!fk_exists) {
+			foreign_key_indices.push_back({-1, String("None")});
+			on_delete = String("None");
+		}
     }
 
 
@@ -129,6 +159,13 @@ public:
         return foreign_key_indices;
     }
 
+	Vector<String>& getIsReferencedIn() {
+		return this->is_referenced_in;
+	}
+
+	String getOnDelete() {
+		return on_delete;
+	}
     // // Method to check if primary key value exists
     // bool primaryKeyExists(const Vector<Cell>& row) {
     //     for (int i = 0; i < primary_key_indices.get_size(); ++i) {

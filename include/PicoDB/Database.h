@@ -110,167 +110,193 @@ public:
 			}
 		}
 
+		// update the is_referenced_in of the referenced table
+		int num_headers = col_data.get_size();
+		for (int i = 0; i < num_headers; ++i) {
+			bool table_found = false;
+			if (col_data[i].get_size() > 2) {
+				String temp_constraint = col_data[i][2];
+				if (temp_constraint == String("FOREIGN_KEY")) {
+					int table_size = tables.get_size();
+					for (int j=0; j<table_size; j++) {
+						if (tables[j].getTableName() == col_data[i][3]) {
+							// debug
+							std::cout << "Has reached inside here." << std::endl;
+							table_found = true;
+							if (tables[j].getIsReferencedIn().get_size() <= 0) {
+								tables[j].getIsReferencedIn().push_back(table_name);
+								break;
+							} else if (tables[j].getIsReferencedIn()[0] == String("None")) {
+								tables[j].getIsReferencedIn()[0] = table_name;
+								break;
+							} else {
+								tables[j].getIsReferencedIn().push_back(table_name);
+								break;
+							}
+						}
+					}
+
+					if (!table_found) {
+						std::cerr << "Referenced table not found in current User Permissions. Please, ensure proper User access." << std::endl;
+						return false;
+					}
+				}
+			
+			}
+		}
+
 		tables.push_back(Table(table_name, col_data));
 		return true;
 	}
 
-    // bool update(String table_name, Vector<String> update_values, String condition){
-	// 	if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
-	// 	Table input_table;
-	// 	bool table_found = false;
+    bool update(String table_name, Vector<Vector<String>> 	update_values, String condition){
+		Table* input_table = nullptr;
+		bool table_found = false;
 
-	// 	// Find the table by name
+		// Find the table by name
+		for (int i = 0; i < tables.get_size(); ++i) {
+			if (tables[i].getTableName() == table_name) {
+				input_table = &tables[i];
+				table_found = true;
+				break;
+			}
+		}
 
-	// 	for (int i = 0; i < tables.get_size(); i++) {
-	// 		if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
-	// 		if (tables[i].getTableName() == table_name) {
-	// 			input_table = tables[i];
-	// 			table_found = true;
-	// 			if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
-	// 			break;
-	// 		}
-	// 	}
-	// 	if(DEBUG) cout<<endl;
+		if (!table_found) {
+			std::cerr << "Table not found or User doesn't have access to table : " << table_name << std::endl;
+			return false;
+		}
 
-	// 	if (!table_found) {
-	// 		std::cerr << "Table not found: " << table_name << std::endl;
-	// 		return false;
-	// 	}
+		// Store selected column indices and corresponding update values
+		Vector<int> selected_column_indices;
+		Vector<String> selected_column_updt_values;
+		for (int i = 0; i < update_values.get_size(); i++) {
+			for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
+				if (input_table->getHeaders()[j] == update_values[i][0]) {
+					// update_values[i][0] because each inner string will contain the col_name at 0 index
+					selected_column_indices.push_back(j);
+					selected_column_updt_values.push_back(update_values[i][1]);
+					break;
+				}
+			}
+		}
+		if(DEBUG) cout<<endl;
 
-	// if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
-	// for (int i = 0; i < update_values.get_size(); i++) {
-	// 	std::cout << update_values[i] << " ";
-	// }
-	// std::cout << std::endl<<std::endl;}
-
-	// 	// Store selected column indices
-	// 	Vector<int> selected_column_indices;
-	// 	for (int i = 0; i < update_values.get_size(); i++) {
-	// 		for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
-	// 			if (input_table.getHeaders()[j] == update_values[i]) {
-	// 				selected_column_indices.push_back(j);
-	// 			if(DEBUG) cout << "[DEBUG] Column " << update_values[i] << " found at index " << j << std::endl;
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// 	if(DEBUG) cout<<endl;
-
-	// 	// Parse complex conditions
-	// 	Vector<int> condition_indices;
-	// 	Vector<String> condition_ops;
-	// 	Vector<String> condition_values;
-	// 	Vector<String> logical_ops;
+		// Parse complex conditions
+		Vector<int> condition_indices;
+		Vector<String> condition_ops;
+		Vector<String> condition_values;
+		Vector<String> logical_ops;
 
 
-	// // tokenize the conditions
-	// 	if (condition != String("")) {
-	// 		Vector<String> tokens;
-	// 		String current_token;
-	// 		String op;
-	// 		bool in_string = false;
+	// tokenize the conditions
+		if (condition != String("")) {
+			Vector<String> tokens;
+			String current_token;
+			String op;
+			bool in_string = false;
 
-	// 		for (size_t i = 0; i < condition.length(); i++) {
-	// 			char c = condition[i];
-	// 			if (c == ' ' && !in_string) {
-	// 				if (!current_token.trim().empty()) {
-	// 					tokens.push_back(current_token.trim());
-	// 					current_token.clear();
-	// 				}
-	// 			} else if (c == '"') {
-	// 				in_string = !in_string;
-	// 			} else {
-	// 				current_token = current_token + c;
-	// 			}
-	// 		}
-	// 		if (!current_token.empty()) {
-	// 			tokens.push_back(current_token.trim());
-	// 		}
+			for (size_t i = 0; i < condition.length(); i++) {
+				char c = condition[i];
+				if (c == ' ' && !in_string) {
+					if (!current_token.trim().empty()) {
+						tokens.push_back(current_token.trim());
+						current_token.clear();
+					}
+				} else if (c == '"') {
+					in_string = !in_string;
+				} else {
+					current_token = current_token + c;
+				}
+			}
+			if (!current_token.empty()) {
+				tokens.push_back(current_token.trim());
+			}
 
-	// 		bool expecting_value = false;  // Track when an operator is found
+			bool expecting_value = false;  // Track when an operator is found
 
-	// 		for (size_t i = 0; i < tokens.get_size(); i++) {
-	// 			if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
-	// 				logical_ops.push_back(tokens[i]);
-	// 				expecting_value = false;  // Reset flag after logical operator
-	// 			} else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
-	// 					tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
-	// 					tokens[i] == String("LIKE")) {
-	// 				condition_ops.push_back(tokens[i]);
-	// 				expecting_value = true;  // Next token should be a value
-	// 			} else if (expecting_value) {
-	// 				condition_values.push_back(tokens[i]);
-	// 				expecting_value = false;  // Reset flag after capturing a value
-	// 			} else {
-	// 				for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
-	// 					if (input_table.getHeaders()[j] == tokens[i]) {
-	// 						condition_indices.push_back(j);
-	// 						break;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 		if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
-	// 			std::cout << "[DEBUG] Parsed tokens: ";
-	// 			for (int i = 0; i < tokens.get_size(); i++) {
-	// 				std::cout << tokens[i] << " ";
-	// 			}
-	// 			std::cout << std::endl;
+			for (size_t i = 0; i < tokens.get_size(); i++) {
+				if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+					logical_ops.push_back(tokens[i]);
+					expecting_value = false;  // Reset flag after logical operator
+				} else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
+						tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
+						tokens[i] == String("LIKE")) {
+					condition_ops.push_back(tokens[i]);
+					expecting_value = true;  // Next token should be a value
+				} else if (expecting_value) {
+					condition_values.push_back(tokens[i]);
+					expecting_value = false;  // Reset flag after capturing a value
+				} else {
+					for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
+						if (input_table->getHeaders()[j] == tokens[i]) {
+							condition_indices.push_back(j);
+							break;
+						}
+					}
+				}
+			}
+			if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
+				std::cout << "[DEBUG] Parsed tokens: ";
+				for (int i = 0; i < tokens.get_size(); i++) {
+					std::cout << tokens[i] << " ";
+				}
+				std::cout << std::endl;
 
-	// 			std::cout << "[DEBUG] Condition Indices: ";
-	// 			for (int i = 0; i < condition_indices.get_size(); i++) {
-	// 				std::cout << condition_indices[i] << " ";
-	// 			}
-	// 			std::cout << std::endl;
+				std::cout << "[DEBUG] Condition Indices: ";
+				for (int i = 0; i < condition_indices.get_size(); i++) {
+					std::cout << condition_indices[i] << " ";
+				}
+				std::cout << std::endl;
 
-	// 			std::cout << "[DEBUG] Condition Operators: ";
-	// 			for (int i = 0; i < condition_ops.get_size(); i++) {
-	// 				std::cout << condition_ops[i] << " ";
-	// 			}
-	// 			std::cout << std::endl;
+				std::cout << "[DEBUG] Condition Operators: ";
+				for (int i = 0; i < condition_ops.get_size(); i++) {
+					std::cout << condition_ops[i] << " ";
+				}
+				std::cout << std::endl;
 
-	// 			std::cout << "[DEBUG] Condition Values: ";
-	// 			for (int i = 0; i < condition_values.get_size(); i++) {
-	// 				std::cout << condition_values[i] << " ";
-	// 			}
-	// 			std::cout << std::endl;
-	// 		}
+				std::cout << "[DEBUG] Condition Values: ";
+				for (int i = 0; i < condition_values.get_size(); i++) {
+					std::cout << condition_values[i] << " ";
+				}
+				std::cout << std::endl;
+			}
 
-	// 	}
+		}
 
-	// 	// Apply condition filtering
-	// 	Vector<Vector<Cell>> filtered_data;
-	// 	for (int i = 0; i < input_table.getTableData().get_size(); i++) {
-	// 		if (evaluateComplexCondition(input_table.getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
-	// 			filtered_data.push_back(input_table.getTableData()[i]);
-	// 		}
-	// 	}
+		// Apply condition filtering
+		Vector<Vector<Cell>> filtered_data;
+		for (int i = 0; i < input_table->getTableData().get_size(); i++) {
+			if (evaluateComplexCondition(input_table->getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
+				filtered_data.push_back(input_table->getTableData()[i]);
+			}
+		}
 
-	// 	// Create new table with selected columns
-	// 	Table selected_table;
-	// 	Vector<String> selected_headers;
-	// 	for (int i = 0; i < selected_column_indices.get_size(); i++) {
-	// 		selected_headers.push_back(input_table.getHeaders()[selected_column_indices[i]]);
-	// 	}
-	// 	selected_table.setHeaders(selected_headers);
+		// Create new table with selected columns
+		Table selected_table;
+		Vector<String> selected_headers;
+		for (int i = 0; i < selected_column_indices.get_size(); i++) {
+			selected_headers.push_back(input_table->getHeaders()[selected_column_indices[i]]);
+		}
+		selected_table.setHeaders(selected_headers);
 
-	// 	Vector<Vector<Cell>> selected_data;
-	// 	for (int i = 0; i < filtered_data.get_size(); i++) {
-	// 		Vector<Cell> row;
-	// 		for (int j = 0; j < selected_column_indices.get_size(); j++) {
-	// 			row.push_back(filtered_data[i][selected_column_indices[j]]);
-	// 		}
-	// 		selected_data.push_back(row);
-	// 	}
-	// 	selected_table.updateRecords(selected_data);
+		Vector<Vector<Cell>> selected_data;
+		for (int i = 0; i < filtered_data.get_size(); i++) {
+			Vector<Cell> row;
+			for (int j = 0; j < selected_column_indices.get_size(); j++) {
+				row.push_back(filtered_data[i][selected_column_indices[j]]);
+			}
+			selected_data.push_back(row);
+		}
+		selected_table.updateRecords(selected_data);
 
-	// //debugging
-	// 	// std::cout << "\tFiltering table: " << table_name << std::endl;
-	// 	// std::cout << "\tCondition: " << condition << std::endl;
-	// 	// std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
+	//debugging
+		// std::cout << "\tFiltering table: " << table_name << std::endl;
+		// std::cout << "\tCondition: " << condition << std::endl;
+		// std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
 
-	// 	return true;
-	// }
+		return true;
+	}
 
 	// Load tables from the configuration file
 	void loadCurrentTables(ConfigManager conf_manager){
@@ -283,17 +309,17 @@ public:
 		int temp_data_size = temp_data.get_size();
 
 		if (!isAdmin()) {
-			for(int i=0; i<temp_data_size; i+=4) {
+			for(int i=0; i<temp_data_size; i+=8) {
 				int current_permission_size = currentUserPermissions.get_size();
 				for (int j=0; j<current_permission_size; j++) {
 					if (temp_data[i][0] == currentUserPermissions[j]){
-						this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
+						this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3],temp_data[i+4],temp_data[i+5],temp_data[i+6],temp_data[i+7][0]));
 					}
 				}
 			}	
 		} else {
-			for(int i=0; i<temp_data_size; i+=4) {
-				this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
+			for(int i=0; i<temp_data_size; i+=8) {
+				this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3],temp_data[i+4],temp_data[i+5],temp_data[i+6],temp_data[i+7][0]));
 			}
 		}
 		
@@ -448,6 +474,36 @@ public:
 
 				//for constraints
 				table_meta_data += converter.vectorToString(tables[i].getConstraints());
+
+				// for primary key indices
+				table_meta_data += String::toString(tables[i].getPrimaryKeyIndices()[0]);
+				table_meta_data += String("\n");
+
+				// for foreign key indices
+				table_meta_data += String::toString(tables[i].getForeignKeyIndices()[0].first);
+				table_meta_data += String(",");
+				table_meta_data += tables[i].getForeignKeyIndices()[0].second;
+				table_meta_data += String("\n");
+
+				// for is_referenced_in
+				int is_ref_size = tables[i].getIsReferencedIn().get_size();
+				if (is_ref_size > 0) {
+					int j;
+					for (j=0; i<is_ref_size-1; i++) {
+						table_meta_data += tables[i].getIsReferencedIn()[j];
+						table_meta_data += String(",");
+					}
+					// to get the last ref_table_name
+					table_meta_data += tables[i].getIsReferencedIn()[j];
+					table_meta_data += String("\n");
+				} else {
+					table_meta_data += String("None");
+					table_meta_data += String("\n");
+				}
+
+				// for on_delete
+				table_meta_data += tables[i].getOnDelete();
+				table_meta_data += String("\n");
 			}
 		} else {
 			Vector<Vector<String>> temp_table_meta_data = conf_manager.get_table_meta_data();
@@ -456,11 +512,31 @@ public:
 			int tables_num = tables.get_size();
 			for (int i=0; i<tables_num; i++) {
 				bool table_exists_in_config = false;
-				for (int j=0; j<temp_table_meta_data_size; j+=4) {
+				for (int j=0; j<temp_table_meta_data_size; j+=8) {
 					if (tables[i].getTableName() == temp_table_meta_data[j][0]) {
 						temp_table_meta_data[j+1] = tables[i].getHeaders();
 						temp_table_meta_data[j+2] = tables[i].getDataTypes();
 						temp_table_meta_data[j+3] = tables[i].getConstraints();
+
+						// for primary key indices
+						Vector<String> pk_index;
+						pk_index.push_back(String::toString(tables[i].getPrimaryKeyIndices()[0]));
+						temp_table_meta_data[j+4] = pk_index;
+
+						// for foreing key indices
+						Vector<String> fk_index;
+						fk_index.push_back(String::toString(tables[i].getForeignKeyIndices()[0].first));
+						fk_index.push_back(tables[i].getForeignKeyIndices()[0].second);
+						temp_table_meta_data[j+5] = fk_index;
+
+						// for is_referenced_in
+						temp_table_meta_data[j+6] = tables[i].getIsReferencedIn();
+
+						// for on_delete
+						Vector<String> on_delete;
+						on_delete.push_back(tables[i].getOnDelete());
+						temp_table_meta_data[j+7] = on_delete;
+
 						table_exists_in_config = true;
 						break;
 					}
@@ -475,6 +551,25 @@ public:
 					temp_table_meta_data.push_back(tables[i].getHeaders());
 					temp_table_meta_data.push_back(tables[i].getDataTypes());
 					temp_table_meta_data.push_back(tables[i].getConstraints());
+
+					// for primary key indices
+					Vector<String> pk_index;
+					pk_index.push_back(String::toString(tables[i].getPrimaryKeyIndices()[0]));
+					temp_table_meta_data.push_back(pk_index);
+
+					// for foreing key indices
+					Vector<String> fk_index;
+					fk_index.push_back(String::toString(tables[i].getForeignKeyIndices()[0].first));
+					fk_index.push_back(tables[i].getForeignKeyIndices()[0].second);
+					temp_table_meta_data.push_back(fk_index);
+
+					// for is_referenced_in
+					temp_table_meta_data.push_back(tables[i].getIsReferencedIn());
+
+					// for on_delete
+					Vector<String> on_delete;
+					on_delete.push_back(tables[i].getOnDelete());
+					temp_table_meta_data.push_back(on_delete);
 				}
 			}
 
@@ -672,7 +767,7 @@ public:
 	}
 
 	Table select(String table_name, Vector<String> cols, String condition) {
-	if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
+		if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
 		Table input_table;
 		bool table_found = false;
 
@@ -694,11 +789,11 @@ public:
 			return Table();
 		}
 
-	if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
-	for (int i = 0; i < cols.get_size(); i++) {
-		std::cout << cols[i] << " ";
-	}
-	std::cout << std::endl<<std::endl;}
+		if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
+		for (int i = 0; i < cols.get_size(); i++) {
+			std::cout << cols[i] << " ";
+		}
+		std::cout << std::endl<<std::endl;}
 
 		// Store selected column indices
 		Vector<int> selected_column_indices;
@@ -828,7 +923,9 @@ public:
 
 		return selected_table;
 	}
-bool evaluateCondition(const Cell& cell, String op, String value) {
+
+
+	bool evaluateCondition(const Cell& cell, String op, String value) {
 		if(DEBUG) {
 			std::cout << "[DEBUG] Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
 			std::cout << "[DEBUG] DataType: " << static_cast<int>(cell.getDataType()) << std::endl;
@@ -839,32 +936,32 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 				int cellValue = cell.getInt();
 				int intValue = value.toInt();
 				return (op == String("=")) ? (cellValue == intValue) :
-				       (op == String("!=")) ? (cellValue != intValue) :
-				       (op == String(">")) ? (cellValue > intValue) :
-				       (op == String("<")) ? (cellValue < intValue) :
-				       (op == String(">=")) ? (cellValue >= intValue) :
-				       (op == String("<=")) ? (cellValue <= intValue) : false;
+						(op == String("!=")) ? (cellValue != intValue) :
+						(op == String(">")) ? (cellValue > intValue) :
+						(op == String("<")) ? (cellValue < intValue) :
+						(op == String(">=")) ? (cellValue >= intValue) :
+						(op == String("<=")) ? (cellValue <= intValue) : false;
 			}
 			case DataType::DOUBLE: {
 				double cellValue = cell.getDouble();
 				double doubleValue = value.toDouble();
 				return (op == String("=")) ? (cellValue == doubleValue) :
-				       (op == String("!=")) ? (cellValue != doubleValue) :
-				       (op == String(">")) ? (cellValue > doubleValue) :
-				       (op == String("<")) ? (cellValue < doubleValue) :
-				       (op == String(">=")) ? (cellValue >= doubleValue) :
-				       (op == String("<=")) ? (cellValue <= doubleValue) : false;
+						(op == String("!=")) ? (cellValue != doubleValue) :
+						(op == String(">")) ? (cellValue > doubleValue) :
+						(op == String("<")) ? (cellValue < doubleValue) :
+						(op == String(">=")) ? (cellValue >= doubleValue) :
+						(op == String("<=")) ? (cellValue <= doubleValue) : false;
 			}
 			case DataType::BOOLEAN: {
 				bool cellValue = cell.getBoolean();
 				bool boolValue = (value == String("true"));
 				return (op == String("=")) ? (cellValue == boolValue) :
-				       (op == String("!=")) ? (cellValue != boolValue) : false;
+						(op == String("!=")) ? (cellValue != boolValue) : false;
 			}
 			case DataType::STRING: {
 				return (op == String("=")) ? (cell.getString() == value) :
-				       (op == String("!=")) ? (cell.getString() != value) :
-				       (op == String("LIKE")) ? (cell.getString().findSubstring(value) != -1) : false;
+						(op == String("!=")) ? (cell.getString() != value) :
+						(op == String("LIKE")) ? (cell.getString().findSubstring(value) != -1) : false;
 			}
 			default:
 				std::cerr << "[ERROR] Unknown DataType encountered!" << std::endl;
@@ -873,7 +970,6 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 	}
 
 	bool evaluateComplexCondition(const Vector<Cell>& row, Vector<int> condition_indices, Vector<String> condition_ops, Vector<String> condition_values, Vector<String> logical_ops) {
-		// cout<<"INSIDE evaluateComplexCondition \t"<<endl;
 		if (condition_indices.get_size() == 0) return true;
 
 		bool result = evaluateCondition(row[condition_indices[0]], condition_ops[0], condition_values[0]);
