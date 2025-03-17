@@ -29,13 +29,25 @@ public:
 		return this->db.createTable(table_name, col_data);
 	}
 
-    Table select(String table_name, Vector<String> cols, String condition) {
-        return this->db.select(table_name, cols, condition);
+    // Table select(String table_name, Vector<String> cols, String condition) {
+    //     return this->db.select(table_name, cols, condition);
+    // }
+    //
+    Table select(Table table, Vector<String> cols, String condition) {
+        return this->db.select(table, cols, condition);
+    }
+
+    Table getTable(String table_name){
+        return this->db.get_table_by_name(table_name);
     }
 
     bool insertInto(String table_name, Vector<String> col_names, Vector<String> values) {
         return this->db.insertInto(table_name, col_names, values);
     }
+
+    // bool dropTable(const String& table_name) {
+    //     return this->dropTable(table_name);
+    // }
 
     void addUser (const String& username, const String& tableName) {
         UserPermissionManager permissionManager(db);

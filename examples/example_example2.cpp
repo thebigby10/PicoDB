@@ -15,10 +15,14 @@ int main() {
     zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
     zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
 
+    cout<<"before getTable";
+    Table t1 = zawadDB.getTable("students");
+    cout<<"after getTable";
     // Print full table (no condition)
-    std::cout << "🔹 SELECT * FROM students;" << std::endl;
-    Table result1 = zawadDB.select("students", {"id", "name"}, "");
-    zawadDB.printTable(result1);
+    // std::cout << "🔹 SELECT * FROM students;" << std::endl;
+    Table result1 = zawadDB.select(t1, {"id", "name", "age"}, "");
+    Table result2 = zawadDB.select(result1,{"id", "name", "age"}, "age >= 18");
+    zawadDB.printTable(result2);
 
     // // Create a table BY NON ADMIN USER
     // zawadDB.createTable("department", {
@@ -68,6 +72,8 @@ int main() {
 	// zawadDB.grantPermission("utsho", "teachers");
     // std::cout << "\n🔹 Granted access permissions on teachers to user utsho " << std::endl;
 	// zawadDB.revokePermission("utsho", "teachers");
+
+
 
     zawadDB.saveDB();
 

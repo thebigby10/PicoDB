@@ -17,6 +17,7 @@ public:
 */
 
 class Table{
+
 private:
 	String table_name;
 	Vector<String> headers;
@@ -49,6 +50,76 @@ public:
 	Table(String table_name, Vector<String> headers, Vector<String> data_types, Vector<String> constraints)
 	: table_name(table_name), headers(headers), data_types(data_types), constraints(constraints){
 	}
+
+	// Getter for foreign key references
+
+    // Getter for the table data
+    Vector<Vector<Cell>>& getTableData() {
+        return table_data;
+    }
+
+    // Implementation of the deleteRows method
+    bool deleteRows(Vector<String> condition_columns, Vector<String> condition_values, String cascade_or_setnull) {
+        Vector<int> condition_indices;
+
+        // Find the column indices for the conditions
+        for (size_t i = 0; i < condition_columns.get_size(); ++i) {
+            bool found = false;
+            for (size_t j = 0; j < headers.get_size(); ++j) {
+                if (headers[j] == condition_columns[i]) {
+                    condition_indices.push_back(j);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                std::cerr << "Column " << condition_columns[i] << " not found in table " << table_name << std::endl;
+                return false; // If a column is not found, abort the deletion
+            }
+        }
+
+        // Vector to hold rows to be deleted
+        Vector<int> rows_to_delete;
+
+        // Find the rows that match the condition
+        for (int i = 0; i < table_data.get_size(); ++i) {
+            bool match = true;
+            for (size_t j = 0; j < condition_indices.get_size(); ++j) {
+                if (table_data[i][condition_indices[j]].getString() != condition_values[j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                rows_to_delete.push_back(i);
+            }
+        }
+
+        // Now delete the rows
+        for (int i = rows_to_delete.get_size() - 1; i >= 0; --i) {
+            // If CASCADE is specified, we need to delete rows in other tables that reference this row (foreign key constraints)
+            if (cascade_or_setnull == String("CASCADE")) {
+                for (size_t fk_idx = 0; fk_idx < foreign_key_indices.get_size(); ++fk_idx) {
+                    // Implement cascade logic here
+                    // Iterate through other tables and delete the rows referencing this row
+                    // This is where foreign key cascade deletion is handled
+                }
+            }
+
+            // If SET_NULL is specified, we need to set foreign key columns to NULL in other tables
+            if (cascade_or_setnull == String("SET_NULL")) {
+                for (size_t fk_idx = 0; fk_idx < foreign_key_indices.get_size(); ++fk_idx) {
+                    // Implement set_null logic here
+                    // Iterate through other tables and set the foreign key to NULL
+                    // This is where foreign key set-null operation is handled
+                }
+            }
+
+            // Finally, delete the row from the table data
+            table_data.erase(rows_to_delete[i]);
+        }
+        return true;
+    }
 
 	//update table with new data
     void extract_col_data(Vector<Vector<String>> temp_col_data) {

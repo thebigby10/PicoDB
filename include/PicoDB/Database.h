@@ -671,28 +671,75 @@ public:
 		std::cout << "+" << std::endl;  // End line for the bottom of the table
 	}
 
-Table select(String table_name, Vector<String> cols, String condition) {
-	if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
-		Table input_table;
-		bool table_found = false;
+//new select
+// Table select(Table input_table, Vector<String> cols, String condition){
+//     Table selected_table;
+
+//        // If no columns are specified, select all columns
+//        if (cols.get_size() == 0) {
+//            cols = input_table.getHeaders();  // Set to all columns if empty
+//        }
+
+//        // Store indices of the specified columns in the headers
+//        Vector<int> selected_column_indices;
+//        Vector<String> selected_headers;
+
+//        for (int i = 0; i < cols.get_size(); i++) {
+//            for (int j = 0; j < input_table.getHeaders().get_size(); j++) {
+//                if (input_table.getHeaders()[j] == cols[i]) {
+//                    selected_column_indices.push_back(j);
+//                    selected_headers.push_back(cols[i]);
+//                    break;
+//                }
+//            }
+//        }
+
+//        // Apply condition filtering
+//        Vector<Vector<Cell>> filtered_data;
+//        for (int i = 0; i < input_table.getTableData().get_size(); i++) {
+//            // Check if the row meets the condition (if condition is non-empty)
+//            if (condition.empty() || evaluateComplexCondition(input_table.getTableData()[i], selected_column_indices, condition)) {
+//                Vector<Cell> row;
+//                for (int j = 0; j < selected_column_indices.get_size(); j++) {
+//                    row.push_back(input_table.getTableData()[i][selected_column_indices[j]]);
+//                }
+//                filtered_data.push_back(row);
+//            }
+//        }
+
+//        // Update the selected table with headers and filtered data
+//        selected_table.setHeaders(selected_headers);
+//        selected_table.updateRecords(filtered_data);
+
+//        // Return the selected table
+//        return selected_table;
+// }
+
+
+
+//previous select
+Table select(Table table, Vector<String> cols, String condition) {
+	// if(DEBUG) cout << "[DEBUG] Searching for table: " << table_name << std::endl;
+		Table input_table = table;
+		// bool table_found = false;
 
 		// Find the table by name
 
-		for (int i = 0; i < tables.get_size(); i++) {
-			if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
-			if (tables[i].getTableName() == table_name) {
-				input_table = tables[i];
-				table_found = true;
-				if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
-				break;
-			}
-		}
-		if(DEBUG) cout<<endl;
+		// for (int i = 0; i < tables.get_size(); i++) {
+		// 	if(DEBUG) cout << "[DEBUG] Checking table: " << tables[i].getTableName() << std::endl;
+		// 	if (tables[i].getTableName() == table_name) {
+		// 		input_table = tables[i];
+		// 		table_found = true;
+		// 		if(DEBUG) cout << "[DEBUG] Table found!" << std::endl;
+		// 		break;
+		// 	}
+		// }
+		// if(DEBUG) cout<<endl;
 
-		if (!table_found) {
-			std::cerr << "Table not found: " << table_name << std::endl;
-			return Table();
-		}
+		// if (!table_found) {
+		// 	std::cerr << "Table not found: " << table_name << std::endl;
+		// 	return Table();
+		// }
 
 	if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
 	for (int i = 0; i < cols.get_size(); i++) {
@@ -828,6 +875,7 @@ Table select(String table_name, Vector<String> cols, String condition) {
 
 		return selected_table;
 	}
+
 bool evaluateCondition(const Cell& cell, String op, String value) {
 		if(DEBUG) {
 			std::cout << "[DEBUG] Checking condition: " << cell.getString() << " " << op << " " << value << std::endl;
@@ -941,5 +989,86 @@ bool evaluateCondition(const Cell& cell, String op, String value) {
 		std::cout << "No table found by the following name : " << table_name << std::endl;
         return Table(); // Placeholder implementation
     }
+
+/*bool dropTable(const String& table_name, const String& option = "CASCADE") {
+        // Find the table by name
+        int tableIndex = -1;
+        for (int i = 0; i < tables.get_size(); ++i) {
+            if (tables[i].getTableName() == table_name) {
+                tableIndex = i;
+                break;
+            }
+        }
+
+        // If table not found, return false
+        if (tableIndex == -1) {
+            std::cerr << "Error: Table " << table_name << " not found." << std::endl;
+            return false;
+        }
+
+        Table tableToDrop = tables[tableIndex];
+
+        // CASCADE: Find and delete rows in other tables that reference the table being dropped
+        if (option == String("CASCADE")) {
+            for (int i = 0; i < tables.get_size(); ++i) {
+                if (tables[i].getTableName() != table_name) {
+                    // Check for foreign key references to the table being dropped
+                    Vector<pair<int, String>> foreignKeys = tables[i].getForeignKeyIndices();
+                    for (auto& foreignKey : foreignKeys) {
+                        if (foreignKey.second == table_name) {
+                            // Delete rows in the current table that reference the dropped table
+                            deleteFrom(tables[i].getTableName(), "foreign_key_column = " + table_name);
+                        }
+                    }
+                }
+            }
+        }
+
+        // SET_NULL: Set the foreign key references to NULL in other tables
+        if (option == String("SET_NULL")) {
+            for (int i = 0; i < tables.get_size(); ++i) {
+                if (tables[i].getTableName() != table_name) {
+                    // Check for foreign key references to the table being dropped
+                    Vector<pair<int, String>> foreignKeys = tables[i].getForeignKeyIndices();
+                    for (auto& foreignKey : foreignKeys) {
+                        if (foreignKey.second == table_name) {
+                            // Set foreign key references to NULL in the current table
+                            String condition = "foreign_key_column = " + table_name;
+                            updateForeignKeyToNull(tables[i], foreignKey.first, condition);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Remove the table from the internal vector
+        tables.erase(tableIndex);
+
+        // Delete the associated CSV file
+        FileHandler tableFile(db_path + "/" + table_name + ".csv");
+        if (tableFile.fileExists()) {
+            tableFile.removeFile();
+        }
+
+        std::cout << "Table " << table_name << " has been dropped successfully." << std::endl;
+        return true;
+    }*/
+
+    // Helper function to set foreign keys to NULL in a given table
+/*void updateForeignKeyToNull(Table& table, int foreignKeyColumn, const String& condition) {
+        Vector<Vector<Cell>> updatedData;
+        for (const auto& row : table.getTableData()) {
+            Vector<Cell> updatedRow = row;
+
+            // Set the foreign key value to NULL
+            updatedRow[foreignKeyColumn] = Cell();  // Assuming Cell() represents NULL
+
+            updatedData.push_back(updatedRow);
+        }
+
+        // Update the table data
+        table.updateRecords(updatedData);
+        }*/
 };
+
 #endif
