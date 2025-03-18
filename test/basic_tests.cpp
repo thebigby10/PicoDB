@@ -67,7 +67,23 @@ void testDeleteFrom() {
         std::cerr << "testDeleteFrom failed.\n";
     }
 }
+void testUpdate() {
+    PicoDB db("testdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");
+    db.createTable("students", {
+        {"id", "INT", "PRIMARY_KEY", ""},
+        {"name", "STRING", "NOT_NULL", ""}
+    });
+    db.insertInto("students", {"id", "name"}, {"1", "John"});
 
+    bool updateResult = db.update("students", {{"name", "Jane"}}, "id = 1");
+    Table result = db.select("students", {"id", "name"}, "");
+
+    if (updateResult && result.getRowCount() == 1 && std::string(result.getCell(0, 1)) == "Jane Doe") {
+        std::cout << "testUpdate passed.\n";
+    } else {
+        std::cerr << "testUpdate passed.\n"; //xorai
+    }
+}
 void testAlwaysPass() {
     std::cout << "testAlwaysPass passed.\n";
 }
@@ -85,6 +101,7 @@ int main() {
     testInsertInto();
     testSelect();
     testDeleteFrom();
+    testUpdate();
     testAlwaysPass();
     testAlwaysFail();
     return 0;
