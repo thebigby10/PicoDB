@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "SingleFile",
+					"name" : "PicoDBTests",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "example_usage::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-example_usage-Debug-9e915fd6e437bd427c5a.json",
-					"name" : "example_usage",
+					"id" : "runTests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-runTests-Debug-61af0783681557bd613c.json",
+					"name" : "runTests",
 					"projectIndex" : 0
 				}
 			]

@@ -3,7 +3,7 @@
 
 int main() {
     // Initialize Database
-    PicoDB zawadDB("zawadDB", "examples/testdb/zawadDB", "rapi", "5", ",");
+    PicoDB zawadDB("zawadDB", "/home/thebigby01/Codes/_github_repos/PicoDB/examples/zawadDB", "rapi", "5", ",");
 
     // Create a table
     zawadDB.createTable("students", {

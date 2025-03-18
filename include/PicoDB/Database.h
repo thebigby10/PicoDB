@@ -1228,6 +1228,7 @@ Table select(Table table, Vector<String> cols, String condition) {
         return false;
     }
 
+
     // Method to check if foreign key value exists in referenced table
     bool foreignKeyExists(Table *table, int col_index, const String& value) {
         String referenced_table_name = table->getForeignKeyIndices()[0].second;
@@ -1266,5 +1267,12 @@ Table select(Table table, Vector<String> cols, String condition) {
 		std::cout << "No table found by the following name : " << table_name << std::endl;
         return Table(); // Placeholder implementation
     }
+
+//getname function
+String get_db_name() const {
+    return db_name;
+}
+
 };
+
 #endif

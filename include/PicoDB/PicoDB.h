@@ -107,9 +107,9 @@ public:
 	      this->db.printTable(table);
 	}
 // Add these to your PicoDB class
-// String getDBName() const {
-// 	return db.get_db_name();
-// }
+String getDBName() const {
+	return db.get_db_name();
+}
 
 Vector<Table>& getTables() {
 	return db.get_tables();
@@ -155,7 +155,5 @@ Table innerJoin(String leftTableName, String rightTableName, String leftColumnFu
     return leftTable.innerJoin(rightTable, leftColumn, rightColumn, selectedColumns);
 
 }
-
-
 
 };

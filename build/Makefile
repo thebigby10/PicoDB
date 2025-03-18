@@ -117,48 +117,48 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named example_usage
+# Target rules for targets named runTests
 
 # Build rule for target.
-example_usage: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example_usage
-.PHONY : example_usage
+runTests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 runTests
+.PHONY : runTests
 
 # fast build rule for target.
-example_usage/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/build
-.PHONY : example_usage/fast
+runTests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/build
+.PHONY : runTests/fast
 
-examples/example_usage.o: examples/example_usage.cpp.o
-.PHONY : examples/example_usage.o
+src/Database.o: src/Database.cpp.o
+.PHONY : src/Database.o
 
 # target to build an object file
-examples/example_usage.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/examples/example_usage.cpp.o
-.PHONY : examples/example_usage.cpp.o
+src/Database.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/Database.cpp.o
+.PHONY : src/Database.cpp.o
 
-examples/example_usage.i: examples/example_usage.cpp.i
-.PHONY : examples/example_usage.i
+src/Database.i: src/Database.cpp.i
+.PHONY : src/Database.i
 
 # target to preprocess a source file
-examples/example_usage.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/examples/example_usage.cpp.i
-.PHONY : examples/example_usage.cpp.i
+src/Database.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/Database.cpp.i
+.PHONY : src/Database.cpp.i
 
-examples/example_usage.s: examples/example_usage.cpp.s
-.PHONY : examples/example_usage.s
+src/Database.s: src/Database.cpp.s
+.PHONY : src/Database.s
 
 # target to generate assembly for a file
-examples/example_usage.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/examples/example_usage.cpp.s
-.PHONY : examples/example_usage.cpp.s
+src/Database.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/Database.cpp.s
+.PHONY : src/Database.cpp.s
 
 src/PicoDB.o: src/PicoDB.cpp.o
 .PHONY : src/PicoDB.o
 
 # target to build an object file
 src/PicoDB.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/PicoDB.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/PicoDB.cpp.o
 .PHONY : src/PicoDB.cpp.o
 
 src/PicoDB.i: src/PicoDB.cpp.i
@@ -166,7 +166,7 @@ src/PicoDB.i: src/PicoDB.cpp.i
 
 # target to preprocess a source file
 src/PicoDB.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/PicoDB.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/PicoDB.cpp.i
 .PHONY : src/PicoDB.cpp.i
 
 src/PicoDB.s: src/PicoDB.cpp.s
@@ -174,7 +174,7 @@ src/PicoDB.s: src/PicoDB.cpp.s
 
 # target to generate assembly for a file
 src/PicoDB.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/PicoDB.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/PicoDB.cpp.s
 .PHONY : src/PicoDB.cpp.s
 
 src/core/Cell.o: src/core/Cell.cpp.o
@@ -182,7 +182,7 @@ src/core/Cell.o: src/core/Cell.cpp.o
 
 # target to build an object file
 src/core/Cell.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Cell.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Cell.cpp.o
 .PHONY : src/core/Cell.cpp.o
 
 src/core/Cell.i: src/core/Cell.cpp.i
@@ -190,7 +190,7 @@ src/core/Cell.i: src/core/Cell.cpp.i
 
 # target to preprocess a source file
 src/core/Cell.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Cell.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Cell.cpp.i
 .PHONY : src/core/Cell.cpp.i
 
 src/core/Cell.s: src/core/Cell.cpp.s
@@ -198,7 +198,7 @@ src/core/Cell.s: src/core/Cell.cpp.s
 
 # target to generate assembly for a file
 src/core/Cell.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Cell.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Cell.cpp.s
 .PHONY : src/core/Cell.cpp.s
 
 src/core/ConfigManager.o: src/core/ConfigManager.cpp.o
@@ -206,7 +206,7 @@ src/core/ConfigManager.o: src/core/ConfigManager.cpp.o
 
 # target to build an object file
 src/core/ConfigManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/ConfigManager.cpp.o
 .PHONY : src/core/ConfigManager.cpp.o
 
 src/core/ConfigManager.i: src/core/ConfigManager.cpp.i
@@ -214,7 +214,7 @@ src/core/ConfigManager.i: src/core/ConfigManager.cpp.i
 
 # target to preprocess a source file
 src/core/ConfigManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/ConfigManager.cpp.i
 .PHONY : src/core/ConfigManager.cpp.i
 
 src/core/ConfigManager.s: src/core/ConfigManager.cpp.s
@@ -222,7 +222,7 @@ src/core/ConfigManager.s: src/core/ConfigManager.cpp.s
 
 # target to generate assembly for a file
 src/core/ConfigManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/ConfigManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/ConfigManager.cpp.s
 .PHONY : src/core/ConfigManager.cpp.s
 
 src/core/Database.o: src/core/Database.cpp.o
@@ -230,7 +230,7 @@ src/core/Database.o: src/core/Database.cpp.o
 
 # target to build an object file
 src/core/Database.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Database.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Database.cpp.o
 .PHONY : src/core/Database.cpp.o
 
 src/core/Database.i: src/core/Database.cpp.i
@@ -238,7 +238,7 @@ src/core/Database.i: src/core/Database.cpp.i
 
 # target to preprocess a source file
 src/core/Database.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Database.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Database.cpp.i
 .PHONY : src/core/Database.cpp.i
 
 src/core/Database.s: src/core/Database.cpp.s
@@ -246,7 +246,7 @@ src/core/Database.s: src/core/Database.cpp.s
 
 # target to generate assembly for a file
 src/core/Database.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Database.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Database.cpp.s
 .PHONY : src/core/Database.cpp.s
 
 src/core/Table.o: src/core/Table.cpp.o
@@ -254,7 +254,7 @@ src/core/Table.o: src/core/Table.cpp.o
 
 # target to build an object file
 src/core/Table.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Table.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Table.cpp.o
 .PHONY : src/core/Table.cpp.o
 
 src/core/Table.i: src/core/Table.cpp.i
@@ -262,7 +262,7 @@ src/core/Table.i: src/core/Table.cpp.i
 
 # target to preprocess a source file
 src/core/Table.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Table.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Table.cpp.i
 .PHONY : src/core/Table.cpp.i
 
 src/core/Table.s: src/core/Table.cpp.s
@@ -270,7 +270,7 @@ src/core/Table.s: src/core/Table.cpp.s
 
 # target to generate assembly for a file
 src/core/Table.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/core/Table.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/core/Table.cpp.s
 .PHONY : src/core/Table.cpp.s
 
 src/storage/Encryptor.o: src/storage/Encryptor.cpp.o
@@ -278,7 +278,7 @@ src/storage/Encryptor.o: src/storage/Encryptor.cpp.o
 
 # target to build an object file
 src/storage/Encryptor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/Encryptor.cpp.o
 .PHONY : src/storage/Encryptor.cpp.o
 
 src/storage/Encryptor.i: src/storage/Encryptor.cpp.i
@@ -286,7 +286,7 @@ src/storage/Encryptor.i: src/storage/Encryptor.cpp.i
 
 # target to preprocess a source file
 src/storage/Encryptor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/Encryptor.cpp.i
 .PHONY : src/storage/Encryptor.cpp.i
 
 src/storage/Encryptor.s: src/storage/Encryptor.cpp.s
@@ -294,7 +294,7 @@ src/storage/Encryptor.s: src/storage/Encryptor.cpp.s
 
 # target to generate assembly for a file
 src/storage/Encryptor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/Encryptor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/Encryptor.cpp.s
 .PHONY : src/storage/Encryptor.cpp.s
 
 src/storage/FileHandler.o: src/storage/FileHandler.cpp.o
@@ -302,7 +302,7 @@ src/storage/FileHandler.o: src/storage/FileHandler.cpp.o
 
 # target to build an object file
 src/storage/FileHandler.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/FileHandler.cpp.o
 .PHONY : src/storage/FileHandler.cpp.o
 
 src/storage/FileHandler.i: src/storage/FileHandler.cpp.i
@@ -310,7 +310,7 @@ src/storage/FileHandler.i: src/storage/FileHandler.cpp.i
 
 # target to preprocess a source file
 src/storage/FileHandler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/FileHandler.cpp.i
 .PHONY : src/storage/FileHandler.cpp.i
 
 src/storage/FileHandler.s: src/storage/FileHandler.cpp.s
@@ -318,7 +318,7 @@ src/storage/FileHandler.s: src/storage/FileHandler.cpp.s
 
 # target to generate assembly for a file
 src/storage/FileHandler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/storage/FileHandler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/storage/FileHandler.cpp.s
 .PHONY : src/storage/FileHandler.cpp.s
 
 src/utils/Date.o: src/utils/Date.cpp.o
@@ -326,7 +326,7 @@ src/utils/Date.o: src/utils/Date.cpp.o
 
 # target to build an object file
 src/utils/Date.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Date.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Date.cpp.o
 .PHONY : src/utils/Date.cpp.o
 
 src/utils/Date.i: src/utils/Date.cpp.i
@@ -334,7 +334,7 @@ src/utils/Date.i: src/utils/Date.cpp.i
 
 # target to preprocess a source file
 src/utils/Date.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Date.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Date.cpp.i
 .PHONY : src/utils/Date.cpp.i
 
 src/utils/Date.s: src/utils/Date.cpp.s
@@ -342,7 +342,7 @@ src/utils/Date.s: src/utils/Date.cpp.s
 
 # target to generate assembly for a file
 src/utils/Date.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Date.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Date.cpp.s
 .PHONY : src/utils/Date.cpp.s
 
 src/utils/Map.o: src/utils/Map.cpp.o
@@ -350,7 +350,7 @@ src/utils/Map.o: src/utils/Map.cpp.o
 
 # target to build an object file
 src/utils/Map.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Map.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Map.cpp.o
 .PHONY : src/utils/Map.cpp.o
 
 src/utils/Map.i: src/utils/Map.cpp.i
@@ -358,7 +358,7 @@ src/utils/Map.i: src/utils/Map.cpp.i
 
 # target to preprocess a source file
 src/utils/Map.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Map.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Map.cpp.i
 .PHONY : src/utils/Map.cpp.i
 
 src/utils/Map.s: src/utils/Map.cpp.s
@@ -366,7 +366,7 @@ src/utils/Map.s: src/utils/Map.cpp.s
 
 # target to generate assembly for a file
 src/utils/Map.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Map.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Map.cpp.s
 .PHONY : src/utils/Map.cpp.s
 
 src/utils/String.o: src/utils/String.cpp.o
@@ -374,7 +374,7 @@ src/utils/String.o: src/utils/String.cpp.o
 
 # target to build an object file
 src/utils/String.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/String.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/String.cpp.o
 .PHONY : src/utils/String.cpp.o
 
 src/utils/String.i: src/utils/String.cpp.i
@@ -382,7 +382,7 @@ src/utils/String.i: src/utils/String.cpp.i
 
 # target to preprocess a source file
 src/utils/String.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/String.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/String.cpp.i
 .PHONY : src/utils/String.cpp.i
 
 src/utils/String.s: src/utils/String.cpp.s
@@ -390,7 +390,7 @@ src/utils/String.s: src/utils/String.cpp.s
 
 # target to generate assembly for a file
 src/utils/String.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/String.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/String.cpp.s
 .PHONY : src/utils/String.cpp.s
 
 src/utils/StringVectorConverter.o: src/utils/StringVectorConverter.cpp.o
@@ -398,7 +398,7 @@ src/utils/StringVectorConverter.o: src/utils/StringVectorConverter.cpp.o
 
 # target to build an object file
 src/utils/StringVectorConverter.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/StringVectorConverter.cpp.o
 .PHONY : src/utils/StringVectorConverter.cpp.o
 
 src/utils/StringVectorConverter.i: src/utils/StringVectorConverter.cpp.i
@@ -406,7 +406,7 @@ src/utils/StringVectorConverter.i: src/utils/StringVectorConverter.cpp.i
 
 # target to preprocess a source file
 src/utils/StringVectorConverter.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/StringVectorConverter.cpp.i
 .PHONY : src/utils/StringVectorConverter.cpp.i
 
 src/utils/StringVectorConverter.s: src/utils/StringVectorConverter.cpp.s
@@ -414,7 +414,7 @@ src/utils/StringVectorConverter.s: src/utils/StringVectorConverter.cpp.s
 
 # target to generate assembly for a file
 src/utils/StringVectorConverter.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/StringVectorConverter.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/StringVectorConverter.cpp.s
 .PHONY : src/utils/StringVectorConverter.cpp.s
 
 src/utils/Vector.o: src/utils/Vector.cpp.o
@@ -422,7 +422,7 @@ src/utils/Vector.o: src/utils/Vector.cpp.o
 
 # target to build an object file
 src/utils/Vector.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Vector.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Vector.cpp.o
 .PHONY : src/utils/Vector.cpp.o
 
 src/utils/Vector.i: src/utils/Vector.cpp.i
@@ -430,7 +430,7 @@ src/utils/Vector.i: src/utils/Vector.cpp.i
 
 # target to preprocess a source file
 src/utils/Vector.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Vector.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Vector.cpp.i
 .PHONY : src/utils/Vector.cpp.i
 
 src/utils/Vector.s: src/utils/Vector.cpp.s
@@ -438,8 +438,32 @@ src/utils/Vector.s: src/utils/Vector.cpp.s
 
 # target to generate assembly for a file
 src/utils/Vector.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_usage.dir/build.make CMakeFiles/example_usage.dir/src/utils/Vector.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/src/utils/Vector.cpp.s
 .PHONY : src/utils/Vector.cpp.s
+
+test/test_create_table.o: test/test_create_table.cpp.o
+.PHONY : test/test_create_table.o
+
+# target to build an object file
+test/test_create_table.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/test/test_create_table.cpp.o
+.PHONY : test/test_create_table.cpp.o
+
+test/test_create_table.i: test/test_create_table.cpp.i
+.PHONY : test/test_create_table.i
+
+# target to preprocess a source file
+test/test_create_table.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/test/test_create_table.cpp.i
+.PHONY : test/test_create_table.cpp.i
+
+test/test_create_table.s: test/test_create_table.cpp.s
+.PHONY : test/test_create_table.s
+
+# target to generate assembly for a file
+test/test_create_table.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runTests.dir/build.make CMakeFiles/runTests.dir/test/test_create_table.cpp.s
+.PHONY : test/test_create_table.cpp.s
 
 # Help Target
 help:
@@ -449,10 +473,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... example_usage"
-	@echo "... examples/example_usage.o"
-	@echo "... examples/example_usage.i"
-	@echo "... examples/example_usage.s"
+	@echo "... runTests"
+	@echo "... src/Database.o"
+	@echo "... src/Database.i"
+	@echo "... src/Database.s"
 	@echo "... src/PicoDB.o"
 	@echo "... src/PicoDB.i"
 	@echo "... src/PicoDB.s"
@@ -489,6 +513,9 @@ help:
 	@echo "... src/utils/Vector.o"
 	@echo "... src/utils/Vector.i"
 	@echo "... src/utils/Vector.s"
+	@echo "... test/test_create_table.o"
+	@echo "... test/test_create_table.i"
+	@echo "... test/test_create_table.s"
 .PHONY : help
 
 

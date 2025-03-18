@@ -3,7 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/opt/homebrew/Cellar/googletest/1.16.0/include",
+                "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/include"
             ],
             "defines": [],
             "macFrameworkPath": [
