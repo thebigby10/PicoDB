@@ -1,5 +1,7 @@
 #include "../../include/PicoDB/Database.h"
 
+// #include "../../include/PicoDB/Database.h"
+
 // Database::Database(String db_name, String db_path, String username, String key, String table_delimiter){
 // 	this->db_name = db_name;
 // 	this->db_path = db_path;
@@ -26,6 +28,14 @@
 // 			int permissions_size = allUserPermissionsInfo.get_size();
 // 			for (int i=0; i<permissions_size; i+=2) {
 // 				if (username == allUserPermissionsInfo[i][0]) {
+		
+// 		// check if the user exists ✅
+// 		bool user_exists = false;
+		
+// 		if (!isAdmin()) {
+// 			int permissions_size = allUserPermissionsInfo.get_size(); 
+// 			for (int i=0; i<permissions_size; i+=2) {
+// 				if (username == allUserPermissionsInfo[i][0]) { 
 // 					// we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
 // 					Vector<String> temp = allUserPermissionsInfo[i+1];
 // 					this->currentUserPermissions = temp;
@@ -34,7 +44,6 @@
 // 				}
 // 			}
 // 		}
-
 
 // 		if (user_exists || isAdmin()) {
 // 			//convert the tables into vector ✅
@@ -67,7 +76,6 @@
 // 	// if(condition[1]=="=="){
 // 	// 	for(int i=0;i<table.get_RowSize();i++){
 // 	// 		for(int j=0;j<table[i].;j++){
-
 // 	// 		}
 // 	// 	}
 // 	// }
@@ -116,7 +124,6 @@
 // 		}
 // 	}
 
-
 // 	// decrypt the csv file data related to the table and copy the info
 // 	int table_size = tables.get_size();
 // 	for(int i=0; i<table_size; i++) {
@@ -131,9 +138,17 @@
 // 		table_string_data = table_file.readFromFile();
 // 		table_string_data = encryptor.decryptData(table_string_data); // decrypt fetched string data
 
+
 // 		//converter.stringToVector(table_string_data, delimiter);
 // 		table_data_from_file = converter.stringToVector(table_string_data, delimiter);
 
+
+
+		
+// 		//converter.stringToVector(table_string_data, delimiter);
+// 		table_data_from_file = converter.stringToVector(table_string_data, delimiter);
+
+		
 
 // 		// load the data to table cells
 // 		int num_of_types = data_types.get_size();

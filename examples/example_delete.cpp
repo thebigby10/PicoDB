@@ -4,70 +4,79 @@
 using namespace std;
 
 int main() {
-    // Initialize database
-    PicoDB db("schoolDB", "/home/thebigby01/Codes/_github_repos/PicoDB/examples/schooldb", "admin", "password", ",_,");
+    // Create a database
+    PicoDB db("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ";_;");
 
-    // Create the students table
-    db.createTable("students", {
-        {"student_id", "INT", "PRIMARY_KEY"},
-        {"student_name", "STRING", "NOT_NULL"},
-        {"cgpa", "DOUBLE", "DEFAULT"}
-    });
+    // // Create a table for courses (primary key on `course_id`)
+    // cout << "SQL Query: CREATE TABLE courses (course_id INT PRIMARY_KEY, course_name STRING NOT_NULL);" << endl;
+    // db.createTable("courses", {
+    //     {"course_id", "INT", "PRIMARY_KEY"},
+    //     {"course_name", "STRING", "NOT_NULL"}
+    // });
 
-    // Create the courses table with a foreign key reference to students
-    db.createTable("courses", {
-        {"course_id", "INT", "PRIMARY_KEY"},
-        {"course_name", "STRING", "NOT_NULL"},
-        {"student_id", "INT", "FOREIGN_KEY", "students"}  // Foreign key reference to students
-    });
+    // // Create a table for students (primary key on `student_id` and foreign key on `course_id` referencing `courses.course_id`)
+    // cout << "SQL Query: CREATE TABLE students (student_id INT PRIMARY_KEY, student_name STRING NOT_NULL, course_id INT FOREIGN_KEY REFERENCES courses(course_id));" << endl;
+    // db.createTable("students", {
+    //     {"student_id", "INT", "PRIMARY_KEY"},
+    //     {"student_name", "STRING", "NOT_NULL"},
+    //     {"course_id", "INT", "FOREIGN_KEY", "courses", "CASCADE"}  // Foreign key referencing `courses.course_id`
+    // });
 
-    // Insert sample data into the students table
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"1", "Alice", "3.8"});
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"2", "Bob", "2.5"});
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"3", "Charlie", "3.2"});
+    // // Create a table for teachers (primary key on `teacher_id`)
+    // cout << "SQL Query: CREATE TABLE teachers (teacher_id INT PRIMARY_KEY, salaray INT NOT_NULL,  student_id INT FOREIGN_KEY references students SET_NULL);" << endl;
+    // db.createTable("teachers", {
+    //     {"teacher_id", "INT", "PRIMARY_KEY"},
+    //     {"salary", "INT", "NOT_NULL"},
+    //     {"student_id", "INT", "FOREIGN_KEY", "students", "SET_NULL"},
+    // });
 
-    // Insert sample data into the courses table
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"101", "Mathematics", "1"});
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"102", "Physics", "2"});
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"103", "Chemistry", "3"});
 
-    // Print tables before delete operation
-    cout << "Before DELETE operation:" << endl;
-    cout << "Students Table:" << endl;
-    db.select("students", {});
-    cout << "Courses Table:" << endl;
-    db.select("courses", {});
 
-    // Perform DELETE operation with CASCADE (this will delete related courses)
-    cout << "\nDeleting students with CGPA < 3.5 (CASCADE)..." << endl;
-    db.deleteFrom("students", "cgpa < 3.5", "CASCADE");
+    // // Insert data into `courses` table
+    // cout << "SQL Query: INSERT INTO courses (course_id, course_name) VALUES (101, 'Mathematics');" << endl;
+    // db.insertInto("courses", {"course_id", "course_name"}, {"101", "Mathematics"});
 
-    // Print tables after CASCADE delete operation
-    cout << "\nAfter DELETE operation with CASCADE:" << endl;
-    cout << "Students Table:" << endl;
-    db.select("students", {"student_id", "student_name"});
-    cout << "Courses Table:" << endl;
-    db.select("courses", {});
+    // cout << "SQL Query: INSERT INTO courses (course_id, course_name) VALUES (102, 'Physics');" << endl;
+    // db.insertInto("courses", {"course_id", "course_name"}, {"102", "Physics"});
 
-    // Insert students and courses data again for testing SET_NULL
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"1", "Alice", "3.8"});
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"2", "Bob", "2.5"});
-    db.insertInto("students", {"student_id", "student_name", "cgpa"}, {"3", "Charlie", "3.2"});
+    // // Insert data into `students` table (valid course_id)
+    // cout << "SQL Query: INSERT INTO students (student_id, student_name, course_id) VALUES (1, 'John Doe', 101);" << endl;
+    // db.insertInto("students", {"student_id", "student_name", "course_id"}, {"1", "John Doe", "101"});
 
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"101", "Mathematics", "1"});
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"102", "Physics", "2"});
-    db.insertInto("courses", {"course_id", "course_name", "student_id"}, {"103", "Chemistry", "3"});
+    // cout << "SQL Query: INSERT INTO students (student_id, student_name, course_id) VALUES (2, 'Jane Smith', 102);" << endl;
+    // db.insertInto("students", {"student_id", "student_name", "course_id"}, {"2", "Jane Smith", "102"});
 
-    // Perform DELETE operation with SET_NULL (this will set student_id to NULL in courses)
-    cout << "\nDeleting students with CGPA < 3.5 (SET_NULL)..." << endl;
-    db.deleteFrom("students", "cgpa < 3.5", "SET_NULL");
+    // // Insert data into `teachers` table (valid course_id)
+    // cout << "SQL Query: INSERT INTO teachers (teacher_id, salary, student_id) VALUES (1, '20000', 1);" << endl;
+    // db.insertInto("teachers", {"teacher_id", "salary", "student_id"}, {"1", "20000", "1"});
 
-    // Print tables after SET_NULL delete operation
-    cout << "\nAfter DELETE operation with SET_NULL:" << endl;
-    cout << "Students Table:" << endl;
-    db.select("students", {});
-    cout << "Courses Table:" << endl;
-    db.select("courses", {});
+    // cout << "SQL Query: INSERT INTO teachers (teacher_id, salary, student_id) VALUES (2, '50000', 2);" << endl;
+    // db.insertInto("teachers", {"teacher_id", "salary", "student_id"}, {"2", "50000", "2"});
+
+
+    // // example deleteFROM() with ON DELETE = CASCADE
+    // db.deleteFrom("students", "course_id = 102");
+
+    // example deleteFROM() with ON DELETE = SET_NULL
+    // db.deleteFrom("students", "course_id = 102");
+
+
+    // Step 4: Display the tables after modification
+    // cout << "SQL Query: SELECT * FROM courses;" << endl;
+    Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
+    db.printTable(courses_table);
+
+    // cout << "SQL Query: SELECT * FROM students;" << endl;
+    Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
+    db.printTable(students_table);
+
+    // cout << "SQL Query: SELECT * FROM teachers;" << endl;
+    Table teachers_table = db.select("teachers", {"teacher_id", "salary", "student_id"}, "");
+    db.printTable(teachers_table);
+
+    // Save the database after operations
+    cout << "SQL Query: SAVE DATABASE;" << endl;
+    db.saveDB();
 
     return 0;
 }
