@@ -1,12 +1,21 @@
-#include "../../include/PicoDB/Cell.h"
+// #include "../../include/PicoDB/Cell.h"
 
-// // Getters for each data type
-// DataType Cell::getDataType() const { return datatype;}
+//     // Default constructor - compile hoy na naile, pore thik korte hobe
+//     //Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {
+//     // Alternatively, you could set datatype to a more appropriate type if needed
+//     //}
 
-// int Cell::getInt() const {return data_i;}
+//     // Getters for each data type
+//     DataType Cell::getDataType() const {return datatype;}
 
-// double Cell::getDouble() const {return data_d;}
+//     int Cell::getInt() const {return data_i;}
 
-// String Cell::getString() const {return data_s;}
+//     double Cell::getDouble() const {return data_d;}
 
-// bool Cell::getBoolean() const {return data_b;}
+//     String Cell::getString() const {return data_s;}
+
+//     bool Cell::getBoolean() const {return data_b;}
+
+// 	//data field:
+// 	//implement date
+//     // Constrains constrains;

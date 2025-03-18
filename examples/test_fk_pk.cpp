@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     // Create a database
-    PicoDB db("schoolDB", "/home/thebigby01/Codes/_github_repos/PicoDB/examples/testdb", "admin", "password", ";_;");
+    PicoDB db("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ";_;");
 
     // Create a table for courses (primary key on `course_id`)
     // cout << "SQL Query: CREATE TABLE courses (course_id INT PRIMARY_KEY, course_name STRING NOT_NULL);" << endl;

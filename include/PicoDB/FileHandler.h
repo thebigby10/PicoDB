@@ -19,7 +19,7 @@ public:
 // Function to read from a file and return a single String containing all its contents
     String readFromFile() {
         std::ifstream fileStream(filepath.c_str(), std::ios::in);  // Open the file in input mode
-
+        
         if (!fileStream.is_open()) {
             std::cerr << "Failed to open file: " << filepath << std::endl;
             return String("");  // Return an empty string on failure
@@ -34,7 +34,7 @@ public:
             fileContent += String(buffer);  // Append the current line to fileContent
             fileContent += "\n";            // Append newline to maintain formatting
         }
-
+        
         fileStream.close();  // Close the file
         return fileContent;
     }
@@ -42,32 +42,32 @@ public:
     // The 'append' flag determines if the data should overwrite (false) or append (true) to the file
     void writeToFile(const String& data, bool append = false) {
         std::ofstream fileStream;
-
+        
         // Choose file mode based on append flag
         if (append) {
             fileStream.open(filepath.c_str(), std::ios::app);  // Open file in append mode
         } else {
             fileStream.open(filepath.c_str(), std::ios::out);  // Open file in write/overwrite mode
         }
-
+        
         if (!fileStream.is_open()) {
             std::cerr << "Failed to open file: " << filepath << std::endl;
             return;
         }
-
+        
         // Write the entire string to the file
         fileStream << data;
-
+        
         fileStream.close();  // Close the file
     }
     // Function to create a file (it will overwrite if the file already exists)
     void createFile() {
         std::ofstream fileStream(filepath.c_str(), std::ios::out);  // Open file in write mode (creates file)
-
+        
         if (!fileStream.is_open()) {
             std::cerr << "Failed to create file: " << filepath << std::endl;
         }
-
+        
         fileStream.close();  // Close the file
     }
     // Function to delete a file

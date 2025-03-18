@@ -2,26 +2,27 @@
 
 int main(){
     // Initialize PicoDB instance
-        PicoDB testdb("studentdb", "/home/thebigby01/Codes/_github_repos/PicoDB/examples", "admin", "admin");
+        //PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
 
         // Create Table
-        testdb.createTable("students", {
-            {"id", "INT"},
-            {"name", "STRING"},
-            {"age", "INT"},
-            {"is_active", "BOOLEAN"}
-        });
+        // zawadDB.createTable("students", {
+        //     {"id", "INT"},
+        //     {"name", "STRING"},
+        //     {"age", "INT"},
+        //     {"is_active", "BOOLEAN"}
+        // });
 
         // Insert sample data
-        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"1", "John", "20", "true"});
-        testdb.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Alice", "18", "true"});
+        // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"1", "John", "20", "true"});
+        // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Alice", "17", "true"});
         // testdb.insertInto(String table_name, Vector<String> col_names, Vector<String> values)
 
         // Select records where age > 18 and name is NOT "Alice"
-        Table result = testdb.select("students", {"id", "name", "age"}, "age > 18");
+        //Table result = zawadDB.select("students", {"id", "name", "age"}, "age > 18");
+       // zawadDB.select("students", {"id", "name", "age"}, "age > 18");
 
         // Display the result
-        testdb.printTable(result);
+        // zawadDB.printTable(result);
 
         // testdb.saveDB();
 

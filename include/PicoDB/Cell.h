@@ -10,23 +10,37 @@ enum class DataType {
     DOUBLE,
     STRING,
     BOOLEAN,
+    //DATE
 };
 
-class Cell {
+class Cell{
 public:
-    DataType datatype;
-    int data_i;
-    double data_d;
-    String data_s;
-    bool data_b;
+    // Default constructor - compile hoy na naile, pore thik korte hobe
+    //Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {
+    // Alternatively, you could set datatype to a more appropriate type if needed
+    //}
 
-    Cell() : data_i(0), data_d(0.0), data_b(false), datatype(DataType::STRING) {}
+	// alternative default constructor
+	Cell() : datatype(DataType::STRING), data_s("") {}
 
-    Cell(int data) : data_i(data), datatype(DataType::INTEGER) {}
-    Cell(double data) : data_d(data), datatype(DataType::DOUBLE) {}
-    Cell(bool data) : data_b(data), datatype(DataType::BOOLEAN) {}
+	Cell(int data){
+		this->data_i = data;
+		this->datatype = DataType::INTEGER;
+	};
+	Cell(double data){
+		this->data_d = data;
+		this->datatype = DataType::DOUBLE;
+	};
+	// Cell(String data){
+	// 	this->data_s = data;
+	// 	this->datatype = DataType::STRING;
+	// };
+	Cell(bool data){
+		this->data_b = data;
+		this->datatype = DataType::BOOLEAN;
+	};
 
-    Cell(const String& data) {
+	Cell(const String& data) {
         if (data == String("true") || data == String("false")) {
             datatype = DataType::BOOLEAN;
             data_b = (data == String("true"));
@@ -42,14 +56,42 @@ public:
         }
     }
 
-    DataType getDataType() const { return datatype; }
-    int getInt() const { return data_i; }
-    double getDouble() const { return data_d; }
-    String getString() const { return data_s; }
-    bool getBoolean() const { return data_b; }
+	// Function to get data based on the datatype
+	String getData() const {
+		switch (datatype) {
+			case DataType::INTEGER:
+				return String::toString(data_i);
+			case DataType::DOUBLE:
+				return String::toString(data_d);
+			case DataType::BOOLEAN:
+				return data_b ? String("true") : String("false");
+			case DataType::STRING:
+				return data_s;
+			default:
+				return String("Unknown DataType");
+		}
+	}
+
+    // Getters for each data type
+    DataType getDataType() const {return datatype;}
+
+    int getInt() const {return data_i;}
+
+    double getDouble() const {return data_d;}
+
+    String getString() const {return data_s;}
+
+    bool getBoolean() const {return data_b;}
 
 private:
-    bool isInteger(const String& str) const {
+	DataType datatype;
+	//data field:
+	int data_i;
+	double data_d;
+	String data_s;
+	bool data_b;
+
+	bool isInteger(const String& str) const {
         for (size_t i = 0; i < str.length(); ++i) {
             if (i == 0 && str[i] == '-') continue;
             if (str[i] < '0' || str[i] > '9') return false;
@@ -70,6 +112,8 @@ private:
         }
         return decimalPoint;
     }
-};
 
+	//implement date
+    // Constrains constrains;
+};
 #endif
