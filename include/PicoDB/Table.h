@@ -106,8 +106,16 @@ public:
 		this->table_data = cell_data;
 	}
 
-	void updateSingleRecord (Vector<Cell> cell_data) {
+	void updateSingleRecord(Vector<Cell> cell_data) {
 		this->table_data.push_back(cell_data);
+	}
+
+	void updateSingleCell(Cell cell_data, int row_num, int col_num) {
+		this->table_data[row_num][col_num] = cell_data;
+	}
+
+	void deleteSingleRecord(int row_num){
+		this->table_data.erase(row_num);
 	}
 
     // Getter for table_name

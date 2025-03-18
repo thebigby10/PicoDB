@@ -149,9 +149,16 @@ public:
 		return true;
 	}
 
-    bool update(String table_name, Vector<Vector<String>> 	update_values, String condition){
+    bool update(String table_name, Vector<Vector<String>> update_values, String condition){
 		Table* input_table = nullptr;
 		bool table_found = false;
+		int curr_updt_pk_index;
+		int curr_updt_fk_index;
+		int curr_pk_index;
+		int curr_fk_index = -1;
+		bool curr_fk_exists = false;
+		bool parent_ref_integrity_needed = false;
+		bool child_ref_integrity_needed = false;
 
 		// Find the table by name
 		for (int i = 0; i < tables.get_size(); ++i) {
@@ -167,20 +174,69 @@ public:
 			return false;
 		}
 
-		// Store selected column indices and corresponding update values
-		Vector<int> selected_column_indices;
-		Vector<String> selected_column_updt_values;
-		for (int i = 0; i < update_values.get_size(); i++) {
-			for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
-				if (input_table->getHeaders()[j] == update_values[i][0]) {
-					// update_values[i][0] because each inner string will contain the col_name at 0 index
-					selected_column_indices.push_back(j);
-					selected_column_updt_values.push_back(update_values[i][1]);
-					break;
+		// check if table is referenced in another table or has referenced other tables
+		int curr_table_constraint_size = input_table->getConstraints().get_size();
+		for (int i = 0; i<curr_table_constraint_size; i++) {
+			if (input_table->getConstraints()[i] == String("PRIMARY_KEY")) {
+				curr_pk_index = i;
+			}
+			if (input_table->getConstraints()[i] == String("FOREIGN_KEY")) {
+				curr_fk_exists = true;
+				curr_fk_index = i;
+			}
+		}
+		// determining whether parent/child referencial integrity maintanance is needed
+		for (int i=0; i<update_values.get_size(); i++) {
+			if (update_values[i][0] == input_table->getHeaders()[curr_pk_index]){
+				if (input_table->getIsReferencedIn().get_size() >0 && input_table->getIsReferencedIn()[0] != "None") {
+					child_ref_integrity_needed = true;
+					curr_updt_pk_index = i;
+				}
+			}
+
+			if (curr_fk_index > -1 && update_values[i][0] == input_table->getHeaders()[curr_fk_index]) {
+				parent_ref_integrity_needed = true;
+				curr_updt_fk_index = i;
+			}
+		}
+
+		// parent referencing check
+		if (parent_ref_integrity_needed) {
+			for (int i=0; i<input_table->getForeignKeyIndices().get_size(); i++) {
+				bool ref_table_found = false;
+				for (int j=0; j<tables.get_size(); j++) {
+					if (input_table->getForeignKeyIndices()[i].second == tables[j].getTableName()) {
+						ref_table_found = true;
+						//Cell updt_cell = new Cell(update_values[curr_updt_fk_index][1]);
+						// debug
+						// std::cout << Cell(update_values[curr_updt_fk_index][1]).getData() << std::endl;
+						if (!foreignKeyExists(input_table, i, update_values[curr_updt_fk_index][1])) {
+							std::cerr << "Error: Foreign key constraint failed for column " << update_values[curr_updt_fk_index][0] << " with value " << update_values[curr_updt_fk_index][1] << std::endl;
+							return false;  // Foreign key value not found in the referenced table
+						}
+					}
+				}
+
+				if (!ref_table_found) {
+					std::cerr << "User doesn't have access to the referenced table. Try operating with a different User." << std::endl;
+					return false;
 				}
 			}
 		}
-		if(DEBUG) cout<<endl;
+
+		// Store selected column indices and corresponding update values
+		// Vector<int> selected_column_indices;
+		// Vector<String> selected_column_updt_values;
+		// for (int i = 0; i < update_values.get_size(); i++) {
+		// 	for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
+		// 		if (input_table->getHeaders()[j] == update_values[i][0]) {
+		// 			// update_values[i][0] because each inner string will contain the col_name at 0 index
+		// 			selected_column_indices.push_back(j);
+		// 			selected_column_updt_values.push_back(update_values[i][1]);
+		// 			break;
+		// 		}
+		// 	}
+		// }
 
 		// Parse complex conditions
 		Vector<int> condition_indices;
@@ -189,7 +245,7 @@ public:
 		Vector<String> logical_ops;
 
 
-	// tokenize the conditions
+		// tokenize the conditions
 		if (condition != String("")) {
 			Vector<String> tokens;
 			String current_token;
@@ -236,65 +292,61 @@ public:
 					}
 				}
 			}
-			if(DEBUG){std::cout << "[DEBUG] Condition: " << condition << std::endl;
-				std::cout << "[DEBUG] Parsed tokens: ";
-				for (int i = 0; i < tokens.get_size(); i++) {
-					std::cout << tokens[i] << " ";
-				}
-				std::cout << std::endl;
-
-				std::cout << "[DEBUG] Condition Indices: ";
-				for (int i = 0; i < condition_indices.get_size(); i++) {
-					std::cout << condition_indices[i] << " ";
-				}
-				std::cout << std::endl;
-
-				std::cout << "[DEBUG] Condition Operators: ";
-				for (int i = 0; i < condition_ops.get_size(); i++) {
-					std::cout << condition_ops[i] << " ";
-				}
-				std::cout << std::endl;
-
-				std::cout << "[DEBUG] Condition Values: ";
-				for (int i = 0; i < condition_values.get_size(); i++) {
-					std::cout << condition_values[i] << " ";
-				}
-				std::cout << std::endl;
-			}
-
 		}
 
 		// Apply condition filtering
-		Vector<Vector<Cell>> filtered_data;
-		for (int i = 0; i < input_table->getTableData().get_size(); i++) {
-			if (evaluateComplexCondition(input_table->getTableData()[i], condition_indices, condition_ops, condition_values, logical_ops)) {
-				filtered_data.push_back(input_table->getTableData()[i]);
+		// update current table cells plus child reference tables		
+		for (int m = 0; m < input_table->getTableData().get_size(); m++) {
+			if (evaluateComplexCondition(input_table->getTableData()[m], condition_indices, condition_ops, condition_values, logical_ops)) {
+				// child referencing check
+				if (child_ref_integrity_needed) {
+					Table* ref_table = nullptr;
+					String temp_on_delete;
+					Vector<Vector<Cell>> ref_table_data;
+					bool ref_table_found = false;
+					for (int i=0; i<tables.get_size(); i++) {
+						if (tables[i].getTableName() == input_table->getIsReferencedIn()[0]) {
+							ref_table_found = true;
+							ref_table = &tables[i];
+							ref_table_data = ref_table->getTableData();
+							temp_on_delete = ref_table->getOnDelete();
+						}
+					}
+
+					if (!ref_table_found) {
+						std::cerr << "User doesn't have access to tables that contain references to this one. Try operating with a different User." << std::endl;
+						return false;
+					}
+
+					// operate on the child table based on on_delete
+					int ref_table_data_size = ref_table_data.get_size();
+					if (temp_on_delete == String("CASCADE")) {
+						for (int i=0; i<ref_table_data_size; i++) {
+							if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+								ref_table->deleteSingleRecord(i);
+							}
+						}
+					} else if (temp_on_delete == String("SET_NULL")) {
+						for (int i=0; i<ref_table_data_size; i++) {
+							if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+								ref_table->updateSingleCell(Cell(),i,ref_table->getForeignKeyIndices()[0].first );
+							}
+						}
+					}
+				}
+
+
+				// updating the current table records
+				for (int j=0; j<update_values.get_size(); j++){
+					for (int k=0; k<input_table->getHeaders().get_size(); k++) {
+						if (update_values[j][0] == input_table->getHeaders()[k]) {
+							input_table->updateSingleCell(Cell(update_values[j][1]), m, k);
+							break;
+						}
+					}
+				}
 			}
 		}
-
-		// Create new table with selected columns
-		Table selected_table;
-		Vector<String> selected_headers;
-		for (int i = 0; i < selected_column_indices.get_size(); i++) {
-			selected_headers.push_back(input_table->getHeaders()[selected_column_indices[i]]);
-		}
-		selected_table.setHeaders(selected_headers);
-
-		Vector<Vector<Cell>> selected_data;
-		for (int i = 0; i < filtered_data.get_size(); i++) {
-			Vector<Cell> row;
-			for (int j = 0; j < selected_column_indices.get_size(); j++) {
-				row.push_back(filtered_data[i][selected_column_indices[j]]);
-			}
-			selected_data.push_back(row);
-		}
-		selected_table.updateRecords(selected_data);
-
-	//debugging
-		// std::cout << "\tFiltering table: " << table_name << std::endl;
-		// std::cout << "\tCondition: " << condition << std::endl;
-		// std::cout << "\tNumber of rows before filtering: " << input_table.getTableData().get_size() << std::endl;
-
 		return true;
 	}
 
@@ -1016,6 +1068,12 @@ public:
 		int ref_table_data_size = ref_table_data.get_size();
 
         for (int i = 0; i < ref_table_data_size; ++i) {
+			// debug
+			// std::cout << "ref_table_data : " << ref_table_data[i][ref_table.getPrimaryKeyIndices()[0]].getData() << std::endl;
+			// std::cout << "Input table data : " << value << std::endl;
+			// bool result = ref_table_data[i][ref_table.getPrimaryKeyIndices()[0]].getData().toInt() == value.toInt();
+			// std::cout << "bool result : " << result << std::endl;
+
             if (ref_table_data[i][ref_table.getPrimaryKeyIndices()[0]].getData() == value) {
                 return true;
             }

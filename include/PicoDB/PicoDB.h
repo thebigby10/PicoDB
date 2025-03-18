@@ -33,6 +33,10 @@ public:
         return this->db.select(table_name, cols, condition);
     }
 
+    bool update(String table_name, Vector<Vector<String>> update_values, String condition) {
+        return this->db.update(table_name, update_values, condition);
+    }
+
     bool insertInto(String table_name, Vector<String> col_names, Vector<String> values) {
         return this->db.insertInto(table_name, col_names, values);
     }
