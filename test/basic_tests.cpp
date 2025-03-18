@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../include/PicoDB/PicoDB.h"
-#include "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/CommandLineInterface.cpp"
+//#include "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/CommandLineInterface.cpp"
 
 void testCreateTable() {
     PicoDB db("testdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");

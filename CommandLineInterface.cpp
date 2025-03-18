@@ -39,6 +39,10 @@ void printHelp() {
     cout << "      If no columns specified, selects all columns.\n";
     cout << "      Example: select students id name\n\n";
     
+    cout << "  delete_from <table_name> <condition>\n";
+    cout << "      Deletes records from the specified table based on the condition.\n";
+    cout << "      Example: delete_from students id = 1\n\n";
+    
     cout << "SYSTEM COMMANDS:\n";
     cout << "  save_db\n";
     cout << "      Saves all changes to the current database.\n";
@@ -117,6 +121,18 @@ void insertInto(PicoDB& db, const vector<string>& tokens) {
     } else {
         cerr << "Failed to insert record into table '" << table_name << "'.\n";
     }
+
+    // Debug: Print the inserted values
+    cout << "Inserted values: ";
+    for (size_t i = 0; i < col_names.get_size(); ++i) {
+        cout << col_names[i] << " = " << values[i] << ", ";
+    }
+    cout << endl;
+
+    // Debug: Print the table data after insertion
+    Table table = db.getTable(table_name);
+    cout << "Table data after insertion:\n";
+    db.printTable(table);
 }
 
 // Function to select and display data from a table
@@ -133,8 +149,52 @@ void selectFromTable(PicoDB& db, const vector<string>& tokens) {
         cols.push_back(tokens[i].c_str());
     }
 
-    Table result = db.select(table_name, cols, "");
-    db.printTable(result);
+    // Debug: Print the table data before selection
+    Table table = db.getTable(table_name);
+    cout << "Table data before selection:\n";
+    db.printTable(table);
+
+    // Table result = db.select(table_name, cols, "");
+    // db.printTable(result);
+
+    // Debug: Print the selected columns
+    cout << "Selected columns: ";
+    for (size_t i = 0; i < cols.get_size(); ++i) {
+        cout << cols[i] << ", ";
+    }
+    cout << endl;
+
+    // Debug: Print the number of rows in the result
+    cout << "Number of rows in result: " << table.getRowCount() << endl;
+}
+
+// Function to delete data from a table
+void deleteFromTable(PicoDB& db, const vector<string>& tokens) {
+    if (tokens.size() < 3) {
+        cerr << "Invalid syntax for delete_from. Use: delete_from <table_name> <condition>\n";
+        return;
+    }
+
+    String table_name(tokens[1].c_str());
+    String condition;
+
+    for (size_t i = 2; i < tokens.size(); ++i) {
+        condition += tokens[i].c_str();
+        if (i < tokens.size() - 1) {
+            condition += " ";
+        }
+    }
+
+    if (db.deleteFrom(table_name, condition)) {
+        cout << "Records deleted successfully from table '" << table_name << "' where " << condition << ".\n";
+    } else {
+        cerr << "Failed to delete records from table '" << table_name << "' where " << condition << ".\n";
+    }
+
+    // Debug: Print the table data after deletion
+    Table table = db.getTable(table_name);
+    cout << "Table data after deletion:\n";
+    db.printTable(table);
 }
 
 // Function to list available databases
@@ -182,6 +242,8 @@ int main() {
             insertInto(db, tokens);
         } else if (command == "select") {
             selectFromTable(db, tokens);
+        } else if (command == "delete_from") {
+            deleteFromTable(db, tokens);
         } else if (command == "save_db") {
             db.saveDB();
             cout << "Database saved successfully.\n";
@@ -199,3 +261,11 @@ int main() {
 
     return 0;
 }
+
+// [DUMMY DATA DO NOT DELETE]
+// create_table students id INT PRIMARY_KEY name STRING NOT_NULL
+// insert_into students id 1 name John
+// insert_into students id 2 name Jane
+// select students id name
+// delete_from students id = 1
+// select students id name
