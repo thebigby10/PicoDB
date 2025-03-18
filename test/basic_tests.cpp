@@ -1,9 +1,9 @@
 #include <iostream>
 #include "../include/PicoDB/PicoDB.h"
-#include "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/CommandLineInterface.cpp"
+// #include "../CommandLineInterface.cpp"
 
 void testCreateTable() {
-    PicoDB db("testdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");
+    PicoDB db("testdb", "/home/thebigby01/Codes/_github_repos/PicoDB/test/rapidb", "admin", "admin");
 
     bool result = db.createTable("students", {
         {"id", "INT", "PRIMARY_KEY", ""},
@@ -56,11 +56,11 @@ void testAlwaysPass() {
 void testAlwaysFail() {
     std::cerr << "testAlwaysFail failed.\n";
 }
- 
+
 void testCLI() {
     // Initialize CommandLineInterface with the test database path
     // implementation
-    
+
 }
 int main() {
     testCreateTable();

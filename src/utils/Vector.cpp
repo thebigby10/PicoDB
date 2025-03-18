@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/Vector.h"
+#include "../../include/PicoDB/Vector.h"
 
 // // Vector assignment operator
 // template<typename T>

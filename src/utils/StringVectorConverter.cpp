@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/StringVectorConverter.h"
+#include "../../include/PicoDB/StringVectorConverter.h"
 
 // Vector<Vector<String>> StringVectorConverter::stringToVector(String data, String delimiter) {
 // 	Vector<Vector<String>> table_cell_data;

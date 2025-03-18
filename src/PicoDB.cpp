@@ -1,4 +1,4 @@
-// #include "../include/PicoDB/PicoDB.h"
+#include "../include/PicoDB/PicoDB.h"
 
 // bool PicoDB::createTable(String table_name, Vector<Vector<String>> col_data){
 // 		this->db.get_tables().push_back(Table(table_name, col_data));

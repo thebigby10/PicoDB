@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/FileHandler.h"
+#include "../../include/PicoDB/FileHandler.h"
 
 // // Constructor
 // FileHandler::FileHandler(String filepath) {

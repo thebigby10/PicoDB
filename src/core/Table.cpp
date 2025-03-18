@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/Table.h"
+#include "../../include/PicoDB/Table.h"
 
 // // Default constructor
 // Table::Table() : table_name(""), headers(), data_types(), constraints(), table_data() {}

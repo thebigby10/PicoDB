@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/Encryptor.h"
+#include "../../include/PicoDB/Encryptor.h"
 
 // Encryptor::Encryptor(int key) : key(key) {}
 

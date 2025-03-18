@@ -1,4 +1,4 @@
-// #include "../../include/PicoDB/UserPermissionManager.h"
+#include "../../include/PicoDB/UserPermissionManager.h"
 
 
 // // Constructor that initializes the ConfigManager

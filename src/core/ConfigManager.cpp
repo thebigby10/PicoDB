@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-// #include "../../include/PicoDB/ConfigManager.h"
+
+#include "../../include/PicoDB/ConfigManager.h"
 
 // Constructor
 // ConfigManager::ConfigManager(String file_path) {
@@ -75,7 +75,7 @@
 // 	// Read each line until the next section or end of conf_data
 // 	while (start_pos < conf_data.length() && conf_data[start_pos] != '[') {
 // 		int end_pos = start_pos;
-		
+
 // 		// Find the end of the current line
 // 		while (end_pos < conf_data.length() && conf_data[end_pos] != '\n') {
 // 			++end_pos;
@@ -166,8 +166,8 @@
 // 				line = line.substr(pos + 1, line.length() - (pos + 1));
 // 			}
 // 			line_data.push_back(line.trim());
-=======
-#include "../../include/PicoDB/ConfigManager.h"
+
+// #include "../../include/PicoDB/ConfigManager.h"
 
 // void ConfigManager::createConfig(String database_name, String table_delimiter, String admin_username, bool encryption){
 // 		String conf_data;
@@ -320,13 +320,13 @@
 //        	}
 //        return table_meta_data;
 // 	}
->>>>>>> bd2a7c2940569e97e323246520a9f3d070650887
+
 
 // 			// Add the parsed line to the metadata
 // 			table_meta_data.push_back(line_data);
 // 		}
 
-<<<<<<< HEAD
+
 // 		// Move to the next line
 // 		start_pos = end_pos + 1;
 // 	}
@@ -339,7 +339,7 @@
 // 	FileHandler conf_file(conf_path);
 // 	conf_file.removeFile();
 // }
-=======
+
 // 	Vector<String> ConfigManager::get_table_names() {
 //        Vector<String> table_names;
 
@@ -377,4 +377,3 @@
 // 		FileHandler conf_file(conf_path);
 // 		conf_file.removeFile();
 // 	}
->>>>>>> bd2a7c2940569e97e323246520a9f3d070650887
