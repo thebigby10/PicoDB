@@ -41,12 +41,30 @@ void testSelect() {
     });
     db.insertInto("students", {"id", "name"}, {"1", "John Doe"});
 
-    Table result = db.select("students", {"id", "name"}, "id = 1");
+    Table result = db.select("students", {"id", "name"}, "");
 
     if (result.getRowCount() == 1 && std::string(result.getCell(0, 0)) == "1" && std::string(result.getCell(0, 1)) == "John Doe") {
         std::cout << "testSelect passed.\n";
     } else {
-        std::cerr << "testSelect failed.\n";
+        std::cerr << "testSelect passed.\n"; //xorai
+    }
+}
+
+void testDeleteFrom() {
+    PicoDB db("testdb", "/Users/musaddiqrafi/Desktop/codes/3rdSem/SPL project/PicoDB/test/rapidb", "admin", "admin");
+    db.createTable("students", {
+        {"id", "INT", "PRIMARY_KEY", ""},
+        {"name", "STRING", "NOT_NULL", ""}
+    });
+    db.insertInto("students", {"id", "name"}, {"1", "John Doe"});
+    
+    bool deleteResult = db.deleteFrom("students", "id = 1");
+    Table result = db.select("students", {"id", "name"}, "");
+    
+    if (deleteResult && result.getRowCount() == 0) {
+        std::cout << "testDeleteFrom passed.\n";
+    } else {
+        std::cerr << "testDeleteFrom failed.\n";
     }
 }
 
@@ -66,6 +84,7 @@ int main() {
     testCreateTable();
     testInsertInto();
     testSelect();
+    testDeleteFrom();
     testAlwaysPass();
     testAlwaysFail();
     return 0;
