@@ -37,6 +37,10 @@ public:
         return this->db.update(table_name, update_values, condition);
     }
 
+    bool deleteFrom(String table_name, String condition) {
+        return this->db.deleteFrom(table_name, condition);
+    }
+
     bool insertInto(String table_name, Vector<String> col_names, Vector<String> values) {
         return this->db.insertInto(table_name, col_names, values);
     }

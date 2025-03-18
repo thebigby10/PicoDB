@@ -224,20 +224,6 @@ public:
 			}
 		}
 
-		// Store selected column indices and corresponding update values
-		// Vector<int> selected_column_indices;
-		// Vector<String> selected_column_updt_values;
-		// for (int i = 0; i < update_values.get_size(); i++) {
-		// 	for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
-		// 		if (input_table->getHeaders()[j] == update_values[i][0]) {
-		// 			// update_values[i][0] because each inner string will contain the col_name at 0 index
-		// 			selected_column_indices.push_back(j);
-		// 			selected_column_updt_values.push_back(update_values[i][1]);
-		// 			break;
-		// 		}
-		// 	}
-		// }
-
 		// Parse complex conditions
 		Vector<int> condition_indices;
 		Vector<String> condition_ops;
@@ -345,6 +331,144 @@ public:
 						}
 					}
 				}
+			}
+		}
+		return true;
+	}
+
+	bool deleteFrom(String table_name, String condition) {
+		Table* input_table = nullptr;
+		bool table_found = false;
+		int curr_pk_index;
+		bool child_ref_integrity_needed = false;
+
+		// Find the table by name
+		for (int i = 0; i < tables.get_size(); ++i) {
+			if (tables[i].getTableName() == table_name) {
+				input_table = &tables[i];
+				table_found = true;
+				break;
+			}
+		}
+
+		if (!table_found) {
+			std::cerr << "Table not found or User doesn't have access to table : " << table_name << std::endl;
+			return false;
+		}
+
+		// check if table is referenced in another table or has referenced other tables
+		// also determine if child referential integrity maintainance is needed
+		int curr_table_constraint_size = input_table->getConstraints().get_size();
+		for (int i = 0; i<curr_table_constraint_size; i++) {
+			if (input_table->getConstraints()[i] == String("PRIMARY_KEY")) {
+				curr_pk_index = i;
+
+				if (input_table->getIsReferencedIn().get_size() >0 && input_table->getIsReferencedIn()[0] != "None") {
+					child_ref_integrity_needed = true;
+				}
+			}
+		}
+
+		// Parse complex conditions
+		Vector<int> condition_indices;
+		Vector<String> condition_ops;
+		Vector<String> condition_values;
+		Vector<String> logical_ops;
+
+
+		// tokenize the conditions
+		if (condition != String("")) {
+			Vector<String> tokens;
+			String current_token;
+			String op;
+			bool in_string = false;
+
+			for (size_t i = 0; i < condition.length(); i++) {
+				char c = condition[i];
+				if (c == ' ' && !in_string) {
+					if (!current_token.trim().empty()) {
+						tokens.push_back(current_token.trim());
+						current_token.clear();
+					}
+				} else if (c == '"') {
+					in_string = !in_string;
+				} else {
+					current_token = current_token + c;
+				}
+			}
+			if (!current_token.empty()) {
+				tokens.push_back(current_token.trim());
+			}
+
+			bool expecting_value = false;  // Track when an operator is found
+
+			for (size_t i = 0; i < tokens.get_size(); i++) {
+				if (tokens[i] == String("AND") || tokens[i] == String("OR")) {
+					logical_ops.push_back(tokens[i]);
+					expecting_value = false;  // Reset flag after logical operator
+				} else if (tokens[i] == String("=") || tokens[i] == String("!=") || tokens[i] == String(">") ||
+						tokens[i] == String("<") || tokens[i] == String(">=") || tokens[i] == String("<=") ||
+						tokens[i] == String("LIKE")) {
+					condition_ops.push_back(tokens[i]);
+					expecting_value = true;  // Next token should be a value
+				} else if (expecting_value) {
+					condition_values.push_back(tokens[i]);
+					expecting_value = false;  // Reset flag after capturing a value
+				} else {
+					for (int j = 0; j < input_table->getHeaders().get_size(); j++) {
+						if (input_table->getHeaders()[j] == tokens[i]) {
+							condition_indices.push_back(j);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// Apply condition filtering
+		// update current table cells plus child reference tables		
+		for (int m = 0; m < input_table->getTableData().get_size(); m++) {
+			if (evaluateComplexCondition(input_table->getTableData()[m], condition_indices, condition_ops, condition_values, logical_ops)) {
+				// child referencing check
+				if (child_ref_integrity_needed) {
+					Table* ref_table = nullptr;
+					String temp_on_delete;
+					Vector<Vector<Cell>> ref_table_data;
+					bool ref_table_found = false;
+					for (int i=0; i<tables.get_size(); i++) {
+						if (tables[i].getTableName() == input_table->getIsReferencedIn()[0]) {
+							ref_table_found = true;
+							ref_table = &tables[i];
+							ref_table_data = ref_table->getTableData();
+							temp_on_delete = ref_table->getOnDelete();
+						}
+					}
+
+					if (!ref_table_found) {
+						std::cerr << "User doesn't have access to tables that contain references to this one. Try operating with a different User." << std::endl;
+						return false;
+					}
+
+					// operate on the child table based on on_delete
+					int ref_table_data_size = ref_table_data.get_size();
+					if (temp_on_delete == String("CASCADE")) {
+						for (int i=0; i<ref_table_data_size; i++) {
+							if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+								ref_table->deleteSingleRecord(i);
+							}
+						}
+					} else if (temp_on_delete == String("SET_NULL")) {
+						for (int i=0; i<ref_table_data_size; i++) {
+							if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+								ref_table->updateSingleCell(Cell(),i,ref_table->getForeignKeyIndices()[0].first );
+							}
+						}
+					}
+				}
+
+
+				// updating the current table records
+				input_table->deleteSingleRecord(m);
 			}
 		}
 		return true;
