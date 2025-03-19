@@ -110,7 +110,7 @@ int main() {
 1. **Create a database**:
 
     ```cpp
-    Database db("studentdb", "/path/to/csv/files/", true); // true for encryption
+    createDatabase("/path/to/databases", "university", true); // true for encryption
     ```
 
 2. **Create a table**:
@@ -155,6 +155,3 @@ Here is the proposed basic Project Structure. We are planning to update it over 
 ├── docs/               	# Documentation
 └── README.md           	# Project overview
  ```
-
-## Here is the draw.io diagram for our project (rough)
-![alt text](image.png)
