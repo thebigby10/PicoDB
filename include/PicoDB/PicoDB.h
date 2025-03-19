@@ -29,8 +29,8 @@ public:
 		return this->db.createTable(table_name, col_data);
 	}
 
-    Table select(String table_name, Vector<String> cols, String condition) {
-        return this->db.select(table_name, cols, condition);
+    Table select(Table table, Vector<String> cols, String condition) {
+        return this->db.select(table, cols, condition);
     }
 
     bool update(String table_name, Vector<Vector<String>> update_values, String condition) {
@@ -51,6 +51,10 @@ public:
 
     bool dropDB() {
         return this->db.dropDB();
+    }
+
+    Table getTable(String table_name){
+        return this->db.get_table_by_name(table_name);
     }
     
     void addUser (const String& username, const String& tableName) {

@@ -6,19 +6,22 @@ int main() {
     PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
 
     // // Create a table
-    // zawadDB.createTable("students", {
-    //     {"student_id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
-    // });
+    zawadDB.createTable("students", {
+        {"student_id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
+    });
 
-    // // Insert some data
-    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"1", "John Doe", "20", "true"});
-    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
-    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
+    // Insert some data
+    zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"1", "John Doe", "20", "true"});
+    zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
+    zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
 
     // // Print full table (no condition)
-    // std::cout << "🔹 SELECT * FROM students;" << std::endl;
-    // Table result1 = zawadDB.select("students", {"student_id", "name", "age", "is_active"}, "");
-    // zawadDB.printTable(result1);
+    std::cout << "🔹 SELECT * FROM students;" << std::endl;
+    Table t_student = zawadDB.getTable("students");
+    Table result1 = zawadDB.select(t_student, {"student_id", "name", "age", "is_active"}, "");
+    Table result2 = zawadDB.select(result1, {"student_id", "name", "age", "is_active"}, "age > 15 AND is_active = true");
+    zawadDB.printTable(result1);
+    zawadDB.printTable(result2);
 
     // std::cout << "🔹 SELECT * FROM students;" << std::endl;
     // Table result2 = zawadDB.select("students", {"student_id", "name"}, "age >= 18 AND is_active = true");
@@ -77,9 +80,9 @@ int main() {
     // zawadDB.dropTable("students");
 
     // dropDB() demo
-    zawadDB.dropDB();
+    // zawadDB.dropDB();
 
-    // zawadDB.saveDB();
+    zawadDB.saveDB();
 
     return 0;
 }
