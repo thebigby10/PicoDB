@@ -66,7 +66,6 @@ public:
 					}
 				}
 			}
-			
 
 			if (user_exists || isAdmin()) {
 				//convert the tables into vector ✅
@@ -74,7 +73,6 @@ public:
 			} else {
 				// throw exception
 			}
-
 		}
 		else{
 			//create config file
@@ -777,10 +775,46 @@ public:
         return false;
     }
 
+	// 
+	Vector<String> data_types = table->getDataTypes();
+
     // Prepare the row of cells
     Vector<Cell> row;
     for (int i = 0; i < cols.get_size(); ++i) {
-        row.push_back(Cell(cell_data[i]));  // Assuming all values are strings (can be enhanced based on types)
+		bool is_cell_value_valid = false;
+
+		if (data_types[i] == String("INT")) {
+			is_cell_value_valid = isInteger(cell_data[i]);
+		} else if (data_types[i] == String("DOUBLE")) {
+			is_cell_value_valid = isDouble(cell_data[i]);
+		} else if (data_types[i] == String("BOOLEAN")) {
+			if (cell_data[i] == String("true") || cell_data[i] == String("false")) {
+				is_cell_value_valid = true;
+			}
+		} else {
+			if (isInteger(cell_data[i]) || isDouble(cell_data[i]) || cell_data[i] ==String("true") || cell_data[i] ==String("false")) {
+				is_cell_value_valid = false;
+			} else {
+				is_cell_value_valid = true;
+			}
+		}
+
+		try {
+			if (is_cell_value_valid) {
+				row.push_back(Cell(cell_data[i]));
+			} else {
+				// throw runtime_error("Invalid data inserted");
+				throw exception();
+				// exit(EXIT_FAILURE);
+			}
+		} catch (exception& e) {
+			std::cout << "Exception occured : Invalid data inserted" << std::endl;
+			std::cout << "data value inserted : " << cell_data[i] << std::endl;
+			std::cout << "data value type expected : " << data_types[i] << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		
+          // Assuming all values are strings (can be enhanced based on types)
     }
 
     // 1. Check Primary Key Constraints (ensure no duplicate primary key)
@@ -962,9 +996,10 @@ public:
 
 		if (!table_found) {
 			std::cerr << "Table not found: " << table_name << std::endl;
+			exit(EXIT_FAILURE);
 			return Table();
 		}
-
+		
 		if(DEBUG){ std::cout << "[DEBUG] Selected columns: ";
 		for (int i = 0; i < cols.get_size(); i++) {
 			std::cout << cols[i] << " ";
@@ -1100,6 +1135,134 @@ public:
 		return selected_table;
 	}
 
+	bool dropTable(String table_name) {
+		Table* input_table = nullptr;
+		bool table_found = false;
+		int table_index;
+		int curr_pk_index;
+		bool child_ref_integrity_needed = false;
+
+		// Find the table by name
+		for (int i = 0; i < tables.get_size(); ++i) {
+			if (tables[i].getTableName() == table_name) {
+				input_table = &tables[i];
+				table_found = true;
+				table_index = i;
+				break;
+			}
+		}
+
+		try {
+			if (!table_found) {
+				throw exception();
+			}
+		} catch(exception& e) {
+			std::cout << "Table not found or User doesn't have access to table : " << table_name << std::endl;
+			exit(EXIT_FAILURE);
+		}
+
+		// check if table is referenced in another table or has referenced other tables
+		// also determine if child referential integrity maintainance is needed
+		int curr_table_constraint_size = input_table->getConstraints().get_size();
+		for (int i = 0; i<curr_table_constraint_size; i++) {
+			if (input_table->getConstraints()[i] == String("PRIMARY_KEY")) {
+				curr_pk_index = i;
+
+				if (input_table->getIsReferencedIn().get_size() >0 && input_table->getIsReferencedIn()[0] != "None") {
+					child_ref_integrity_needed = true;
+				}
+			}
+		}
+		
+		for (int m = 0; m < input_table->getTableData().get_size(); m++) {
+			// child referencing check
+			if (child_ref_integrity_needed) {
+				Table* ref_table = nullptr;
+				String temp_on_delete;
+				Vector<Vector<Cell>> ref_table_data;
+				bool ref_table_found = false;
+				for (int i=0; i<tables.get_size(); i++) {
+					if (tables[i].getTableName() == input_table->getIsReferencedIn()[0]) {
+						ref_table_found = true;
+						ref_table = &tables[i];
+						ref_table_data = ref_table->getTableData();
+						temp_on_delete = ref_table->getOnDelete();
+					}
+				}
+
+				if (!ref_table_found) {
+					std::cerr << "User doesn't have access to tables that contain references to this one. Try operating with a different User." << std::endl;
+					return false;
+				}
+
+				// operate on the child table based on on_delete
+				int ref_table_data_size = ref_table_data.get_size();
+				if (temp_on_delete == String("CASCADE")) {
+					for (int i=0; i<ref_table_data_size; i++) {
+						if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+							ref_table->deleteSingleRecord(i);
+						}
+					}
+				} else if (temp_on_delete == String("SET_NULL")) {
+					for (int i=0; i<ref_table_data_size; i++) {
+						if (input_table->getTableData()[m][curr_pk_index].getData() == ref_table_data[i][ref_table->getForeignKeyIndices()[0].first].getData()) {
+							ref_table->updateSingleCell(Cell(),i,ref_table->getForeignKeyIndices()[0].first);
+						}
+					}
+				}
+			}
+		}
+
+		// remove table permissions from other users
+		int permissions_size = allUserPermissionsInfo.get_size(); 
+			for (int i=1; i<permissions_size; i+=2) {
+				int user_permissions_size = allUserPermissionsInfo[i].get_size();
+				for (int j=0; j<user_permissions_size; j++) {
+					if(allUserPermissionsInfo[i][j] == table_name) {
+						allUserPermissionsInfo[i].erase(j);
+						break;
+					}
+				}
+			}
+
+        // Remove the table from the internal vector
+        tables.erase(table_index);
+
+        // Delete the associated CSV file
+        FileHandler tableFile(db_path + "/" + table_name + ".csv");
+        if (tableFile.fileExists()) {
+            tableFile.removeFile();
+        }
+        return true;
+    }
+
+	bool dropDB(){
+
+		try {
+			if (isAdmin()){
+				for (int i=0; i<tables.get_size(); i++) {
+					// Delete the associated CSV file
+					FileHandler tableFile(db_path + "/" + tables[i].getTableName() + ".csv");
+					if (tableFile.fileExists()) {
+						tableFile.removeFile();
+					}
+				}
+
+				// delete the config file
+				FileHandler configFile(db_path + "/" + this->db_name + ".config");
+				if (configFile.fileExists()) {
+						configFile.removeFile();
+					}
+				
+				return true;
+			} else {
+				throw exception();
+			}
+		} catch(exception& e) {
+			std::cout << "Non-admin users can't drop databases." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+	}
 
 	bool evaluateCondition(const Cell& cell, String op, String value) {
 		if(DEBUG) {
@@ -1218,6 +1381,33 @@ public:
 		// if no table by the given name has been found
 		std::cout << "No table found by the following name : " << table_name << std::endl;
         return Table(); // Placeholder implementation
+    }
+
+	// helper functions for dataType constraint checking
+	bool isInteger(const String& str) const {
+		try {
+			for (size_t i = 0; i < str.length(); ++i) {
+            if (i == 0 && str[i] == '-') continue;
+            if (str[i] < '0' || str[i] > '9') return false;
+        }
+        return !str.empty();
+		} catch (exception& e){
+			std::cout << "Exception encountered." << std::endl;
+		}
+    }
+
+    bool isDouble(const String& str) const {
+        bool decimalPoint = false;
+        for (size_t i = 0; i < str.length(); ++i) {
+            if (i == 0 && str[i] == '-') continue;
+            if (str[i] == '.') {
+                if (decimalPoint) return false;
+                decimalPoint = true;
+            } else if (str[i] < '0' || str[i] > '9') {
+                return false;
+            }
+        }
+        return decimalPoint;
     }
 };
 #endif

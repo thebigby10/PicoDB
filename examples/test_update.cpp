@@ -27,7 +27,7 @@ int main() {
     // db.createTable("teachers", {
     //     {"teacher_id", "INT", "PRIMARY_KEY"},
     //     {"salary", "INT", "NOT_NULL"},
-    //     {"student_id", "INT", "FOREIGN_KEY", "students", "SET_NULL"},
+    //     {"student_id", "INT", "FOREIGN_KEY", "students", "CASCADE"},
     // });
 
 
@@ -91,11 +91,11 @@ int main() {
     // }
 
     // correct update [double breach testing]
-    // cout << "SQL Query: UPDATE students SET student_id=3, course_id=102 WHERE course_id=101;" << endl;
-    // bool result = db.update("students", {{"student_id", "3"}, {"course_id", "102"}}, "course_id = 101");
-    // if (!result) {
-    //     cout << "Error: Foreign key constraint failed for student Jane Smmith" << endl;
-    // }
+    cout << "SQL Query: UPDATE students SET student_id=3, course_id=102 WHERE course_id=101;" << endl;
+    bool result = db.update("students", {{"student_id", "3"}, {"course_id", "102"}}, "course_id = 101");
+    if (!result) {
+        cout << "Error: Foreign key constraint failed for student Jane Smmith" << endl;
+    }
 
     // correct update [double breach testing but with on_delete = "SET_NULL"]
     // cout << "SQL Query: UPDATE students SET student_id=3, course_id=102 WHERE course_id=101;" << endl;

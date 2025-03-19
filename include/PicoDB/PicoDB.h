@@ -44,6 +44,14 @@ public:
     bool insertInto(String table_name, Vector<String> col_names, Vector<String> values) {
         return this->db.insertInto(table_name, col_names, values);
     }
+
+    bool dropTable(String table_name) {
+        return this->db.dropTable(table_name);
+    }
+
+    bool dropDB() {
+        return this->db.dropDB();
+    }
     
     void addUser (const String& username, const String& tableName) {
         UserPermissionManager permissionManager(db);

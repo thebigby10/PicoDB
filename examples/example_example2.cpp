@@ -3,36 +3,36 @@
 
 int main() {
     // Initialize Database
-    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "rapi", "5", ",");
+    PicoDB zawadDB("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ",");
 
-    // Create a table
+    // // Create a table
     // zawadDB.createTable("students", {
-    //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
+    //     {"student_id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"age", "INT", "NOT_NULL"}, {"is_active", "BOOLEAN", "DEFAULT"}
     // });
 
     // // Insert some data
-    // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"1", "John Doe", "20", "true"});
-    // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
-    // zawadDB.insertInto("students", {"id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
+    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"1", "John Doe", "20", "true"});
+    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"2", "Jane Smith", "18", "false"});
+    // zawadDB.insertInto("students", {"student_id", "name", "age", "is_active"}, {"3", "Alice Brown", "15", "true"});
 
-    // Print full table (no condition)
+    // // Print full table (no condition)
     // std::cout << "🔹 SELECT * FROM students;" << std::endl;
-    // Table result1 = zawadDB.select("students", {"id", "name", "salary", "is_employed"}, "");
+    // Table result1 = zawadDB.select("students", {"student_id", "name", "age", "is_active"}, "");
     // zawadDB.printTable(result1);
 
-    std::cout << "🔹 SELECT * FROM students;" << std::endl;
-    Table result1 = zawadDB.select("department", {"id", "name"}, "");
-    zawadDB.printTable(result1);
+    // std::cout << "🔹 SELECT * FROM students;" << std::endl;
+    // Table result2 = zawadDB.select("students", {"student_id", "name"}, "age >= 18 AND is_active = true");
+    // zawadDB.printTable(result2);
 
-    // // Create a table BY NON ADMIN USER
+    // Create a table BY NON ADMIN USER
     // zawadDB.createTable("department", {
-    //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}
+    //     {"id", "INT", "PRIMARY_KEY"}, {"name", "STRING", "NOT_NULL"}, {"student_id", "INT","FOREIGN_KEY", "students", "CASCADE"}
     // });
 
     // // Insert some data in new table by NON ADMIN USER
-    // zawadDB.insertInto("department", {"id", "name"}, {"1", "Mechanical"});
-    // zawadDB.insertInto("department", {"id", "name"}, {"2", "Computer Science"});
-    // zawadDB.insertInto("department", {"id", "name"}, {"3", "Electrical"});  
+    // zawadDB.insertInto("department", {"id", "name", "student_id"}, {"1", "Mechanical", "1"});
+    // zawadDB.insertInto("department", {"id", "name", "student_id"}, {"2", "Computer Science", "2"});
+    // zawadDB.insertInto("department", {"id", "name", "student_id"}, {"3", "Electrical", "3"});  
 
 
 
@@ -72,6 +72,12 @@ int main() {
 	// zawadDB.grantPermission("utsho", "teachers");
     // std::cout << "\n🔹 Granted access permissions on teachers to user utsho " << std::endl;
 	// zawadDB.revokePermission("utsho", "teachers");
+
+    // drpoTable() demo
+    // zawadDB.dropTable("students");
+
+    // dropDB() demo
+    zawadDB.dropDB();
 
     // zawadDB.saveDB();
 
