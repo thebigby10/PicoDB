@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/example_usage.dir/examples/example_usage.cpp.o"
   "CMakeFiles/example_usage.dir/examples/example_usage.cpp.o.d"
+  "CMakeFiles/example_usage.dir/src/Database.cpp.o"
+  "CMakeFiles/example_usage.dir/src/Database.cpp.o.d"
   "CMakeFiles/example_usage.dir/src/PicoDB.cpp.o"
   "CMakeFiles/example_usage.dir/src/PicoDB.cpp.o.d"
   "CMakeFiles/example_usage.dir/src/core/Cell.cpp.o"

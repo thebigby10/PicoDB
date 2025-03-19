@@ -50,14 +50,14 @@ public:
 			this->delimiter = conf_manager.get_t_delimiter();
 			this->admin = conf_manager.get_admin();
 			this->allUserPermissionsInfo = conf_manager.get_permissions();
-			
+
 			// check if the user exists ✅
 			bool user_exists = false;
-			
+
 			if (!isAdmin()) {
-				int permissions_size = allUserPermissionsInfo.get_size(); 
+				int permissions_size = allUserPermissionsInfo.get_size();
 				for (int i=0; i<permissions_size; i+=2) {
-					if (username == allUserPermissionsInfo[i][0]) { 
+					if (username == allUserPermissionsInfo[i][0]) {
 						// we're taking [i][0] and i+=2 cause every 2nd vector in allUserPermissionInfo contains the table name, need to use constants here later
 						Vector<String> temp = allUserPermissionsInfo[i+1];
 						this->currentUserPermissions = temp;
@@ -139,7 +139,7 @@ public:
 						return false;
 					}
 				}
-			
+
 			}
 		}
 
@@ -279,7 +279,7 @@ public:
 		}
 
 		// Apply condition filtering
-		// update current table cells plus child reference tables		
+		// update current table cells plus child reference tables
 		for (int m = 0; m < input_table->getTableData().get_size(); m++) {
 			if (evaluateComplexCondition(input_table->getTableData()[m], condition_indices, condition_ops, condition_values, logical_ops)) {
 				// child referencing check
@@ -424,7 +424,7 @@ public:
 		}
 
 		// Apply condition filtering
-		// update current table cells plus child reference tables		
+		// update current table cells plus child reference tables
 		for (int m = 0; m < input_table->getTableData().get_size(); m++) {
 			if (evaluateComplexCondition(input_table->getTableData()[m], condition_indices, condition_ops, condition_values, logical_ops)) {
 				// child referencing check
@@ -477,7 +477,7 @@ public:
 		ConfigManager conf_file = conf_manager;
 		StringVectorConverter converter;
 		Encryptor encryptor(String(key).toInt());
-		
+
 		// fetch the config file data and add it to table_name, headers, types and constraints
 		Vector<Vector<String>> temp_data = conf_file.get_table_meta_data();
 		int temp_data_size = temp_data.get_size();
@@ -490,13 +490,13 @@ public:
 						this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3],temp_data[i+4],temp_data[i+5],temp_data[i+6],temp_data[i+7][0]));
 					}
 				}
-			}	
+			}
 		} else {
 			for(int i=0; i<temp_data_size; i+=8) {
 				this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3],temp_data[i+4],temp_data[i+5],temp_data[i+6],temp_data[i+7][0]));
 			}
 		}
-		
+
 		// decrypt the csv file data related to the table and copy the info
 		int table_size = tables.get_size();
 		for(int i=0; i<table_size; i++) {
@@ -510,11 +510,11 @@ public:
 			FileHandler table_file = FileHandler(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
 			table_string_data = table_file.readFromFile();
 			table_string_data = encryptor.decryptData(table_string_data); // decrypt fetched string data
-			
+
 			//converter.stringToVector(table_string_data, delimiter);
 			table_data_from_file = converter.stringToVector(table_string_data, delimiter);
 
-			
+
 			// load the data to table cells
 			int num_of_types = data_types.get_size();
 			int num_of_rows = table_data_from_file.get_size();
@@ -1337,9 +1337,10 @@ public:
         return false;
     }
 
+
     // Method to check if foreign key value exists in referenced table
     bool foreignKeyExists(Table *table, int col_index, const String& value) {
-        String referenced_table_name = table->getForeignKeyIndices()[0].second; 
+        String referenced_table_name = table->getForeignKeyIndices()[0].second;
 		// ekhane 0 deyar karon tablecreation logic e forKeyExist e push_back kora hoise rather than saving at that particular col_index
         // Retrieve the referenced table and check for matching primary key
         // Assuming 'get_table_by_name' retrieves a table by name (implement as needed)
@@ -1402,5 +1403,11 @@ public:
         }
         return decimalPoint;
     }
+//getname function
+String get_db_name() const {
+    return db_name;
+}
+
 };
+
 #endif

@@ -63,16 +63,16 @@ int main() {
 
     // Step 4: Display the tables after modification
     // cout << "SQL Query: SELECT * FROM courses;" << endl;
-    Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
-    db.printTable(courses_table);
+    // Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
+    // db.printTable(courses_table);
 
-    // cout << "SQL Query: SELECT * FROM students;" << endl;
-    Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
-    db.printTable(students_table);
+    // // cout << "SQL Query: SELECT * FROM students;" << endl;
+    // Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
+    // db.printTable(students_table);
 
-    // cout << "SQL Query: SELECT * FROM teachers;" << endl;
-    Table teachers_table = db.select("teachers", {"teacher_id", "salary", "student_id"}, "");
-    db.printTable(teachers_table);
+    // // cout << "SQL Query: SELECT * FROM teachers;" << endl;
+    // Table teachers_table = db.select("teachers", {"teacher_id", "salary", "student_id"}, "");
+    // db.printTable(teachers_table);
 
     // Save the database after operations
     cout << "SQL Query: SAVE DATABASE;" << endl;

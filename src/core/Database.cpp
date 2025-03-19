@@ -1,3 +1,5 @@
+#include "../../include/PicoDB/Database.h"
+
 // #include "../../include/PicoDB/Database.h"
 
 // Database::Database(String db_name, String db_path, String username, String key, String table_delimiter){
@@ -18,6 +20,14 @@
 // 		this->delimiter = conf_manager.get_t_delimiter();
 // 		this->admin = conf_manager.get_admin();
 // 		this->allUserPermissionsInfo = conf_manager.get_permissions();
+
+// 		// check if the user exists ✅
+// 		bool user_exists = false;
+
+// 		if (!isAdmin()) {
+// 			int permissions_size = allUserPermissionsInfo.get_size();
+// 			for (int i=0; i<permissions_size; i+=2) {
+// 				if (username == allUserPermissionsInfo[i][0]) {
 		
 // 		// check if the user exists ✅
 // 		bool user_exists = false;
@@ -34,7 +44,6 @@
 // 				}
 // 			}
 // 		}
-		
 
 // 		if (user_exists || isAdmin()) {
 // 			//convert the tables into vector ✅
@@ -67,7 +76,6 @@
 // 	// if(condition[1]=="=="){
 // 	// 	for(int i=0;i<table.get_RowSize();i++){
 // 	// 		for(int j=0;j<table[i].;j++){
-				
 // 	// 		}
 // 	// 	}
 // 	// }
@@ -95,7 +103,7 @@
 // 	ConfigManager conf_file = conf_manager;
 // 	StringVectorConverter converter;
 // 	Encryptor encryptor(String(key).toInt());
-	
+
 // 	// fetch the config file data and add it to table_name, headers, types and constraints
 // 	Vector<Vector<String>> temp_data = conf_file.get_table_meta_data();
 // 	int temp_data_size = temp_data.get_size();
@@ -109,14 +117,13 @@
 // 				}
 // 			}
 // 		}
-		
+
 // 	} else {
 // 		for(int i=0; i<temp_data_size; i+=4) {
 // 			this->tables.push_back(Table(temp_data[i][0],temp_data[i+1],temp_data[i+2],temp_data[i+3]));
 // 		}
 // 	}
-	
-	
+
 // 	// decrypt the csv file data related to the table and copy the info
 // 	int table_size = tables.get_size();
 // 	for(int i=0; i<table_size; i++) {
@@ -130,11 +137,19 @@
 // 		FileHandler table_file = FileHandler(db_path+String("/")+table_name+String(".csv")); //path to that table's csv file
 // 		table_string_data = table_file.readFromFile();
 // 		table_string_data = encryptor.decryptData(table_string_data); // decrypt fetched string data
+
+
+// 		//converter.stringToVector(table_string_data, delimiter);
+// 		table_data_from_file = converter.stringToVector(table_string_data, delimiter);
+
+
+
 		
 // 		//converter.stringToVector(table_string_data, delimiter);
 // 		table_data_from_file = converter.stringToVector(table_string_data, delimiter);
 
 		
+
 // 		// load the data to table cells
 // 		int num_of_types = data_types.get_size();
 // 		int num_of_rows = table_data_from_file.get_size();

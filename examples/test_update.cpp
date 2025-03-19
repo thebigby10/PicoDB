@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     // Create a database
-    PicoDB db("zawadDB", "D:/SPL Projects/PicoDB/test/zawadDB", "admin", "5", ";_;");
+    PicoDB db("rapidb", "test/rapidb", "admin", "5", ";_;");
 
     // // Create a table for courses (primary key on `course_id`)
     // cout << "SQL Query: CREATE TABLE courses (course_id INT PRIMARY_KEY, course_name STRING NOT_NULL);" << endl;
@@ -107,16 +107,16 @@ int main() {
 
     // Step 4: Display the tables after insertion
     // cout << "SQL Query: SELECT * FROM courses;" << endl;
-    Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
-    db.printTable(courses_table);
+    // Table courses_table = db.select("courses", {"course_id", "course_name"}, "");
+    // db.printTable(courses_table);
 
     // cout << "SQL Query: SELECT * FROM students;" << endl;
-    Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
-    db.printTable(students_table);
+    // Table students_table = db.select("students", {"student_id", "student_name", "course_id"}, "");
+    // db.printTable(students_table);
 
     // cout << "SQL Query: SELECT * FROM teachers;" << endl;
-    Table teachers_table = db.select("teachers", {"teacher_id", "salary", "student_id"}, "");
-    db.printTable(teachers_table);
+    // Table teachers_table = db.select("teachers", {"teacher_id", "salary", "student_id"}, "");
+    // db.printTable(teachers_table);
 
     // Save the database after operations
     cout << "SQL Query: SAVE DATABASE;" << endl;

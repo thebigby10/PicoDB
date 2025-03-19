@@ -19,7 +19,7 @@ int main() {
     db.insertInto("students", {"id", "name", "age", "is_active"}, {"5", "Sakib Al Hasan", "15", "true"});
 
     // Print full table (no condition)
-    Table result1 = db.select("students", {"id", "name", "age", "is_active"}, "age != 18");
+    Table result1 = db.select("students", {"id", "name", "age", "is_active"}, "age != 18 AND is_active = true");
     db.printTable(result1);
 
     // Cell c1(true);
