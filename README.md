@@ -4,7 +4,6 @@
 
 
 ![C++](https://img.shields.io/badge/language-C%2B%2B-blue)
-![CSV](https://img.shields.io/badge/data-CSV-orange)
 ![CMake](https://img.shields.io/badge/build-CMake-brightgreen)
 
 
@@ -24,27 +23,87 @@ PicoDB is a lightweight SQL simulation library built in C++ that uses CSV files 
 
 - **Basic SQL Operations**:
 
-
   - **SELECT, INSERT, UPDATE, DELETE**: Perform standard SQL operations.
 
   - **CREATE, ALTER, DROP TABLE**: Manage table schemas.
-  
+
   - **JOIN Operations**: Basic INNER JOIN support.
 
   - **Primary & Foreign Keys**: Define relationships between tables.
 
-  - **Aggregate Functions**: COUNT, SUM, AVG, MIN, MAX.
-
-  - **Sorting & Filtering**: ORDER BY and WHERE clauses.
+  - **Filtering**: WHERE clauses.
 
   - **Functions**: String, numeric, and date functions.
 
+  - **Sub-Queries**: Nested SELECT statements.
+
+## Requirements
+- C++17 or higher
+- CMake (for building the project)
+- A C++ compiler like GCC or Clang
 
 
-- **NoSQL Functionality**: Basic CRUD operations for simpler data manipulation.
+## Getting Started
+1. Clone the Repository
 
+Clone the PicoDB repository to your local machine:
 
-- **Compression & Encryption**: Advanced algorithms for efficient storage and secure data management.
+```bash
+git clone https://github.com/yourusername/PicoDB.git
+cd PicoDB
+```
+
+2. Build the library
+
+You will need to use CMake to build the library.
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+This will compile the project into a static library (libpicoDB.a) in the build/lib directory.
+
+3. Using PicoDB in Your Project
+
+After building and installing the library, you can use PicoDB in your own C++ projects.
+
+Here’s how you can link it to your project using CMake:
+
+```cmake
+# In your project's CMakeLists.txt
+find_package(PicoDB REQUIRED PATHS "/path/to/picodb/install")
+
+add_executable(your_project main.cpp)
+target_link_libraries(your_project picoDB)
+```
+
+4. Running Examples
+
+PicoDB includes some example usage. To try them out, you can create a simple test file:
+
+```cpp
+#include "PicoDB/PicoDB.h"
+
+int main() {
+    // Initialize PicoDB with database name, path, username, and encryption key
+    PicoDB db("studentdb", "./db_data", "admin", "admin");
+
+    // Create a table
+    db.createTable("students", {{"id", "INT", "PRIMARY_KEY"}, {"name", "STRING"}, {"age", "INT"}});
+
+    // Insert some data
+    db.insertInto("students", {"id", "name", "age"}, {"1", "John Doe", "20"});
+
+    // Query the data
+    auto result = db.select("students", {"id", "name", "age"}, "age > 18");
+    db.printTable(result);
+
+    return 0;
+}
+```
 
 ## Using PicoDB
 
@@ -75,7 +134,7 @@ PicoDB is a lightweight SQL simulation library built in C++ that uses CSV files 
 ### Advanced Usage
 
 - **Joins**: Perform inner joins to combine tables on a common key.
-  
+
     ```sql
     SELECT students.name, courses.name
     FROM students
@@ -95,8 +154,7 @@ Here is the proposed basic Project Structure. We are planning to update it over 
 ├── examples/           	# Example usage
 ├── docs/               	# Documentation
 └── README.md           	# Project overview
- ``` 
- 
+ ```
+
 ## Here is the draw.io diagram for our project (rough)
 ![alt text](image.png)
-
